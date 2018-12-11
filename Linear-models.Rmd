@@ -1,0 +1,346 @@
+---
+title: "Variants of linear models"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+# Linear models
+
+Let's briefly remind ourselves how to get a linear regression model in R. We can use the birth weights data set. We also produce an accompanying plot.
+
+```{r}
+library(ggplot2)
+
+bw = read.csv('birth_weights.csv')
+
+fig1 = ggplot(bw, aes(y=Birth_weight, x=Weight)) +
+  geom_point() +
+  labs(y='Birth weight (kg)', x='Weight (kg)', caption='Data: Baystate Medical Center, 1986')
+
+print(fig1 + geom_smooth(method=lm))
+```
+
+We can ask for a linear model using `lm()`, and inputting a formula of the type 'outcome ~ predictor(s)'. We will get a model that predicts the value of the outcome variable as the sum of an intercept plus some multiple of each predictor.
+
+```{r}
+model = lm(Birth_weight ~ Weight, bw)
+summary(model)
+```
+
+We will now look at a couple of variants of this basic linear model. These adapt the basic structure of the linear model in order to model non-linear relationships.
+
+## Polynomials
+
+Let's look at an example of a possible non-linear relationship between two variables. For this, we load some new data.
+
+These data come from [diving penguins](http://jeb.biologists.org/content/211/8/1169). For each dive, we have the duration of the dive, the depth of the dive, and the penguin's heart rate.
+
+```{r}
+peng = read.csv('penguins.csv')
+
+peng
+```
+
+Let's investigate the relationship between dive duration and heart rate. A linear model perhaps fails to capture an important feature of the data.
+
+```{r}
+peng_plot = ggplot(peng, aes(y=HeartRate, x=Duration)) +
+  geom_point() +
+  labs(y='Heart rate (bpm)', x='Dive duration (mins)', caption='Data: Meir & Ponganis, 2009')
+
+print(peng_plot + geom_smooth(method=lm))
+```
+
+Sometimes we can see this even more clearly by plotting the residuals from a linear model. Since the residuals contain the variance in the outcome that remains after subtracting the model's predictions, any pattern left over in the residuals is one that the model did not account for.
+
+(Since we have changed the data set by adding a column for the residuals, we need to feed this altered data set into our plot with `%+%` in order for the change to be taken into account.)
+
+```{r}
+model1 = lm(HeartRate ~ Duration, peng)
+peng$Residual = residuals(model1)
+
+residual_plot = peng_plot +
+  aes(y=Residual) +
+  geom_hline(yintercept=0, lty='dashed')
+
+print(residual_plot %+% peng)
+```
+
+There appears to be a 'bend' in the relationship. We can easily adapt the linear model to a 'bent' relationship by including as an additional predictor some curved function of our basic predictor. For example, the square of dive duration.
+
+One way of adapting the R formula for the model so as to include the square of a predictor is to just write the mathematical expression for the square `^2`. Unfortunately, the arithmetic operators `+ - * / ^` and so on have particular meanings within formulae. For example, `+` adds in a new predictor, and `*` indicates an interaction. So in order to indicate to R that we want instead the literal arithmetic meaning of the `^` operator and not some special formula meaning, we have to wrap the expression in `I()`, a function whose purpose is to do exactly this: indicate a literal arithmetic meaning within a formula.
+
+```{r}
+model2 = lm(HeartRate ~ Duration + I(Duration^2), peng)
+summary(model2)
+```
+
+A function that is the sum of various powers of the predictor variable is known as a polynomial function. There are many possible polynomial functions. One basic way of classifying them is in terms of their 'degree', the highest power of the predictor included in the function. The function we used in our model above has degree 2, because it includes duration¹ and duration². Each additional power gives the model the flexibility to 'bend' in one more place. So whereas the linear model may not bend at all, the degree-2 polynomial model we used above can have one bend.
+
+Sometimes polynomial functions are given shorthand names according to their degree:
+
+0. constant
+1. linear
+2. quadratic
+3. cubic
+4. quartic
+5. quintic
+6. sextic
+7. septic
+
+If we want polynomial functions of higher degree, it will become tedious to put all the powers of the predictor into the formula. The R function `poly()` generates a polynomial, allowing us to specify the desired degree in a single input.
+
+```{r}
+model2 = lm(HeartRate ~ poly(Duration,degree=2), peng)
+summary(model2)
+
+model3 = lm(HeartRate ~ poly(Duration,degree=3), peng)
+summary(model3)
+```
+
+There is another advantage to using the `poly()` function here. Take a look at what happens if we go up to a quintic model (polynomial of degree 5) for these data, using the literal powers of duration as our predictors.
+
+```{r}
+model5b = lm(HeartRate ~ Duration+I(Duration^2)+I(Duration^3)+I(Duration^4)+I(Duration^5), peng)
+
+summary(model5b)
+```
+
+We can see from the original plot of the heart rate data above that there is a fairly clear single bend in the overall trend. And this was reflected in the low *p*-value for the `I(Duration^2)` coefficient in the hypothesis tests for the model. However, now that we have included some higher powers of duration, the apparent usefulness of the square of duration has drastically diminished; its *p*-value is now quite large.
+
+This is an old problem in a slightly new guise. Recall that in multiple regression the hypothesis tests for the coefficients can be thought of as testing the amount of variance in the outcome that each predictor accounts for, after having already considered all the other predictors. So if predictors are correlated with one another, and consequently explain some of the same variance in the outcome, they will obscure each other's effects in the individual hypothesis tests. The phenomenon of correlated predictors is often termed 'collinearity' (or 'multicollinearity' where more than just two predictors are involved).
+
+Powers of a number tend to be correlated with one another over certain regions of the number line. Take *x*¹ and *x*² for example. In the interval 0 to 2, they are somewhat collinear.
+
+```{r}
+polyplot = ggplot(data.frame(x=seq(from=0, to=2, by=0.01))) +
+  geom_line(aes(x=x, y=x)) +
+  geom_line(aes(x=x, y=x^2), lty='dashed') +
+  labs(y='y') +
+  annotate('text', x=2, y=c(2,4), label=c('y = x¹','y = x²'), hjust=1, vjust=0)
+
+print(polyplot)
+```
+
+So in a model that includes several powers of the predictor, these separate powers may obscure one another's effects in the individual hypothesis tests because they are correlated over the region of the scale that the data occupy.
+
+If this property is undesirable for our use of the model, we can avoid it by transforming the data so that they occupy a region of the scale where the powers of the predictor are not correlated with one another. For example, *x*¹ and *x*² are not correlated over the interval -2 to 2.
+
+```{r}
+print(polyplot %+% data.frame(x=seq(from=-2, to=2, by=0.01)))
+```
+
+In fact, this is what the `poly()` function already does behind the scenes. It generates so-called 'orthogonal polynomials' of our predictor. This means that we will not have a collinearity problem if we want to test the explanatory power of individual powers of our predictor.
+
+For example, for the quintic model generated using `poly()`, we see that the *p*-value for the quadratic component remains low despite the inclusion of the higher powers, according somewhat better with the visual intuition that the quadratic model is a good description of the data.
+
+```{r}
+model5 = lm(HeartRate ~ poly(Duration, degree=5), peng)
+summary(model5)
+```
+
+However, we pay a certain price for this property. Because the orthogonal polynomials are based on a transformation of our predictor, the units of the coefficients in the model are no longer meaningful. They are on the transformed scale, not the original one.
+
+It is also important to note that this orthogonality property is only important where we wish to consider the individual powers within a polynomial model. If we simply wish to assess the overall model, it will not matter whether the predictors are orthogonal polynomials or literal powers. The sum of the components of the model will be the same, and the model will make the same predictions and have the same overall fit to the data.
+
+We can see this if we compare the `summary()` outputs of the two different quintic models we created above. They have the same *R*², for example, and the *p*-value for the overall *F*-test is also the same.
+
+We should visualise models when we can. Polynomial models can be easily visualised as curves overlaid on the scatterplot. To add more than one model to the same plot, we can add multiple `geom_smooth()`s, each time with a different formula. The formulae are the same as those we use to create the linear models with `lm()`, only with the plot dimensions `y` and `x` substituted for our outcome and predictor variables.
+
+When we have more than one smooth line on a plot, it is often clearer if we omit the standard error region around the line. Otherwise we will have too much shading obscuring the plot. We can also colour the lines differently.
+
+(The default formula is the simple linear model, so the formula can be omitted for the linear one.)
+
+```{r}
+peng_plot_models = peng_plot +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_smooth(method=lm, formula=y~poly(x,degree=2), se=FALSE, color='red') +
+  geom_smooth(method=lm, formula=y~poly(x,degree=3), se=FALSE, color='green')
+
+print(peng_plot_models)
+```
+
+As well as polynomials, other functions of the predictors can be included in linear models. For example, a logarithmic function seems to describe these data particularly well.
+
+```{r}
+print(peng_plot + geom_smooth(method=lm, formula=y~log(x)))
+```
+
+## Logistic regression
+
+Let's now look at a rather different way of adapting the basic linear model to a non-linear relationship.
+
+In the birth weights data, the `Visits` variable records how many times a doctor visited the mother while she was in hospital.
+
+```{r}
+table(bw$Visits)
+```
+
+We can see that only a very few mothers received multiple visits. The information available to us about larger numbers of visits is therefore rather sparse, so we will treat this variable as dichotomous, and compare the large number of mothers who did not receive any visits with those who received at least one visit.
+
+To create a new dichotomous variable recording whether or not a mother received any visits, we will first create a new column in the data set containing only zeros, and then we will enter '1' wherever a mother had at least one visit.
+
+```{r}
+bw$Any_visits = 0
+bw$Any_visits[bw$Visits>0] = 1
+
+head(bw)
+```
+
+We will now explore the relationship between a mother's age and whether she received any doctor's visits.
+
+Let's first create a plot. We put age on the *x* axis and our new binary 'any visits?' variable on the *y* axis. Because the visits variable has only two categories, we add a bit of vertical jitter to separate out the individual observations.
+
+Because we have coded our 'any visits?' variable as 0 for 'no' and 1 for 'yes', its scale can be thought of as representing the probability of receiving any visits. So we add a label indicating this. To simplify the numerical labelling of the scale, we add a custom scale for the *y* axis. This can be done with the ggplot function `scale_y_continuous()`. The `breaks=` input specifies the points on the scale that we want to display. For probabilities, 0, 0.5, and 1 are sufficient for good visual orientation.
+
+```{r}
+visits_plot = ggplot(bw, aes(y=Any_visits, x=Age)) +
+  geom_point(position=position_jitter(width=0, height=0.1)) +
+  labs(y='P(visit)', caption='Data: Baystate Medical Center, 1986') +
+  scale_y_continuous(breaks=c(0,0.5,1))
+
+print(visits_plot)
+```
+
+It would not be so wrong to just model this probability as a linear function of age. This is known as a 'linear probability model'.
+
+```{r}
+print(visits_plot + geom_smooth(method=lm))
+
+lpm = lm(Any_visits ~ Age, bw)
+print(lpm)
+```
+
+The slope for age is an estimate of the constant change in the probability of receiving a visit with each additional year of age.
+
+But the linear probability model is perhaps not so satisfying. Because it posits a constant increase in probability, the model will in some places predict a probability less than 0 or greater than 1. This isn't such a problem if such impossible predictions fall well outside the region of the scale that we are interested in. But in this case there are some realistic ages for which the model predcts greater than certain probability of receiving a doctor's visit.
+
+We can check a model's prediction for a new data point using the `predict()` function. The first input is a model and the second input is a new data set containing the values of the predictor(s) for one or more new observations.
+
+```{r}
+predict(lpm, data.frame(Age=49))
+```
+
+It would be mathematically neater if we could ensure that the predicted probabilities are bounded by 0 and 1 and just get arbitrarily close to these values but do not ever reach them. This requires modeling a non-linear relationship of the predictors to the probability outcome.
+
+We can still adapt the basic structure of linear models to this non-linear relationship if we transform the bounded 0 to 1 scale of the probabilities into an unbounded scale. This can be achieved by expressing the probabilities in a different form.
+
+The 'odds' of an event is a numerical quantity that expresses its probability using a number that may go above 1. Odds express probabilities as the ratio of the probability of an event occuring to the probability of it not occurring. This is a notation most familiar from the world of betting, in phrases such as 'fifty-fifty', '10 : 1' or 'a million to one'.
+
+So for example the odds of an event with probability 0.8 are `0.8 / 0.2`, so 4. This expresses the fact that the event is 4 times more likely to occur than it is to not occur.
+
+To quickly experiment with the concept of odds, we will take a brief diversion and learn how to create our own functions in R. We will create a function that takes a probability as its input and then outputs the odds.
+
+We define a function in R using `function()`. Inside the parentheses we give a name to the input of the function. Then we open the curly braces `{}` to describe the workings of the function. In here we do something with the input, using R commands just as normal. At the end of the function we use `return()` to say what the function should 'return' (i.e. what it should output). Like anything else, a function can be stored using `=`. The name under which we store the function is the name that we must then later type in order to use the function on a given new input.
+
+```{r}
+odds = function(p){
+  o = p / (1 - p)
+  return(o)
+}
+
+odds(0.8)
+```
+
+Once created, our function can be used again and again on many new inputs.
+
+```{r}
+odds(0.95)
+odds(0.5)
+odds(0.1)
+```
+
+We can now see that the limit of the odds as a probability approaches 1 is infinity.
+
+```{r}
+odds(1)
+```
+
+However, the odds are still bounded by zero at the lower end of the probability scale.
+
+```{r}
+odds(0)
+```
+
+How can we extend the scale indefinitely in the negative direction? You may recall that logarithms turn positive numbers smaller than 1 into negative numbers.
+
+(The `log()` function in R gives the natural logarithm.)
+
+```{r}
+log(0.1)
+log(0)
+```
+
+So if we convert probabilities into the logarithm of their odds (or 'log odds' for short), we transform them onto an unbounded scale. To quickly check this and to see what the log odds of various probabilities are, let's create another function, this time for converting a probability into log odds.
+
+```{r}
+logodds = function(p){
+  o = p / (1 - p)
+  return(log(o))
+}
+
+logodds(0.8)
+logodds(0.5)
+logodds(0.001)
+```
+
+R also provides a function `plogis()` for converting log odds back into probabilities.
+
+```{r}
+plogis(0)
+plogis(1.5)
+plogis(-2.5)
+```
+
+So a log odds of 0 indicates that the probability of the outcome is 0.5. Positive log odds indicate the outcome is more likely to occur than not, and negative log odds the opposite.
+
+If we model the log odds of an outcome instead of its probability, then we can still use the structure of a linear model to describe the non-linear relationship of predictors to outcome. This is what a 'logistic regression' does.
+
+Since the algorithmic details of fitting such a model to data are rather different from those of a standard linear model, this is handled in R by a different function, `glm()`, which stands for *g*eneralized *l*inear *m*odel. This function handles many different kinds of functions relating predictors to outcome, so we must specify what `family` of models we want. For a logistic regression we want the 'binomial' family ('*bi*nomial' because of the two possible outcomes).
+
+Otherwise, the model formula is the same as for a linear regression.
+
+```{r}
+log_model = glm(Any_visits ~ Age, bw, family=binomial)
+
+summary(log_model)
+```
+
+The coefficients can be interpreted much as for a linear model, but bearing in mind that the scale of the outcome is log odds and not probability. So for example the fact that the intercept on th elog odds scale is negative is telling us that the intercept on the probability scale is below 0.5 (recall that the log odds of 0.5 are 0).
+
+A visualization can help a lot. We can do this with `geom_smooth()` just as for linear models, only with `glm` as the method instead of `lm`. We also need some way of including the `family=` input that we gave to `glm()` when we created the model. `geom_smooth()` allows for an input called `method.args=` which specifies a `list()` of inputs for the method.
+
+```{r}
+visits_plot = visits_plot +
+  geom_smooth(method=glm, method.args=list(family=binomial))
+
+print(visits_plot)
+```
+
+We can get an additional check of the behaviour of the model by seeing what its predictions are for specific values of the predictor.
+
+```{r}
+predict(log_model, data.frame(Age=20))
+```
+
+By default, the predictions are given on the log odds scale, which can be difficult to interpret. To get the probability instead, we can specify what `type=` of prediction we want. `'response'` will get us a prediction on the probability scale.
+
+We can check these against the plot above.
+
+```{r}
+predict(log_model, data.frame(Age=20), type='response')
+predict(log_model, data.frame(Age=30), type='response')
+```
+
+Just as with other linear models, we can include multiple predictors and their interactions in a logistic regression model. For example, here we could explore the association of an interaction of age and smoking with doctor's visits.
+
+```{r}
+print(visits_plot + aes(color=Smoker))
+
+log_model2 = glm(Any_visits ~ Age*Smoker, bw, family=binomial)
+summary(log_model2)
+```
