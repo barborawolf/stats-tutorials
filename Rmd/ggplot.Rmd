@@ -1,0 +1,387 @@
+---
+title: "Data visualization with ggplot"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+    keep_md: TRUE
+---
+
+# Packages
+
+In the introductory tutorial we saw the basic use of R, loading data and making a few checks and calculations. For some of the more specialized tasks in data analysis, basic R won't be enough. We will need to call upon some additional 'packages' that must first be downloaded and installed.
+
+You can download and install a package from within RStudio. You don't need to go to a website or search for an installation file online. Go to the **Packages** tab in RStudio, and there you will see a list of all the extra packages you currently have installed, along with a short description and version number for each. To search for a package and then install it, click on **Install** and then type the name of the package you want. RStudio will autocomplete a package name once you start typing.
+
+If you followed the setup instructions for the course, you will already have installed the package that we will use now, ggplot2, so you don't need to install it again.
+
+However, when we want to use an installed package in an R script, we need to load the package, and this is something that we need to do for each new script that uses the package. Fortunately, loading packages is easy. The `library()` function loads a package, and the input is the name of the package.
+
+```{r}
+library(ggplot2)
+```
+
+If successful, the `library()` function outputs nothing, so you won't see anything printed in the console. If you see an error message telling you there is no such package, either you have spelled the name of the package wrong, or it is not installed. Go and install it first.
+
+We should put any `library()` commands at or near the very top of our R script, so that other people can see easily what packages they will need to have if they want to run our data analysis.
+
+# ggplot
+
+The ggplot package brings with it lots of functions for visualizing data. The main function is `ggplot()`. Note that the name of the *package* is 'ggplot2', but the *function* that the package brings us is called just 'ggplot'.
+
+The *gg* in ggplot stands for *g*rammar of *g*raphics, a particular conceptual approach to describing graphs. You can read about it in more detail [here](https://www.tandfonline.com/doi/abs/10.1198/jcgs.2009.07098), but the core idea is to describe graphs in terms of three components:
+
+* data
+* aesthetic mapping, a mapping of variables from the data onto dimensions of the graph, such as:
+  + *x* dimension
+  + *y* dimension
+  + color
+  + size
+* geometric objects, the shapes used to represent the data, such as:
+  + points
+  + lines
+  + bars
+  + or more complex shapes like boxplots
+
+Let's load the example data set and create a plot. We will make a classic scatterplot, showing the mothers' weights on the *x* axis and their babies' weights on the *y* axis.
+
+We use the main `ggplot()` function to say what data we want to use and what aesthetic mapping we want. The first input is our data set. The second input is itself a function, the `aes()` function. *aes* is short for *aesthetic*, and this function organizes the aesthetic mapping as described above. Inside the `aes()` function, we assign variables from the data set to dimensions of the plot. We do this using the same `=` that we use for assignment in general.
+
+```{r}
+bw = read.csv('birth_weights.csv')
+
+ggplot(bw, aes(y=Birth_weight, x=Weight))
+```
+
+In this first extremely minimal example, we didn't yet add on a geometric object. So the plot is empty. But notice that ggplot already does some useful automatic jobs. It has created the *x* and *y* scales with the necessary range, and has added gridlines to the plot background.
+
+Now we will do it again with points as our geometric object, to produce the finished scatterplot. Geometric objects are added on to the core plot definition using `+`. Each type of geometric object has its own function. The one that we want is called `geom_point()`. Because we have already defined the organization of the plot with `aes()`, `geom_point()` doesn't need any input telling it what to plot or where.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight)) + geom_point()
+```
+
+If we use any other dimensions when defining the plot, such as color, size, or shape, any geometric object that is able to represent that dimension will take this into account. For example, points can be shown in different colors if a factor variable is mapped to the color dimension.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) + geom_point()
+```
+
+## Adding to plots
+
+We will often want to have a few different versions of our plot, for example a basic version showing the raw data, perhaps a version showing the overall means, a version that splits the data into two subgroups, and so on. It would be tedious to have to repeat the basic underlying plot definition for each version. We should avoid this unnecessary repetition. The first step in doing so is to store the most basic form of our plot, so that we can use it repeatedly. We can store a plot using `=` just as we do for storing loaded data or other information. Here we store it under the name 'fig1'.
+
+```{r}
+fig1 = ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) + geom_point()
+```
+
+Now the plot is stored and we can re-use it under this name. One thing we can do with a stored plot is display it again. This is done with the same `print()` function we saw earlier.
+
+```{r}
+print(fig1)
+```
+
+We can now add a new geometric object to the stored plot, and store the result in a new object, so we have our two versions. Let's add a smooth line representing the relationship between our *x* and *y* variables.
+
+```{r}
+fig2 = fig1 + geom_smooth()
+print(fig2)
+```
+
+Notice that we also got a short message printed out when we ran `geom_smooth()`. This is not an error message but simply a warning. Some functions when we run them will print out a reminder of what the function is doing, so that we can check it is really what we wanted. This occurs most often in cases where the function's default behavior might not be what some users typically want.
+
+The content of the warning message tells us something about a 'method' called 'loess', which `geom_smooth()` has used. *loess* stands for *lo*cally *es*timated *s*mooth, and calculates a regression of *y* onto *x* locally for each region of the *x* scale. This is more complex than we will usually need. We can change it to a linear regression.
+
+To change the behaviors of plotting functions, we must give them some input specifying what aspect of their behavior we want to change and what we want to change it to. We will change the `method` to `lm` for a linear model. Note that the `lm` refers to the same function that we used to calculate a linear regression in the previous class. It is being used here to produce the parameters for the line, which `geom_smooth()` then draws.
+
+```{r}
+fig2 = fig1 + geom_smooth(method=lm)
+print(fig2)
+```
+
+Most plotting functions have lots and lots of options that we can change in order to fine-tune our plot. For example, we can turn off the standard error region that `geom_smooth()` draws by default. Options that are just turned on or off are controlled by the logical values `TRUE` and `FALSE`. These must be written in uppercase.
+
+```{r}
+fig2 = fig1 + geom_smooth(method=lm, se=FALSE)
+print(fig2)
+```
+
+The order in which we add geometric objects to the plot matters. They will be drawn in that order, so later objects that overlap with earlier objects will obscure them. For example, if we had created our scatterplot first with the smoothing line and then with the points, it would look slightly different.
+
+(The difference in this case is fairly subtle, but if you look carefully you notice that some of the points are now drawn over the line.)
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) + geom_smooth() + geom_point()
+```
+
+## Plot extras
+
+There are a few extra things that we can add to a plot that are not central to its structure, but that can help to prettify it a bit.
+
+Fairly often we will want to modify the labels on the axes. By default, they are given the names of the variables in our data set. So where feasible, we can make plotting easier by just naming the variables appropriately in the original table of data. But if we want labels with spaces in them, or if we want to state the units of the variable, that can get unwieldy. An alternative is to specify labels manually using the `labs()` function.
+
+As with `aes()`, the inputs to the `labs()` function are assignments to plot dimensions. Because the labels are just literal text, and do not refer to a function or object in R, they must be given in quotation marks.
+
+```{r}
+fig2 = fig2 + labs(y='Birth weight (kg)', x='Weight (kg)')
+print(fig2)
+```
+
+We can also use `labs()` to assign a caption. We don't always need this, but one good use of the caption is to provide a brief reference for where the data come from. This can be important for plots that might be shown without their original context, because it ensures that a record of the source is built in to the plot image.
+
+```{r}
+fig2 = fig2 + labs(caption='Data: Baystate Medical Center, 1986')
+print(fig2)
+```
+
+`labs()` can also assign a title at the top of the plot. We won't always need this, but one use of a title is to assign a label to a plot that we will later use as one of several plots presented at once.
+
+```{r}
+fig2 = fig2 + labs(title='A')
+print(fig2)
+```
+
+We can modify the overall style of the plot by adding on a 'theme'. There are various theme functions, and you can see the look of them at the [ggplot reference website](https://ggplot2.tidyverse.org/reference/ggtheme.html). For example, the 'classic' theme does not have guiding gridlines or a shaded background.
+
+```{r}
+print(fig2 + theme_classic())
+```
+
+## Scales
+
+In the example plots above, ggplot decided for us what range of values to show on each axis scale. And it tends to make fairly good decision about this. But sometimes we will want to take control of this aspect of our plots ourselves. For example, if we are showing data that come from a discrete rating scale we might want to show only particular values.
+
+Various `scale_` functions handle this. There are lots of such functions, and it can sometimes take a bit of work to find out which one we want. But generally the function will have the name of the plot dimension, plus some indication of what kind of scale we want to apply. For example, if we want to change the values shown for 'Birth weight' in our plot above, we need the function `scale_y_continuous()`, because we are dealing with the *y* dimension and a continous scale.
+
+The `breaks=` input tells the `scale_` function at what points on the scale we would like to show values. We can input several numbers, using the `c()` function to group the numbers together.
+
+```{r}
+print(fig2 + scale_y_continuous(breaks=c(1,3,5)))
+```
+
+The same principle applies to color scales. To change the colors assigned to categories, use `scale_color_manual()`. The required input is again a set of values grouped together using `c()`. Since these are not 'break points' along a scale, but just categorical values, the input is called `values=`. The names of colors are given in `''`.
+
+```{r}
+print(fig2 + scale_color_manual(values=c('skyblue','brown')))
+```
+
+If you are wondering what named colors are available in R, you can see a full list of them by typing the `colors()` function into the console.
+
+```{r}
+colors()
+```
+
+## Saving plots to file
+
+Of course we also want to save our plots as images so we can put them in articles, websites, presentations, and posters. One way of saving a plot is via the **Export** button in RStudio's **Plots** tab. This is good for saving a 'one-off' plot that we aren't likely to want to come back to and modify. But if we want to make the creation of the image reproducible, then we should include it as a command in our R script. This allows us to come back and just run our entire analysis again, maybe with new data, and get the new plot image automatically.
+
+The `ggsave()` function saves a plot to an image file. The first input is the name we want to give the file, and the second input is the plot object. We use the suffix of the filename to specify what image format we want.
+
+Here we save one of the plots already created above, as a png file:
+
+```{r}
+ggsave('figure_2.png', fig2)
+```
+
+Again, a warning message informs us of the function's default behavior. In this case it refers to the dimensions of the image. If we want to change the width and height of the image, we have to specify the `width`and `height` options in the input to `ggsave()`.
+
+The units of the image dimensions are by default inches (abbreviated to 'in' in the warning message above). Small values in the range of 2 or 3 will give a small, chunky image in which the text and objects are large relative to the overall plot size. Values much larger than 10 will give a more sparse-looking plot, in which text and points are relatively small.
+
+```{r}
+ggsave('figure_2.png', fig2, width=3, height=2)
+```
+
+If we want a very large-format image, for example to go on a big poster, then a scalable format such as svg is best. Instead of being stored as pixels, which will get fuzzy when the image is zoomed up to a large size, an svg image is stored as a description of lines and shapes, so it stays crisp at whatever size it is zoomed up to.
+
+Unfortunately, not every operating system can create these files from within R. If you type the command `capabilities('cairo')` into your console and you get the answer `TRUE`, then you are probably good to go. Try saving an svg image and see whether it works.
+
+```{r}
+ggsave('figure_2.svg', fig2)
+```
+
+If R prints out an error message saying that some packages were not found (possibly the `svglite` package), you could try installing those packages and it may then work.
+
+## Faceting
+
+If we want to show the same plot for different subsets of our data, we don't need to chop up our data and then create the plot separately for each part. ggplot's faceting functions add a 'split' to a plot, creating it separately for different groups.
+
+The input to these functions is a formula describing the split. We have seen formulae already when we used them to specify subsets of data for `aggregate()`. We will stick here to the basic case in which we want to split by just one grouping variable. In this case, we just need the `~` that appears in all formulae, followed by the name of the grouping variable we want to split by.
+
+The `facet_wrap()` function handles this simplest case.
+
+For example, if we wanted to show the two smoking groups side by side instead of as different colors on the same plot, the full plot command would look like this:
+
+```{r}
+ggplot(bw, aes(y=Birth_weight,x=Weight)) + geom_point() + facet_wrap(~Smoker)
+```
+
+As with all other plot features, a facet can be added to an existing plot. For example, we could take the plot we created earlier, and show it separately for each of the three categories of the `Race` variable.
+
+```{r}
+print(fig2 + facet_wrap(~Race))
+```
+
+Faceting can be particularly useful if we have data from an experiment in which each participant completed many trials of the experiment. We can define a plot that visualizes a participant's performance (for example a speed-accuracy trade-off), and then facet by the participant ID variable. The separate plots will show us whether all participants behaved according to more or less the same pattern, or whether there is a lot of variability among participants or some anomalous cases.
+
+## Distributions
+
+An important first exploration of our data is to check how a variable is distributed. We have different options for this. A histogram is a good start. The histogram divides a scale up into 'bins', and counts how many observations we have in each bin.
+
+Let's see an example with the distribution of birth weights. We need the birth weights on the *x* axis, and then the histogram as our geometric object,
+
+```{r}
+fig0 = ggplot(bw, aes(x=Birth_weight)) + labs(x='Birth weight (kg)')
+
+fig1 = fig0 + geom_histogram()
+
+print(fig1)
+```
+
+Again, we see a short warning message. This time, we are being told about a default choice regarding the width of the bins for the histogram. We can change this by specifying `binwidth` in the input to `geom_histogram()`. The value refers to the scale of measurement. For example to group together birth weights in intervals of half a kilo, we would use 0.5.
+
+```{r}
+fig1 = fig0 + geom_histogram(binwidth=0.5)
+
+print(fig1)
+```
+
+If we want instead to specify the total number of bins rather than the width of each one, we can use the `bins` input instead.
+
+```{r}
+fig1 = fig0 + geom_histogram(bins=20)
+
+print(fig1)
+```
+
+## Summary statistics
+
+If we want to plot summary statistics, such as a mean value, there are ggplot functions for this too. `stat_summary()` is the most general one. Let's show the mean birth weights side by side for the two smoking groups.
+
+```{r}
+fig0 = ggplot(bw, aes(y=Birth_weight, x=Smoker)) + labs(y='Birth weight (kg)')
+
+fig1 = fig0 + stat_summary()
+
+print(fig1)
+```
+
+Again a warning message tells us about a default option that has been applied. By default, `stat_summary()` shows the mean value and its Standard Error (this is the meaning of the `mean_se()` function mentioned in the warning message).
+
+We can specify our own summary functions, but this becomes a little trickier and is beyond the scope of this tutorial.
+
+To make sure our plot can be interpreted correctly, we should say what statistics the points and ranges of the summary show.
+
+```{r}
+fig1 = fig1 + labs(caption='mean ± SE')
+
+print(fig1)
+```
+
+## A more complex example
+
+Let's try a different kind of plot, and see some slightly trickier tweaks that we may sometimes need to make.
+
+We will produce side-by-side boxplots showing the distribution of birth weights in each of the two smoking categories. In addition, we will overlay the individual observations as points. A plot like this combines two objectives of data visualization. On the one hand we want to give a somewhat compressed summary of the data so we can see an overall pattern (this is what the boxplots will achieve), but we also don't want to lose too much information (this is why we will still show the individual observations).
+
+(When writing a longer command, we can make the text of our analysis program a bit more readable by splitting it over two or more lines. This has no functional effect on our program, it just makes it easier for a human to read, which is important if we want people to be able to see clearly what we did with the data.)
+
+```{r}
+# Just the core definition of the plot, and a better label for the y axis.
+fig0 = ggplot(bw, aes(y=Birth_weight,x=Smoker)) +
+  labs(y='Birth weight (kg)')
+
+# Add the boxplots.
+fig1 = fig0 + geom_boxplot()
+
+print(fig1)
+```
+
+The boxplots show quite well the overall tendency for smoking mothers to have smaller babies. Now we will add the points.
+
+```{r}
+fig2 = fig1 + geom_point()
+
+print(fig2)
+```
+
+The points haven't turned out quite so nicely. The problem is that there are too many of them, so they overlap each other. One solution to this is to randomly 'jitter' the points horizontally, so that they are spaced apart from one another a bit.
+
+To change the behavior of how a geom is positioned, we must specify a `position` function in the input to the geom. As is typical in ggplot, functions of the same type all begin with the same word, and positioning functions all begin with `position_`. The one that we want is `position_jitter()`. This function itself needs some input. We must set the `width` and `height`. We definitely don't want to jitter the points vertically, as this would be changing the birth weight values. We only want horizontal jitter. Since we have a categorical variable on the horizontal axis, the units for this axis are as if the distance between the two categories were 1. So a fairly small jitter width like 0.2 will ensure that the jitter does not jitter any points so far out that they move over into the neighboring category.
+
+```{r}
+fig2 = fig1 +
+  geom_point(position=position_jitter(width=0.2,height=0))
+
+print(fig2)
+```
+
+Looks better. But we now have a very slight additional problem. Look carefully at the very lowest birth weight, in the smoking group. Our plot has duplicated this observation. This is because it was drawn once in the boxplot (because boxplots show outliers as individual points), and then once again as a point by `geom_point()`.
+
+We need to go back and tell the `geom_boxplot()` function not to show outliers. `geom_boxplot` has an option called `outlier.shape`. If we set the outlier shape to just be an empty piece of text (`''`), it will not be shown.
+
+```{r}
+fig2 = fig0 +
+  geom_boxplot(outlier.shape='') +
+  geom_point(position=position_jitter(width=0.2,height=0))
+
+print(fig2)
+```
+
+Just to see a few more small subtleties, we will now try also coloring in the boxplots so that the two smoking groups are in different colors. This isn't really necessary, since they are already shown separately, but it can make the image a bit more visually appealing. For this, we need to go back to the definition of the plot and add in an aesthetic mapping to color.
+
+(It is allowed for a variable to be mapped to more than one dimension.)
+
+```{r}
+fig0 = ggplot(bw, aes(y=Birth_weight,x=Smoker,color=Smoker)) +
+  labs(y='Birth weight (kg)')
+
+fig1 = fig0 +
+  geom_boxplot()
+
+print(fig1)
+```
+
+This hasn't worked out as desired. The color dimension in ggplot refers to the color of things that have no area, such as lines and points. So we have colored the outlines of the boxplots. For the filled in color of areas, we need the 'fill' dimension.
+
+```{r}
+fig0 = ggplot(bw, aes(y=Birth_weight,x=Smoker,fill=Smoker)) +
+  labs(y='Birth weight (kg)')
+
+fig1 = fig0 +
+  geom_boxplot()
+
+print(fig1)
+```
+
+That does what we wanted. Now let's try it with the points.
+
+```{r}
+fig2 = fig0 +
+  geom_boxplot(outlier.shape='') +
+  geom_point(position=position_jitter(width=0.2,height=0))
+
+print(fig2)
+```
+
+It might be nice if the points were filled in with color as well. As noted above, `fill` only applies to things with area. So we need to change the default points into filled circles. We can do this by specifying the `shape` input for `geom_point()`.
+
+```{r}
+fig2 = fig0  +
+  geom_boxplot(outlier.shape='') +
+  geom_point(shape='circle filled', position=position_jitter(width=0.2,height=0))
+
+print(fig2)
+```
+
+One last detail to take care of.
+
+Since the two smoking groups are labeled on the *x* axis already, and the colors are just for visual pleasantness and clarity, the legend at the right of the plot is a bit redundant and is using up valuable space in the image. The `theme()` function handles overall details like this. We can remove legends by setting the `legend.position` option to be `'none'`.
+
+```{r}
+fig2 = fig2  +
+  theme(legend.position='none')
+
+print(fig2)
+```
