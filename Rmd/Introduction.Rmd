@@ -1,39 +1,75 @@
 ---
-title: "Introduction to R"
+title: "Introduction"
 author: "LT"
 output:
   html_document:
     toc: TRUE
     toc_float: TRUE
-    df_print: "paged"
-    keep_md: TRUE
 ---
 
 # Commands
 
-R is a programming language. To get R to do things, we must type in commands. We will get R to run commands in two main ways.
+R is a programming language. To get R to do things, we must type in commands. We can get R to run commands in three main ways.
 
-If we type a command into the **Console**, it is executed immediately and we will see the results. So we use the console when we want to test something out, see whether it works, check something, and so on.
+## Console
 
-When we are building up a complete analysis program, we don't want to have to type all the commands in the program into the console. So any commands that form part of our desired final analysis we put into a text file. This file is an R **script**. It is our 'finished product', and if we have constructed it properly it can be run as a whole unit and will carry out all of the steps in our analysis.
+If we type a command into the **console**, it is executed immediately and we will see the results. So we use the console when we want to test something out, see whether it works, check something quickly, and so on.
 
-Generally, most of the basic commands we will use in R are of four broad types:
+There is a console tab in RStudio. You will see a `>` there. Type an R command after the `>` and you will see the result printed out underneath. For example, try typing in `2 + 2`. You should see the result `[1] 4`. Don't worry about the `[1]` for now. This is there because sometimes we will type in commands that have multiple results, in which case R will number the results for us. `2 + 2` has only one result, so we see it numbered as `[1]`.
+
+In the **History** tab, you can see all the commands that you have typed into the console so far. This canbe helpful for retrieving a previous command and using it again. You can also get these commands back by pressing the up arrow key in the console. When you do this, you can edit a command and run it again.
+
+## Scripts
+
+When we are building up a complete program, we don't want to have to type all the commands in the program into the console every time we want to run it. So any commands that form part of our desired final program we put into a text file. We save this file just like any other, and we can return to it at a later date.
+
+A text file containing R commands is called an R **script**. It is our 'finished product', and if we have constructed it properly it can be run as a whole unit and will carry out all of the steps in our analysis. Typically, an R script will contain commands for loading some data, running an analysis, and displaying plots and printouts that show the conclusions of the analysis. If somebody else wishes to run our analysis, perhaps to check it or to apply it to a new set of data of the same kind, they can just run our R script.
+
+You can start writing a new R script in RStudio, via *File* -> *New File* -> *R Script*, just like in most other applications. When you type commands into the script, they are not run immediately, as they are in the console. Instead, they are just written into the file. You can run the commands in an R script by clicking on the command (or highlighting several commands), and then pressing the **run** button in RStudio. You will see the commands appear in the console, followed by their results.
+
+If an R script is complete, you can **source** the whole script. This runs all the commands in the script, one after the other. There is a 'source' button in RStudio.
+
+You can also open existing scripts in RStudio, via *File* -> *Open File*.
+
+## Markdown files
+
+Finally, there are **markdown** files. Markdown files are very similar to scripts. They also contain R commands. But whereas a script just contains R commands and nothing else, a markdown file contains commands along with normal formatted text. The commands run our analysis just as in a script, and the formatted text provides additional explanations.
+
+We can use markdown files to present our analyses in a more easily readable format. Readers can follow the explanations in normal text, and see the R commands that we used.
+
+The commands in a markdown file are organized into **chunks**. Inside a chunk, we write R commands just as we would in the console or in a script. In between the chunks, we write normal text.
+
+To turn a markdown file into a finished document, we **knit** the markdown file. There is a button for doing this in RStudio. When we knit a markdown file, it is turned into a document of another kind, such as *html*, *pdf*, or *Word*. In the knitted document, the R commands in the chunks are displayed along with their results.
+
+This html page and the others in the series were created using markdown files. Below is a chunk, showing an R command and its results.
+
+```{r}
+2 + 2
+```
+
+# Commands
+
+Most of the basic commands we will use in R are of four types:
 
 * mathematical expressions such as `2 + 2`
 * functions, for example the square root function `sqrt(2)`
-* assignments of contents into objects, for example `age = 35`
+* assignments of contents into variables, for example `my_age = 35`
 * comments, which serve to annotate our analysis `# (comments look like this)`
 
 ## Comments
 
-Comments do nothing at all, but are very useful for letting others know (and for reminding ourselves) what each part of our program is doing. We must write a `#` character before a comment. This lets R know that it is a comment, and ensures that R will not try to execute it. Often, we will first write a comment describing what our program is doing, then below it the R command. For example:
+Comments do nothing at all, but are very useful for letting others know (and for reminding ourselves) what each part of our program is doing. We write a `#` character before a comment. This lets R know that it is a comment, and ensures that R will not try to run it. Often, we will first write a comment describing what our program is doing, then below it the R command. For example:
 
 ```{r}
 # Add 2 and 2.
 2 + 2
 ```
 
-Note that the two blocks of text shown above give first the R commands, then their output. Try copying the command from the first block (i.e. the `2 + 2`) into your own console, then see the result printed out there. Do this for some of the other examples below, but try varying the commands, and check that the results match what you expected.
+Or we can write a short comment after a command.
+
+```{r}
+2 + 2 # (example of addition)
+```
 
 ## Mathematical expressions
 
@@ -66,12 +102,20 @@ Lots of other features of basic math are written as you would reasonably expect.
 More complex mathematical expressions are possible, and the usual rules for operator precedence apply. Parentheses play the same role as in standard algebra.
 
 ```{r}
-# For example, exponentiation before division.
+# Exponentiation before division.
 100 ^ 1 / 2
 
 # Using parentheses to force the order of operations.
 100 ^ (1 / 2)
 ```
+
+The placement of spaces in between numbers and mathematical symbols is unimportant. So the following example is functionally the same as the last command above:
+
+```{r}
+100^(1/2)
+```
+
+But a few spaces can make our commands easier for a human to read.
 
 ## Assignments
 
@@ -91,6 +135,27 @@ x = 36
 x + 1
 ```
 
+We can see the contents of a variable by just typing its name in the console.
+
+```{r}
+x
+```
+
+Note that performing a mathematical operation with a variable does not change that variable. It just shows us the result of the calculation.
+
+```{r}
+y = 10
+y + 1
+y
+```
+
+If we want a mathematical operation to change the value of a variable, we need to overwrite the original value with the result, using `=` again.
+
+```{r}
+y = y + 1
+y
+```
+
 It is best to choose meaningful names for our variables. This makes our program more intuitive to read.
 
 ```{r}
@@ -98,19 +163,32 @@ my_age = 36
 my_age + 1
 ```
 
-Assignment can also be done using the two characters `<-`. Some people prefer this, because the arrow shape that this combination makes represents more intuitively what happens for an assignment: some contents are 'going into' the variable.
+The **Environment** tab in RStudio shows the variables that you have assigned so far, along with the values that you have assigned into them. You can also see the names of all your variables by typing `ls()` into the console.
 
 ```{r}
-# Functionally exactly the same as above:
+ls()
+```
+
+Assignment can also be done using the two characters `<-`. Some people prefer this, because the arrow shape that this combination makes represents more intuitively what happens for an assignment: some contents are 'going into' the variable.
+
+So the following is functionally the same as the above:
+
+```{r}
 my_age <- 36
 my_age + 1
 ```
 
-Use whichever you prefer, but be consistent. I will use `=` because it is one character instead of two, and because `=` is also used for assignment in other programming languages.
+Use whichever you prefer, but be consistent. I will use `=` because it is one character instead of two, and because `=` is also used for assignment in some other programming languages.
 
 ## Functions
 
-R has many functions available. Most of them have intuitive names. To apply a function, we type its name followed by parentheses `()` and inside the parentheses we place the input to the function. Some examples:
+R has many functions available. Most of them have intuitive names. To apply a function, we type its name followed by parentheses `()`. The parentheses are R's way of recognizing that what we have typed is a function (and not, for example, the name of a variable).
+
+We have already seen one function, the `ls()` function that we used above to see a list of our variables.
+
+Most functions require some input. We place the input to the function inside its parentheses. In programming terminology, inputs to functions are often termed **arguments**.
+
+Here are some examples of functions:
 
 ```{r}
 # Square root.
@@ -124,35 +202,76 @@ exp(1)
 
 # Absolute value.
 abs(-1)
+
+# Rounding.
+round(1.9)
 ```
 
-# Organizing our analysis
+Some functions can have more than one argument. In this case, the arguments are separated by commas. For example, `round()` can have a second argument saying how many digits we want to round to after the decimal point, and `log()` can have a second argument specifying the base of the logarithm.
+
+```{r}
+round(3.142, 1)
+log(1000, 10)
+```
+
+Additional arguments that have a specific role in the function often have names. In simple cases like the examples above we don't have to use these names, but it can make the working of our commands clearer for a human reader if we do. We give inputs to named arguments using the same `=` that we use for assignment.
+
+```{r}
+round(3.142, digits=1)
+log(1000, base=10)
+```
+
+Some functions have many arguments. If so, it can make the function much clearer to read if we use the names of the arguments. For example, the `seq()` function generates a sequence of numbers starting `from` a certain number, up `to` another number, `by` a third number.
+
+```{r}
+seq(from=2, to=10, by=2)
+```
+
+As long as we input the arguments in the right order, we don't have to use the argument names.
+
+```{r}
+seq(2, 10, 2)
+```
+
+For functions that can have multiple different arguments, it may be necessary to use the names of the arguments in order to make sure that R uses them in the way that we want.
+
+For example, we can use `seq()` with the `length.out` argument to specify the length of the sequence instead of `by`.
+
+```{r}
+seq(0, 1, length.out=101)
+```
+
+In the above example, we also see the meaning of the `[1]` that kept appearing in front of each output earlier. Because `seq()` gives us multiple results (a whole sequence of numbers), these results are numbered. The number that appears at the beginning of each line is the number of the result at the start of that line.
+
+We can input functions into functions. In this case, the 'inner' function is applied first, and its output is then given as the input to the 'outer' function. This is the same as in normal algebra.
+
+```{r}
+sqrt(abs(-2))
+```
+
+# Organizing our work
 
 ## The working directory
 
-Some functions are non-mathematical, and do instead practical things helping us with the organization of our analysis.
+Some functions are non-mathematical, and do instead practical things that help us with the organization of our analysis.
 
-The first such useful function is `getwd()`. This function tells us what folder on our computer we are currently working in (*wd* stands for *w*orking *d*irectory). This function needs no input. Nonetheless, it must still be followd by parentheses. The parentheses are R's way of recognizing that what we have typed is a function that we want to execute (and not, for example, the name of a variable).
+One such useful function is `getwd()`. This function tells us what folder on our computer we are currently working in (**wd** stands for **w**orking **d**irectory). This function needs no arguments.
 
-```{r}
-# This example has printed my working directory.
-# Type it into your console to see yours.
-getwd()
-```
+Type `getwd()` into your console to see your working directory.
 
-This folder is where R will look by default when searching for data to load, and it is also where R will place any graphs or output files we create.
+This folder is where R will look by default when searching for data to load, and it is also where R will place any graphs or output files we create. If you want to change this folder, the simplest way is to do it via *Tools* -> *Global Options* in RStudio. In the global options you can set a default working directory that RStudio will always use unless you tell it otherwise. You will need to click **Apply** and then exit RStudio and restart it for this to take effect.
 
-Use `getwd()` in the console to check what folder you are working in, so that you make sure it is the one you want. If you want to change this folder, the simplest way is to do it via the RStudio **Tools** menu. This was described in the setup guide for the course.
+You will rarely need to use `getwd()` in a finished R script. Instead, write your scripts under the assumption that all the relevant data files are located in whatever folder you or the person running the script are currently working in. This way, when somebody else wants to run your analysis on their computer, they just need to make sure that all the files are in their current working folder, and the analysis will run for them too, without them having to change anything in your script.
 
-You will rarely need to use `getwd()` in a finished R script. Instead, write your script under the assumption that all the relevant data files are located in whatever folder you are currently working in.
+The `list.files()` function displays the files that you have in your current working directory. You can also see them in the **Files** tab in RStudio.
 
 ## Printing results
 
-This guide helpfully displays the results of each command in a separate box, so you can see the expected console printout. When we run a completed R script, R will not automatically print results into the console. Instead, when we run a script all the steps of the analysis still take place in the background, but nothing is printed out unless we explicitly ask for it.
+When we source a completed R script, R will not automatically print results into the console. Instead, when we source a script all the steps of the analysis still take place in the background, but nothing is printed out unless we explicitly ask for it.
 
 We ask for something to be printed using the `print()` function.
 
-This will not be printed out when we run a complete script:
+This will not be printed out when we source a complete script:
 
 ```{r, results=FALSE}
 2 + 2
@@ -164,241 +283,39 @@ But this will:
 print(2 + 2)
 ```
 
-# Data
-
-## Loading
-
-We will usually want to load data from an external source. There are many ways to do this. For simplicity, we will mostly stick to reading data from text files. A simple popular format is the .csv file. csv stands for *c*omma *s*eparated *v*alues. It has a simple table-like structure:
-
-* The first row of the file defines the names of the columns. These are the names of the variables in our data set (things like age, sex, reaction time, and so on). These names are separated by commas.
-* Subsequent rows each give one observation. For example one participant, or one trial of an experiment.
-* The values of the variables in each row are also separated by commas.
-
-We load data from a file like this using the `read.csv()` function. The input is the name of the file. The file should be located in our current working directory. Note that the names of files are enclosed in quotation marks `''`, to distinguish them from the names of variables within R.
-
-```{r, results=FALSE}
-read.csv('birth_weights.csv')
-```
-
-Here again there is a slight optional variation. The double quotation marks `""` also work. As before, use what you like, but be consistent.
-
-```{r, results=FALSE}
-read.csv("birth_weights.csv")
-```
-
-On its own, `read.csv()` just reads the file and will simply print out its contents if we run the command in the console. In order to be able to work with the data, we need to assign them into a variable, and give that variable a name. We already know how to do this.
-
-It is fairly common to choose a very abbreviated but still relevant name for the variable in which we store our data. We will need to type it often in our analyses, so we want to avoid something really long.
-
-```{r}
-bw = read.csv('birth_weights.csv')
-```
-
-Now we have the data and can access them repeatedly using this variable name.
-
-In our example data set we have the birth weights in kilos of babies at a US hospital, along with data about each baby's mother, such as her weight before the pregnancy, whether she smoked during the pregnancy, etc.
-
-```{r}
-bw
-```
-
-## Checking
-
-Once we have our data loaded, it is important to check whether they have the structure we expect before we begin any analysis. There are various helpful functions for checking our data.
-
-```{r}
-# See the names of the columns.
-names(bw)
-
-# See the first few rows.
-head(bw)
-
-# See summaries of the data in each column.
-summary(bw)
-
-# Check how many rows of data we have.
-nrow(bw)
-```
-
-We can pick out just one of the columns of our data using the `$` symbol, followed by the name of the column.
-
-```{r}
-# See a summary of just the Weight column.
-summary(bw$Weight)
-
-# The mean birth weight.
-mean(bw$Birth_weight)
-
-# The standard deviation of age.
-sd(bw$Age)
-```
-
-Some columns give categorical information, not numeric. R calls categorical variables 'factors'. The summary of a factor just tells us how many observations we have in each category.
-
-```{r}
-summary(bw$Smoker)
-```
-
-We can also get the same information using the `table()` function. But the more useful feature of `table()` is to create cross-categorized tables using two factors. To achieve this, we must input both factors to `table()`.
-
-Functions that can have multiple inputs require the inputs to be separated by commas. The order of the inputs matters. In the case of `table()`, the first input is the factor whose categories will be given as rows, and the second input is the factor whose categories will be given as columns. (This is a common pattern in R: rows first, columns second.)
-
-```{r}
-# Smoking status.
-table(bw$Smoker)
-
-# Smoking by race.
-table(bw$Smoker,bw$Race)
-
-# The other way around.
-table(bw$Race,bw$Smoker)
-```
-
-This use of cross-categorized tables is good for checking whether we have the expected number of combinations of conditions in our data. For example, whether each participant did each type of trial as many times as we expect.
-
-# Analysis
-
-We have already seen above how to calculate some basic descriptive statistics. Sometimes we will need to calculate something a bit more elaborate, and R will not have a function ready to help us.
-
-For example, R does not have a function for calculating the (parametric) standard error. To achieve something like this, we have to put together a few of the ingredients we have learned above.
-
-```{r}
-# SE of weights.
-# (SD divided by square root of sample size,
-# sample size given by number of rows in data).
-sd(bw$Weight) / sqrt(nrow(bw))
-```
-
-Even for a fairly short calculation like this, we can make our R script a bit more intuitively readable by breaking down a multi-step calculation into separate lines, and storing the results of each intermediate step in an intuitively-named variable.
-
-```{r}
-# SE of weights.
-sd_Weight = sd(bw$Weight)
-n = nrow(bw)
-se_Weight = sd_Weight / sqrt(n)
-print(se_Weight)
-```
-
-## Formulae
-
-Statistical procedures in R are usually carried out using a 'formula'. This formula describes a statistical model of the relationships among the variables in our data. Just as in many mathematical formulaic descriptions of models, the outcome variable goes at the left end of the formula, and the predictor variables go on the right. R uses the `~` character to separate outcome from predictors.
-
-We input the formula, using the names of the columns from our data, and then as a second input we give the data themselves (so R knows where to look to find the variables mentioned in the formula).
-
-For example, the humble two-sample *t*-test is based on a very simple model, with a numerical outcome variable and a single categorical predictor. We will calculate this test for the model that explains birth weight by smoking status. (The *t*-test tests the null model that denies that this relationship exists at all in the sampled population).
-
-In this case, the output gives us a *p*-value, a confidence interval for the population difference in mean birth weight, and the observed sample means, among other things.
-
-```{r}
-t.test(Birth_weight ~ Smoker, bw)
-```
-
-Many of the functions that execute statistical procedures can be tuned by specifying additional options. You may have noticed that the `t.test()` function above gave us the Welch test by default (with the degrees of freedom corrected for a difference in variances between the two groups). We can alter this behaviour by giving `t.test()` an additional input. These additional inputs must usually be named, so that R knows what aspect of the procedure we want to change. Here the required name is `var.equal` (short for *var*iances *equal*). We set these named options using the same `=` that we use to assign things. In this case, since the option is something that can either be turned on or turned off (we can either assume equal variances or not), we can give it the value `TRUE` or `FALSE`.
-
-```{r}
-t.test(Birth_weight ~ Smoker, bw, var.equal=TRUE)
-```
-
-## Aggregation
-
-Often the same formula that was used to apply a statistical procedure can also be used to calculate the summary statistics that should accompany the procedure.
-
-The `aggregate()` function takes a formula as its input. Just as for a statistical model, the formula specifies what outcome variable we want to summarize, and what other variable(s) we want to split the summary by. We then input the data, and the name of the function we want to use in summarizing the data (often this will be `mean`).
-
-For example, to get separate mean birth weights for the two smoking groups we can copy and paste the same formula we used above.
-
-```{r}
-aggregate(Birth_weight ~ Smoker, bw, mean)
-```
-
-To get other summary statistics, we just change the function that we input to `aggregate()`. For example for the Standard Deviation:
-
-```{r}
-aggregate(Birth_weight ~ Smoker, bw, sd)
-```
-
-## Models
-
-Formulas are also used to specify the form of a model that we wish to fit to our data. For example, we can estimate the parameters of a linear regression model. The general function for linear models is `lm()`.
-
-For example, here we estimate a linear regression with birth weight as the outcome and mother's weight as predictor.
-
-We get the estimated coefficients of the model: intercept and slope.
-
-```{r}
-lm(Birth_weight ~ Weight, bw)
-```
-
-To get a more detailed examination of our model, including hypothesis tests of the model coefficients, and measures of model fit such as R-squared, we can apply the `summary()` function.
-
-```{r}
-summary(lm(Birth_weight ~ Weight, bw))
-```
-
-Models can also be stored for later use with `=`.
-
-```{r}
-model1 = lm(Birth_weight ~ Weight, bw)
-
-summary(model1)
-```
-
-Many procedures allow for multiple predictors. To include more than one predictor variable in a linear regression, we join them in the formula with `+`.
-
-```{r}
-model2 = lm(Birth_weight ~ Weight + Smoker, bw)
-
-summary(model2)
-```
-
-Interactions between predictors can be added using the `*` symbol. Including an interaction like this also by default includes the simple effects of the individual predictors contained in the interaction.
-
-```{r}
-model3 = lm(Birth_weight ~ Weight * Smoker, bw)
-
-summary(model3)
-```
-
-A useful general function for comparing models is the `anova()` function. If we input to it more than one different model (of the same data), it will compare the models in some way. What comparison it performs will depend on the type of model. For our linear regression models we get the *F*-test.
-
-```{r}
-anova(model1, model2, model3)
-```
-
-Of course, before going ahead with any analyses, we should first plot our data. Plotting is the topic of the next class.
-
 # Troubleshooting
 
 ## Errors
 
-Sometimes we get things wrong. A misplaced comma or parenthesis will stop R commands from working as desired. If we type in something that just 'doesn't work', R will stop and print out an error message.
-
-Sometimes the text of this error message will be fairly informative and helpful:
+Sometimes we get things wrong. A misplaced comma or parenthesis will stop R commands from working as desired. If we type in something that just 'doesn't work', R will stop the program and print out an error message.
 
 ```{r, error=TRUE}
-# R will here correctly identify the unexpected extra parenthesis here:
-lm(Birth_weight ~ Weight, bw))
+log(sqrt(2)))
 ```
 
-At other times R will not guess correctly what we were aiming for and what exactly went wrong:
-
-```{r, error=TRUE}
-# R will not spot here that the problem is the $ and not the ):
-lm(Birth_weight ~ Weight, bw$)
-```
+Sometimes the text of this error message will be fairly informative and helpful. At other times R will not guess correctly what we intended, and the error message will not be so clear.
 
 A common error is to get the names of variables very slightly wrong. For example, all names in R are case sensitive, so we need to be careful about this:
 
 ```{r, error=TRUE}
-lm(birth_weight ~ Weight, bw)
+my_age = 36
+My_Age + 1
 ```
+
+## Unfinished commands
+
+Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the *Esc* key to cancel an unfinished command. You should then see the `>` reappear.
 
 ## Help
 
-If we know what function we want to use, but we are not sure how to use it, the `?` can call up documentation for a function, for example `? t.test`.
+If you know what function you want to use, but we are not sure how to use it, the `?` can call up documentation for a function, for example `? seq`.
 
-(You will need to type the `?` into your own RStudio console to see the documentation.)
+Type `?` and the name of a function into your own RStudio console to see the documentation.
 
-Under the section **Usage** we see a short template of the inputs that the function expects. Under **Arguments** we get more details about the nature of each input. But often the **Examples** section is the most informative.
+Under the section **Usage** you will see a short template of the arguments that the function expects. Under **Arguments** you get more details about the nature of each of these arguments. Under **Value** you get some explanation of what the function outputs. The **Examples** section shows some example uses of the function.
 
-For many things, there is clearer and more detailed help available online. A clearly-worded Google search will almost always get you to an example or explanation on one of the main R and programming community sites, such as [StackOverflow](https://stackoverflow.com/) or [R-bloggers](https://www.r-bloggers.com/).
+If you don't know what function you want to use, you can search the documentation for a word or phrase, using a double question mark, for example `?? logarithm`.
+
+Under the section **Help pages** you will see some links to specific documentation pages. Not all of them will be relevant. Those links that begin `base::` or `stats::` are usually the relevant ones, since they link to documentation on the most basic R functions.
+
+For many things, there is clearer and more detailed help available online. A clearly-worded Google search will almost always get you to an example or explanation on one of the main R and programming community sites, such as [StackOverflow](https://stackoverflow.com/), [RDocumentation](https://www.rdocumentation.org/), [R-bloggers](https://www.r-bloggers.com/), and many others.
