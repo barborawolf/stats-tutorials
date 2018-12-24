@@ -7,4 +7,4 @@ A work in flux, maybe even progress.
 
 `/Rmd` contains the Rmarkdown files that generated the html files.
 
-`/data` contains the data files used in the tutorials, in `.csv` format.
+`/data` contains the data files used in the tutorials, mostly in `.csv` format.
