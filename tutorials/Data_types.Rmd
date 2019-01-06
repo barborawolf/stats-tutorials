@@ -1,0 +1,658 @@
+---
+title: "Data types"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+We have seen how to store information inside a variable.
+
+```{r}
+x = 10
+x
+```
+
+So far, we have just looked at storing single numbers. R can store different kinds of information, and organize it in different ways.
+
+# Vectors
+
+We can also store a series of values together in the same variable. This is called a **vector**. We can create a vector using the `c()` function to stick together multiple values. 'c' stands for 'combine' (or perhaps 'concatenate', meaning 'stick together').
+
+Vectors are useful for storing multiple observations of the same thing. For example, several people's scores on a test:
+
+```{r}
+score = c(42,65,64,69,95,20)
+score
+```
+
+The values in a vector are stored in order. Each has a position in the vector, called its **index**. We can pick out one value from a vector by placing its index in square parentheses `[]` after the name of the vector.
+
+For example to get the 3rd score:
+
+```{r}
+score[3]
+```
+
+We can use a number stored inside a variable to index a vector. So if we use a variable that stores the number 3 as the index, we get the 3rd value in the vector.
+
+```{r}
+x = 3
+score[x]
+```
+
+Indexing can be used to overwrite one of the values, using `=`.
+
+```{r}
+score[3] = 65
+score
+```
+
+The `:` symbol specifies a range of numbers. We can use this to get a range of values from a vector.
+
+For example to get the 3rd, 4th, and 5th scores:
+
+```{r}
+score[3:5]
+```
+
+`:` can also be used to create a vector containing a range of numbers.
+
+```{r}
+some_numbers = 1:5
+some_numbers
+```
+
+The `c()` function can also add new values to a vector.
+
+```{r}
+c(score,42,90)
+```
+
+Remember that the original variable is not changed unless we use `=` to overwrite it.
+
+```{r}
+score
+
+score = c(score,42,90)
+score
+```
+
+If we apply a mathematical operation to a vector, the operation will be performed on every value in the vector.
+
+```{r}
+score / 100
+```
+
+If we apply a mathematical operation to two vectors of the same length, the operation will be performed on pairs of values where one value comes from one vector, and the other value comes from the corresponding position in the other vector.
+
+For example, we might use this to combine two pieces of information about the same people:
+
+```{r}
+score2 = c(20,39,20,96,50,50,80,40)
+
+total = score + score2
+total
+```
+
+If we try to do math with vectors of different lengths, R will still work out the answer for the parts of the vectors that match up, but it will print out a warning.
+
+We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that part of our program is wrong.
+
+```{r}
+score3 = c(12,21,18,100,66)
+
+score + score3
+```
+
+There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names.
+
+```{r}
+mean(score)
+median(score)
+min(score)
+max(score)
+range(score) # (note that this outputs two values: the minimum and the maximum)
+IQR(score) # (InterQuartile Range; the range of the middle half of the values)
+length(score)
+sd(score) # (Standard Deviation)
+```
+
+The `summary()` function prints out several pieces of information. This is useful for getting a quick overview.
+
+```{r}
+summary(score)
+```
+
+If we have a vector in which some values are repeated, the `unique()` function tells us what values are in the vector, but without including the repeats. `table()` tells us how often each value occurs.
+
+```{r}
+unique(score)
+table(score)
+```
+
+Apart from `c()`, R has some other useful functions for creating vectors. We have already seen how to use the `seq()` function. Its output is a vector.
+
+```{r}
+more_numbers = seq(from=10, to=100, by=10)
+more_numbers
+```
+
+Another is `rep()`. This repeats a value a certain number of times. The `times` argument specifies how many times to repeat the value.
+
+```{r}
+x = rep(2, times=10)
+x
+```
+
+It is not so often useful to repeat a single value. But `rep()` can also repeat a vector. This can be useful for creating an alternating sequence, for example to designate group memberships.
+
+```{r}
+group = rep(c(1,2), times=4)
+group
+```
+
+Alternatively, the `each` argument repeats each value in the vector a certain number of times. This results in a vector with repeats of the same value all following one another instead of alternating.
+
+```{r}
+group = rep(c(1,2), each=4)
+group
+```
+
+# Character strings
+
+As well as numbers, R can store pieces of text. If we want something to be treated as text, we must enclose it in quotation marks `""`. Otherwise, R will think that we mean the name of a variable.
+
+```{r}
+name = "Ronald"
+name
+```
+
+Single quotation marks `''` work as well. It doesn't matter which you use. Just be consistent.
+
+```{r}
+name = 'Ronald'
+name
+```
+
+Remember that if you forget the quotation marks, R will think that you mean the name of a variable, and this will usually result in an error.
+
+```{r, error=TRUE}
+name = Ronald
+```
+
+We can also treat numbers as text, by enclosing them in quotation marks. R will not treat the result as an actual number, and we cannot perform mathematical operations on text containing numbers.
+
+```{r, error=TRUE}
+y = "10"
+y + 1
+```
+
+If we are unsure whether our variables are text or numbers, we can check, using the `class()` function. This tells us what **class** (i.e. what type of data) the variable stores.
+
+```{r}
+class(x)
+class(y)
+```
+
+R calls numbers **numeric** and text **character**.
+
+We can convert variables from one type of data to another, using functions that begin `as.`, followed by the name of the class we want to convert the contents into.
+
+
+```{r}
+x = as.character(x)
+x
+
+y = as.numeric(y)
+y
+```
+
+We can also have vectors of text, just as we can have vectors of numbers. The use of `c()` and `rep()` for creating vectors is the same for text as it is for numbers.
+
+```{r}
+name = c("Ronald", "Deborah", "Florence", "William")
+name
+
+group = rep(c("A","B"), each=2)
+group
+```
+
+There are also some useful R functions for working with text.
+
+`nchar()` tells us how many characters are in the piece of text. Note that this includes spaces and punctuation.
+
+```{r}
+word = "supercalifragilisticexpialidocious" 
+nchar(word)
+
+nchar("Hello world.")
+```
+
+Beware that the `length()` function counts the length of a vector, and not the length of a single piece of text. The length of a single piece of text is 1 (because a single word is a character vector with only one value in it).
+
+```{r}
+length(word)
+```
+
+Indexing works the same for character vectors as for numeric vectors.
+
+```{r}
+name[3]
+```
+
+The `paste()` function sticks separate text variables together into one piece of text. Note that this is different from `c()`. Whereas `c()` creates a character vector in which the separate pieces of text remain as separate values, `paste()` creates a new single piece of text.
+
+```{r}
+name1 = "Ronald"
+name2 = "Fisher"
+
+paste(name1, name2)
+```
+
+We can see that `paste()` has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the `sep` argument. One common use of this is to join text with no intervening characters, in which case we specify `sep` as an empty piece of text `""`.
+
+```{r}
+paste(name2, name1, sep=",")
+paste(name1, "A", sep="")
+```
+
+`paste()` can also paste together text and numbers.
+
+```{r}
+paste(name1, 1, sep="")
+```
+
+And it can paste together two character vectors, in which case the result is like the result of a mathematical operation on two numeric vectors: Each value in one vector is combined with the corresponding value in the other.
+
+```{r}
+paste(name, group, sep="")
+```
+
+R insists that all the values in a vector be of the same class. If we try to combine text and numbers, for example with `c()`, then R will convert (or '**coerce**') the numbers into characters.
+
+```{r}
+group = c("A","B",1,2)
+group
+
+class(group)
+
+class(group[3])
+```
+
+# Factors
+
+Often, we will want to use text to represent categories, for example things like sex, group, language, and so on. We can use character vectors to do this, but R also provides another option. A **factor** is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the **levels** of the factor.
+
+We can create a factor using the `factor()` function. We input a vector of category memberships.
+
+```{r}
+sex = factor(c("male","female","female","male"))
+class(sex)
+```
+
+We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from. Applied to a factor, the `summary()` function tells us how many values are in each category. This is the same information as we get from `table()`.
+
+```{r}
+sex
+summary(sex)
+table(sex)
+```
+
+By default the levels are arranged in alphabetical order. This shows up in summaries and tables. Later, when we start creating plots of data, the order of the levels will also determine the order in which they are shown on a plot.
+
+If we want, we can specify the possible levels using the `levels` argument. This allows us to specify that certain categories are possible, even if they do not appear in our data. Absent levels will still appear in a table, with a count of 0. Specifying the levels also allows us to determine their order, to make it other than alphabetical.
+
+```{r}
+sex = factor(c("male","female","female","male"), levels=c("male","female","other"))
+sex
+table(sex)
+```
+
+The `levels()` function tells us what levels a factor has, and `nlevels()` tells us how many levels.
+
+```{r}
+levels(sex)
+nlevels(sex)
+```
+
+As with numeric and character vectors, we can convert other types of data into a factor using `as.factor()`.
+
+One of the main uses of this is to convert a vector of numbers that represent ID numbers, which are really just categories.
+
+```{r}
+id = rep(1:3, each=10)
+id
+
+id = as.factor(id)
+id
+```
+
+Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them more often.
+
+# Data frames
+
+In the examples above, we stored data in vectors of various kinds. Most of the time we will have several vectors, each describing a separate variable from the same set of data.
+
+For example, we might have a vector recording some people's age, and a vector recording those same people's sex, and another recording their location.
+
+```{r}
+age = c(36,64,40,53,29)
+sex = factor(c("male","female","female","male","female"), levels=c("female","male","other"))
+location = c("Germany","UK","France","UK","Ireland")
+```
+
+If we want the age, sex, and location of the first person, we have to index each of the vectors separately.
+
+```{r}
+age[1]
+sex[1]
+location[1]
+```
+
+If all of these vectors refer to the same people in the same order, it would be convenient to group them all as one object, as a sort of table or spreadsheet. Then we could get a better overview of our entire set of data, and handle it more conveniently.
+
+A **data frame** is group of vectors that are organized in columns, so that each row contains values from each vector that all refer to the same unit of observation (for example the same person). The result is like a spreadsheet, with numbered rows and named columns.
+
+The `data.frame()` function creates a data frame. If we have already created the columns as vectors, we can just input them directly. The names of the vectors become the names of the columns.
+
+```{r}
+d = data.frame(age, sex, location)
+d
+```
+
+Alternatively, if we haven't yet created the columns as separate vectors, we can create them directly within the parentheses of the `data.frame()` function. In this case, we need to assign names to the columns using `=`, so that R knows what the columns should be named.
+
+Since this makes for quite a long command, we can break the command up over a few lines. As long as we separate the lines after commas, R will still interpret this as one command. Splitting a command over multiple lines makes no difference to the result, but it makes our program a bit easier to read.
+
+```{r}
+d = data.frame(age=c(36,64,40,53,29),
+               sex=factor(c("male","female","female","male","female"),
+                          levels=c("female","male","other")),
+               location=c("Germany","UK","France","UK","Ireland"))
+d
+```
+
+The resulting variable is a data frame.
+
+```{r}
+class(d)
+```
+
+Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under **Data**. R tells us there how many 'observations' (i.e. rows) there are in the data frame, and how many 'variables' (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet. If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.
+
+We can index data frames using the square parentheses, just as we index vectors. However, we need to say both which row we want, and which column. We give the row index first, then the column index.
+
+For example, to get the value in the 3rd row and 2nd column:
+
+```{r}
+d[3,2]
+```
+
+But since the columns have names, it is much better to use these names to index them. This way, we can be clearer about what piece of information we are retrieving from the data frame. Here, we must enclose the names of the column in quotation marks.
+
+So this is better:
+
+```{r}
+d[3,"sex"]
+```
+
+If we want to get all the columns or all the rows, we can just omit the row or column index. But we still have to enter the comma that separates the row index from the column index, to make it clear which we want to omit.
+
+```{r}
+d[3,]
+d[,"sex"]
+```
+
+An alternative way of picking out one entire column from a data frame is with the dollar symbol `$`, followed by the name of the column. We can follow this with the number of a row if we want.
+
+```{r}
+d$sex
+
+d$sex[3]
+```
+
+We can pick out multiple columns by using a vector of column names as the column index.
+
+```{r}
+d[,c("age","location")]
+```
+
+We can also pick out ranges of rows, in the same way as we pick out ranges of values from a vector.
+
+```{r}
+d[2:4,]
+```
+
+There are a few useful functions that can help us explore a data frame. `dim()` tells us the 'dimensions' of the data frame. That is, how many rows and how many columns it has. The output follows the general convention in R of rows first, columns second. There are also functions for finding out separately the number of rows and the number of columns.
+
+```{r}
+dim(d)
+nrow(d)
+ncol(d)
+```
+
+We can find out the names of the columns with the `names()` function. This function can also be used to change one or more of the column names.
+
+```{r}
+names(d)
+
+names(d)[3] = "country"
+d
+```
+
+The `summary()` function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.
+
+```{r}
+summary(d)
+```
+
+The other functions that we have already seen for calculating something from a vector can also be applied to a single column of a data frame.
+
+```{r}
+summary(d$country)
+mean(d$age)
+```
+
+The `table()` function can be used to create a 2-by-2 table of the combinations of factor levels in a data frame.
+
+```{r}
+table(d$sex, d$country)
+```
+
+Adding to a data frame is not so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the `rbind()` function, which sticks together two (or more) data frames.
+
+```{r}
+new_row = data.frame(age=25, sex="other", country="Germany")
+d = rbind(d, new_row)
+d
+```
+
+# Logicals
+
+A **logical** variable is simply a variable that stores either the value `TRUE` or `FALSE`. These two words, written in uppercase, are used in R to denote things that can be the case or not the case.
+
+It is fairly rare that we want to create a logical vector directly, but we can, using `c()` just as for other vectors.
+
+```{r}
+x = c(FALSE,TRUE,FALSE,TRUE,FALSE,FALSE)
+class(x)
+```
+
+Much more often, we will create a logical vector by asking whether a certain condition holds for each of the values in another vector.
+
+For example, we could ask whether each of the people in our data frame is over a certain age, using the 'greater than' operator `>`:
+
+```{r}
+d$age > 40
+```
+
+We see the answer for each of the values.
+
+There are several other operators for asking 'true/false' questions:
+
+* `<` less than
+* `>=` greater than or equal to
+* `<=` less than or equal to (not to be confused with `<-`)
+* `==` equal to (not to be confused with `=`)
+* `!=` not equal to
+
+```{r}
+d$age < 40
+d$age >= 40
+d$age <= 40
+d$age == 40
+```
+
+Of these, only `==` and `!=` are applicable to character vectors or factors.
+
+```{r}
+d$sex == "male"
+d$sex != "male"
+```
+
+If a logical vector is converted to numeric, the `FALSE` values become 0 and the `TRUE` values become 1. When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.
+
+For example, the mean of a vector of 0s and 1s is just the proportion of 1s, so for a logical statement the proportion of cases for which the statement is true. Likewise, the sum tells us the number of cases for which the statement is true.
+
+```{r}
+mean(d$age < 40)
+sum(d$age < 40)
+```
+
+There is one other logical symbol that can sometimes be useful. `%in%` asks whether each of the values in one vector is in another vector.
+
+For example to see which rows have 'UK' or 'Germany' in the 'country' column:
+
+```{r}
+d$country %in% c("UK","Germany")
+```
+
+We can combine or convert logical statements using further logical symbols:
+
+* `!` NOT
+* `&` AND
+* `|` OR
+
+Some examples:
+
+```{r}
+d$age < 40 & d$sex == "male" # (male and under 40)
+d$age < 40 | d$sex == "male" # (male or under 40)
+!(d$age < 40 | d$sex == "male") # (neither male nor under 40)
+```
+
+We can use logical statements in the indexing parentheses `[]` to pick out only the values for which a statement is true.
+
+Some examples:
+
+```{r}
+d$age[d$age < 40] # (show the ages below 40)
+d$age[d$sex == "male"] # (show the men's ages)
+```
+
+If we want to pick out only those rows of a data frame for which a condition holds, we can use the `subset()` function. The first input to `subset()` is the data frame, and the second input is the condition. Because we have input the data frame, we do not need to also prepend the name of the data frame to the variables in the condition; they are assumed to refer to the columns of the data frame.
+
+```{r}
+subset(d, age < 40)
+```
+
+Beware that the single equals sign `=` is used for assignment, and the double equals `==` for logical statements. If you accidentally use `=` when you meant to use `==`, you may overwrite the values instead of asking about them.
+
+```{r}
+d$country = "Germany"
+
+d # (oops)
+```
+
+# Special values
+
+R stores a few special values that can be useful. The constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`. Infinity is stored under `Inf` (with uppercase 'I').
+
+```{r}
+pi
+Inf
+```
+
+Much more often useful is the 'missing' value `NA`. We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
+
+```{r}
+d = rbind(d, data.frame(age=NA, sex="male", country="France"))
+
+d
+```
+
+We can check which values are missing from a column using `is.na()`. If we want to know which rows are 'complete' (i.e. have no missing values in any column), we can use the `complete.cases()` function on the whole data frame.
+
+```{r}
+is.na(d$age)
+complete.cases(d)
+```
+
+If there are any `NA` values anywhere in a vector, mathematical functions applied to that vector will also output `NA`. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.
+
+```{r}
+mean(d$age)
+```
+
+If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the `na.rm` argument (the `rm` in `na.rm` is short for 'remove'). Since this is an argument that specifies a yes/no option, its input is a logical value, where `TRUE` means 'yes, apply this option' (i.e. calculate the result with the `NA` values removed).
+
+```{r}
+mean(d$age, na.rm=TRUE)
+```
+
+There is also a special value called `NULL` in R. This value indicates 'emptiness'. It can be used to create an empty variable that does not yet store anything.
+
+```{r}
+x = NULL
+
+class(x)
+```
+
+Another use is to remove a column from a data frame, by 'making it empty'.
+
+```{r}
+d$country = NULL
+
+d
+```
+
+# Lists
+
+Finally, we may occasionally want to organize more complex collections of data, in which the values are not all of the same class or length, but are still grouped together in order. Lists allow us to do this. They can be created much like a data frame, using the `list()` function, and allocating values to named entries within the list. Each value can be anything at all: a single number, a character string, a vector, a data frame, etc.
+
+For example, we might want to store a data frame together with some other pieces of information:
+
+```{r}
+survey = list(data=d, locations=c("Berlin","Manchester"), survey_ID=3)
+
+class(survey)
+survey
+length(survey)
+```
+
+To index a list, we can use the dollar symbol followed by the name of the entry in the list, as we do to get a column from a data frame.
+
+```{r}
+survey$locations
+```
+
+Alternatively, we can index a list by the order of the entries, as we do for a vector. However, if we do this, we do not get the contents of that entry in the list. Instead, we get a new list that just has one entry.
+
+```{r}
+survey[2]
+
+class(survey[2]) # (it's still a list)
+```
+
+To get the actual contents of a list entry, we must use the double square parentheses `[[]]`.
+
+```{r}
+survey[[2]]
+
+class(survey[[2]]) # (now it's the character vector stored in the list)
+```
+
+We will work mostly with data frames, and less commonly with lists, but they have their occasional uses.

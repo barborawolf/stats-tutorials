@@ -1,0 +1,321 @@
+---
+title: "Introduction"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+# Commands
+
+R is a programming language. To get R to do things, we must type in commands. We can get R to run commands in three main ways.
+
+## Console
+
+If we type a command into the **console**, it is executed immediately and we will see the results. So we use the console when we want to test something out, see whether it works, check something quickly, and so on.
+
+There is a console tab in RStudio. You will see a `>` there. Type an R command after the `>` and you will see the result printed out underneath. For example, try typing in `2 + 2`. You should see the result `[1] 4`. Don't worry about the `[1]` for now. This is there because sometimes we will type in commands that have multiple results, in which case R will number the results for us. `2 + 2` has only one result, so we see it numbered as `[1]`.
+
+In the **History** tab, you can see all the commands that you have typed into the console so far. This canbe helpful for retrieving a previous command and using it again. You can also get these commands back by pressing the up arrow key in the console. When you do this, you can edit a command and run it again.
+
+## Scripts
+
+When we are building up a complete program, we don't want to have to type all the commands in the program into the console every time we want to run it. So any commands that form part of our desired final program we put into a text file. We save this file just like any other, and we can return to it at a later date.
+
+A text file containing R commands is called an R **script**. It is our 'finished product', and if we have constructed it properly it can be run as a whole unit and will carry out all of the steps in our analysis. Typically, an R script will contain commands for loading some data, running an analysis, and displaying plots and printouts that show the conclusions of the analysis. If somebody else wishes to run our analysis, perhaps to check it or to apply it to a new set of data of the same kind, they can just run our R script.
+
+You can start writing a new R script in RStudio, via *File* -> *New File* -> *R Script*, just like in most other applications. When you type commands into the script, they are not run immediately, as they are in the console. Instead, they are just written into the file. You can run the commands in an R script by clicking on the command (or highlighting several commands), and then pressing the **run** button in RStudio. You will see the commands appear in the console, followed by their results.
+
+If an R script is complete, you can **source** the whole script. This runs all the commands in the script, one after the other. There is a 'source' button in RStudio.
+
+You can also open existing scripts in RStudio, via *File* -> *Open File*.
+
+## Markdown files
+
+Finally, there are **markdown** files. Markdown files are very similar to scripts. They also contain R commands. But whereas a script just contains R commands and nothing else, a markdown file contains commands along with normal formatted text. The commands run our analysis just as in a script, and the formatted text provides additional explanations.
+
+We can use markdown files to present our analyses in a more easily readable format. Readers can follow the explanations in normal text, and see the R commands that we used.
+
+The commands in a markdown file are organized into **chunks**. Inside a chunk, we write R commands just as we would in the console or in a script. In between the chunks, we write normal text.
+
+To turn a markdown file into a finished document, we **knit** the markdown file. There is a button for doing this in RStudio. When we knit a markdown file, it is turned into a document of another kind, such as *html*, *pdf*, or *Word*. In the knitted document, the R commands in the chunks are displayed along with their results.
+
+This html page and the others in the series were created using markdown files. Below is a chunk, showing an R command and its results.
+
+```{r}
+2 + 2
+```
+
+# Commands
+
+Most of the basic commands we will use in R are of four types:
+
+* mathematical expressions such as `2 + 2`
+* functions, for example the square root function `sqrt(2)`
+* assignments of contents into variables, for example `my_age = 35`
+* comments, which serve to annotate our analysis `# (comments look like this)`
+
+## Comments
+
+Comments do nothing at all, but are very useful for letting others know (and for reminding ourselves) what each part of our program is doing. We write a `#` character before a comment. This lets R know that it is a comment, and ensures that R will not try to run it. Often, we will first write a comment describing what our program is doing, then below it the R command. For example:
+
+```{r}
+# Add 2 and 2.
+2 + 2
+```
+
+Or we can write a short comment after a command.
+
+```{r}
+2 + 2 # (example of addition)
+```
+
+## Mathematical expressions
+
+Basic mathematical expressions include:
+
+```{r}
+# Subtraction.
+3 - 1
+
+# Multiplication.
+2 * 2
+
+# Division.
+1 / 3
+
+# Exponentiation.
+3 ^ 2
+```
+
+Lots of other features of basic math are written as you would reasonably expect. For example:
+
+```{r}
+# Non-whole number with a decimal point.
+2.718282
+
+# Negative number with minus sign.
+-1
+```
+
+More complex mathematical expressions are possible, and the usual rules for operator precedence apply. Parentheses play the same role as in standard algebra.
+
+```{r}
+# Exponentiation before division.
+100 ^ 1 / 2
+
+# Using parentheses to force the order of operations.
+100 ^ (1 / 2)
+```
+
+The placement of spaces in between numbers and mathematical symbols is unimportant. So the following example is functionally the same as the last command above:
+
+```{r}
+100^(1/2)
+```
+
+But a few spaces can make our commands easier for a human to read.
+
+## Assignments
+
+Just as in algebra, in R we can assign numbers (or indeed other things) into arbitrary variables, and then write expressions with those variables. We assign using `=`. Whatever is on the right hand side of the `=` is stored for later use, under the name that we give it on the left hand side. We are free to make up a name for our variable as we choose, under some constraints:
+
+* must begin with a letter (otherwise R thinks we are beginning a numerical calculation)
+* must contain only letters, numbers, or the symbols `.` and `_`
+* no spaces (otherwise R thinks we mean two separate variables)
+
+A basic example:
+
+```{r}
+# Create the variable x.
+x = 36
+
+# Write an expression containing the variable.
+x + 1
+```
+
+We can see the contents of a variable by just typing its name in the console.
+
+```{r}
+x
+```
+
+Note that performing a mathematical operation with a variable does not change that variable. It just shows us the result of the calculation.
+
+```{r}
+y = 10
+y + 1
+y
+```
+
+If we want a mathematical operation to change the value of a variable, we need to overwrite the original value with the result, using `=` again.
+
+```{r}
+y = y + 1
+y
+```
+
+It is best to choose meaningful names for our variables. This makes our program more intuitive to read.
+
+```{r}
+my_age = 36
+my_age + 1
+```
+
+The **Environment** tab in RStudio shows the variables that you have assigned so far, along with the values that you have assigned into them. You can also see the names of all your variables by typing `ls()` into the console.
+
+```{r}
+ls()
+```
+
+Assignment can also be done using the two characters `<-`. Some people prefer this, because the arrow shape that this combination makes represents more intuitively what happens for an assignment: some contents are 'going into' the variable.
+
+So the following is functionally the same as the above:
+
+```{r}
+my_age <- 36
+my_age + 1
+```
+
+Use whichever you prefer, but be consistent. I will use `=` because it is one character instead of two, and because `=` is also used for assignment in some other programming languages.
+
+## Functions
+
+R has many functions available. Most of them have intuitive names. To apply a function, we type its name followed by parentheses `()`. The parentheses are R's way of recognizing that what we have typed is a function (and not, for example, the name of a variable).
+
+We have already seen one function, the `ls()` function that we used above to see a list of our variables.
+
+Most functions require some input. We place the input to the function inside its parentheses. In programming terminology, inputs to functions are often termed **arguments**.
+
+Here are some examples of functions:
+
+```{r}
+# Square root.
+sqrt(2)
+
+# Natural logarithm.
+log(9000)
+
+# Exponential function.
+exp(1)
+
+# Absolute value.
+abs(-1)
+
+# Rounding.
+round(1.9)
+```
+
+Some functions can have more than one argument. In this case, the arguments are separated by commas. For example, `round()` can have a second argument saying how many digits we want to round to after the decimal point, and `log()` can have a second argument specifying the base of the logarithm.
+
+```{r}
+round(3.142, 1)
+log(1000, 10)
+```
+
+Additional arguments that have a specific role in the function often have names. In simple cases like the examples above we don't have to use these names, but it can make the working of our commands clearer for a human reader if we do. We give inputs to named arguments using the same `=` that we use for assignment.
+
+```{r}
+round(3.142, digits=1)
+log(1000, base=10)
+```
+
+Some functions have many arguments. If so, it can make the function much clearer to read if we use the names of the arguments. For example, the `seq()` function generates a sequence of numbers starting `from` a certain number, up `to` another number, `by` a third number.
+
+```{r}
+seq(from=2, to=10, by=2)
+```
+
+As long as we input the arguments in the right order, we don't have to use the argument names.
+
+```{r}
+seq(2, 10, 2)
+```
+
+For functions that can have multiple different arguments, it may be necessary to use the names of the arguments in order to make sure that R uses them in the way that we want.
+
+For example, we can use `seq()` with the `length.out` argument to specify the length of the sequence instead of `by`.
+
+```{r}
+seq(0, 1, length.out=101)
+```
+
+In the above example, we also see the meaning of the `[1]` that kept appearing in front of each output earlier. Because `seq()` gives us multiple results (a whole sequence of numbers), these results are numbered. The number that appears at the beginning of each line is the number of the result at the start of that line.
+
+We can input functions into functions. In this case, the 'inner' function is applied first, and its output is then given as the input to the 'outer' function. This is the same as in normal algebra.
+
+```{r}
+sqrt(abs(-2))
+```
+
+# Organizing our work
+
+## The working directory
+
+Some functions are non-mathematical, and do instead practical things that help us with the organization of our analysis.
+
+One such useful function is `getwd()`. This function tells us what folder on our computer we are currently working in (**wd** stands for **w**orking **d**irectory). This function needs no arguments.
+
+Type `getwd()` into your console to see your working directory.
+
+This folder is where R will look by default when searching for data to load, and it is also where R will place any graphs or output files we create. If you want to change this folder, the simplest way is to do it via *Tools* -> *Global Options* in RStudio. In the global options you can set a default working directory that RStudio will always use unless you tell it otherwise. You will need to click **Apply** and then exit RStudio and restart it for this to take effect.
+
+You will rarely need to use `getwd()` in a finished R script. Instead, write your scripts under the assumption that all the relevant data files are located in whatever folder you or the person running the script are currently working in. This way, when somebody else wants to run your analysis on their computer, they just need to make sure that all the files are in their current working folder, and the analysis will run for them too, without them having to change anything in your script.
+
+The `list.files()` function displays the files that you have in your current working directory. You can also see them in the **Files** tab in RStudio.
+
+## Printing results
+
+When we source a completed R script, R will not automatically print results into the console. Instead, when we source a script all the steps of the analysis still take place in the background, but nothing is printed out unless we explicitly ask for it.
+
+We ask for something to be printed using the `print()` function.
+
+This will not be printed out when we source a complete script:
+
+```{r, results=FALSE}
+2 + 2
+```
+
+But this will:
+
+```{r}
+print(2 + 2)
+```
+
+# Troubleshooting
+
+## Errors
+
+Sometimes we get things wrong. A misplaced comma or parenthesis will stop R commands from working as desired. If we type in something that just 'doesn't work', R will stop the program and print out an error message.
+
+```{r, error=TRUE}
+log(sqrt(2)))
+```
+
+Sometimes the text of this error message will be fairly informative and helpful. At other times R will not guess correctly what we intended, and the error message will not be so clear.
+
+A common error is to get the names of variables very slightly wrong. For example, all names in R are case sensitive, so we need to be careful about this:
+
+```{r, error=TRUE}
+my_age = 36
+My_Age + 1
+```
+
+## Unfinished commands
+
+Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the *Esc* key to cancel an unfinished command. You should then see the `>` reappear.
+
+## Help
+
+If you know what function you want to use, but we are not sure how to use it, the `?` can call up documentation for a function, for example `? seq`.
+
+Type `?` and the name of a function into your own RStudio console to see the documentation.
+
+Under the section **Usage** you will see a short template of the arguments that the function expects. Under **Arguments** you get more details about the nature of each of these arguments. Under **Value** you get some explanation of what the function outputs. The **Examples** section shows some example uses of the function.
+
+If you don't know what function you want to use, you can search the documentation for a word or phrase, using a double question mark, for example `?? logarithm`.
+
+Under the section **Help pages** you will see some links to specific documentation pages. Not all of them will be relevant. Those links that begin `base::` or `stats::` are usually the relevant ones, since they link to documentation on the most basic R functions.
+
+For many things, there is clearer and more detailed help available online. A clearly-worded Google search will almost always get you to an example or explanation on one of the main R and programming community sites, such as [StackOverflow](https://stackoverflow.com/), [RDocumentation](https://www.rdocumentation.org/), [R-bloggers](https://www.r-bloggers.com/), and many others.
