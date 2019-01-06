@@ -7,7 +7,7 @@ output:
     toc_float: TRUE
 ---
 
-# Commands
+# Ways of working with R
 
 R is a programming language. To get R to do things, we must type in commands. We can get R to run commands in three main ways.
 
@@ -68,7 +68,7 @@ Comments do nothing at all, but are very useful for letting others know (and for
 Or we can write a short comment after a command.
 
 ```{r}
-2 + 2 # (example of addition)
+2 + 2 # (an example of addition)
 ```
 
 ## Mathematical expressions
@@ -109,13 +109,13 @@ More complex mathematical expressions are possible, and the usual rules for oper
 100 ^ (1 / 2)
 ```
 
-The placement of spaces in between numbers and mathematical symbols is unimportant. So the following example is functionally the same as the last command above:
+The placement of spaces in between mathematical symbols is unimportant. So the following example is functionally the same as the last command above:
 
 ```{r}
 100^(1/2)
 ```
 
-But a few spaces can make our commands easier for a human to read.
+But a few well-placed spaces can make our commands easier for a human to read.
 
 ## Assignments
 
@@ -304,7 +304,7 @@ My_Age + 1
 
 ## Unfinished commands
 
-Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the *Esc* key to cancel an unfinished command. You should then see the `>` reappear.
+Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the *Esc* key in the console to cancel an unfinished command. You should then see the `>` reappear.
 
 ## Help
 
