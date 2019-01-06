@@ -12,7 +12,7 @@
 <meta name="author" content="LT" />
 
 
-<title>Data types</title>
+<title>Files</title>
 
 <script>/*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
 !function(a,b){"object"==typeof module&&"object"==typeof module.exports?module.exports=a.document?b(a,!0):function(a){if(!a.document)throw new Error("jQuery requires a window with a document");return b(a)}:b(a)}("undefined"!=typeof window?window:this,function(a,b){var c=[],d=c.slice,e=c.concat,f=c.push,g=c.indexOf,h={},i=h.toString,j=h.hasOwnProperty,k={},l="1.11.3",m=function(a,b){return new m.fn.init(a,b)},n=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,o=/^-ms-/,p=/-([\da-z])/gi,q=function(a,b){return b.toUpperCase()};m.fn=m.prototype={jquery:l,constructor:m,selector:"",length:0,toArray:function(){return d.call(this)},get:function(a){return null!=a?0>a?this[a+this.length]:this[a]:d.call(this)},pushStack:function(a){var b=m.merge(this.constructor(),a);return b.prevObject=this,b.context=this.context,b},each:function(a,b){return m.each(this,a,b)},map:function(a){return this.pushStack(m.map(this,function(b,c){return a.call(b,c,b)}))},slice:function(){return this.pushStack(d.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(a){var b=this.length,c=+a+(0>a?b:0);return this.pushStack(c>=0&&b>c?[this[c]]:[])},end:function(){return this.prevObject||this.constructor(null)},push:f,sort:c.sort,splice:c.splice},m.extend=m.fn.extend=function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for("boolean"==typeof g&&(j=g,g=arguments[h]||{},h++),"object"==typeof g||m.isFunction(g)||(g={}),h===i&&(g=this,h--);i>h;h++)if(null!=(e=arguments[h]))for(d in e)a=g[d],c=e[d],g!==c&&(j&&c&&(m.isPlainObject(c)||(b=m.isArray(c)))?(b?(b=!1,f=a&&m.isArray(a)?a:[]):f=a&&m.isPlainObject(a)?a:{},g[d]=m.extend(j,f,c)):void 0!==c&&(g[d]=c));return g},m.extend({expando:"jQuery"+(l+Math.random()).replace(/\D/g,""),isReady:!0,error:function(a){throw new Error(a)},noop:function(){},isFunction:function(a){return"function"===m.type(a)},isArray:Array.isArray||function(a){return"array"===m.type(a)},isWindow:function(a){return null!=a&&a==a.window},isNumeric:function(a){return!m.isArray(a)&&a-parseFloat(a)+1>=0},isEmptyObject:function(a){var b;for(b in a)return!1;return!0},isPlainObject:function(a){var b;if(!a||"object"!==m.type(a)||a.nodeType||m.isWindow(a))return!1;try{if(a.constructor&&!j.call(a,"constructor")&&!j.call(a.constructor.prototype,"isPrototypeOf"))return!1}catch(c){return!1}if(k.ownLast)for(b in a)return j.call(a,b);for(b in a);return void 0===b||j.call(a,b)},type:function(a){return null==a?a+"":"object"==typeof a||"function"==typeof a?h[i.call(a)]||"object":typeof a},globalEval:function(b){b&&m.trim(b)&&(a.execScript||function(b){a.eval.call(a,b)})(b)},camelCase:function(a){return a.replace(o,"ms-").replace(p,q)},nodeName:function(a,b){return a.nodeName&&a.nodeName.toLowerCase()===b.toLowerCase()},each:function(a,b,c){var d,e=0,f=a.length,g=r(a);if(c){if(g){for(;f>e;e++)if(d=b.apply(a[e],c),d===!1)break}else for(e in a)if(d=b.apply(a[e],c),d===!1)break}else if(g){for(;f>e;e++)if(d=b.call(a[e],e,a[e]),d===!1)break}else for(e in a)if(d=b.call(a[e],e,a[e]),d===!1)break;return a},trim:function(a){return null==a?"":(a+"").replace(n,"")},makeArray:function(a,b){var c=b||[];return null!=a&&(r(Object(a))?m.merge(c,"string"==typeof a?[a]:a):f.call(c,a)),c},inArray:function(a,b,c){var d;if(b){if(g)return g.call(b,a,c);for(d=b.length,c=c?0>c?Math.max(0,d+c):c:0;d>c;c++)if(c in b&&b[c]===a)return c}return-1},merge:function(a,b){var c=+b.length,d=0,e=a.length;while(c>d)a[e++]=b[d++];if(c!==c)while(void 0!==b[d])a[e++]=b[d++];return a.length=e,a},grep:function(a,b,c){for(var d,e=[],f=0,g=a.length,h=!c;g>f;f++)d=!b(a[f],f),d!==h&&e.push(a[f]);return e},map:function(a,b,c){var d,f=0,g=a.length,h=r(a),i=[];if(h)for(;g>f;f++)d=b(a[f],f,c),null!=d&&i.push(d);else for(f in a)d=b(a[f],f,c),null!=d&&i.push(d);return e.apply([],i)},guid:1,proxy:function(a,b){var c,e,f;return"string"==typeof b&&(f=a[b],b=a,a=f),m.isFunction(a)?(c=d.call(arguments,2),e=function(){return a.apply(b||this,c.concat(d.call(arguments)))},e.guid=a.guid=a.guid||m.guid++,e):void 0},now:function(){return+new Date},support:k}),m.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(a,b){h["[object "+b+"]"]=b.toLowerCase()});function r(a){var b="length"in a&&a.length,c=m.type(a);return"function"===c||m.isWindow(a)?!1:1===a.nodeType&&b?!0:"array"===c||0===b||"number"==typeof b&&b>0&&b-1 in a}var s=function(a){var b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u="sizzle"+1*new Date,v=a.document,w=0,x=0,y=ha(),z=ha(),A=ha(),B=function(a,b){return a===b&&(l=!0),0},C=1<<31,D={}.hasOwnProperty,E=[],F=E.pop,G=E.push,H=E.push,I=E.slice,J=function(a,b){for(var c=0,d=a.length;d>c;c++)if(a[c]===b)return c;return-1},K="checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",L="[\\x20\\t\\r\\n\\f]",M="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",N=M.replace("w","w#"),O="\\["+L+"*("+M+")(?:"+L+"*([*^$|!~]?=)"+L+"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|("+N+"))|)"+L+"*\\]",P=":("+M+")(?:\\((('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|((?:\\\\.|[^\\\\()[\\]]|"+O+")*)|.*)\\)|)",Q=new RegExp(L+"+","g"),R=new RegExp("^"+L+"+|((?:^|[^\\\\])(?:\\\\.)*)"+L+"+$","g"),S=new RegExp("^"+L+"*,"+L+"*"),T=new RegExp("^"+L+"*([>+~]|"+L+")"+L+"*"),U=new RegExp("="+L+"*([^\\]'\"]*?)"+L+"*\\]","g"),V=new RegExp(P),W=new RegExp("^"+N+"$"),X={ID:new RegExp("^#("+M+")"),CLASS:new RegExp("^\\.("+M+")"),TAG:new RegExp("^("+M.replace("w","w*")+")"),ATTR:new RegExp("^"+O),PSEUDO:new RegExp("^"+P),CHILD:new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+L+"*(even|odd|(([+-]|)(\\d*)n|)"+L+"*(?:([+-]|)"+L+"*(\\d+)|))"+L+"*\\)|)","i"),bool:new RegExp("^(?:"+K+")$","i"),needsContext:new RegExp("^"+L+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+L+"*((?:-\\d)?\\d*)"+L+"*\\)|)(?=[^-]|$)","i")},Y=/^(?:input|select|textarea|button)$/i,Z=/^h\d$/i,$=/^[^{]+\{\s*\[native \w/,_=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,aa=/[+~]/,ba=/'|\\/g,ca=new RegExp("\\\\([\\da-f]{1,6}"+L+"?|("+L+")|.)","ig"),da=function(a,b,c){var d="0x"+b-65536;return d!==d||c?b:0>d?String.fromCharCode(d+65536):String.fromCharCode(d>>10|55296,1023&d|56320)},ea=function(){m()};try{H.apply(E=I.call(v.childNodes),v.childNodes),E[v.childNodes.length].nodeType}catch(fa){H={apply:E.length?function(a,b){G.apply(a,I.call(b))}:function(a,b){var c=a.length,d=0;while(a[c++]=b[d++]);a.length=c-1}}}function ga(a,b,d,e){var f,h,j,k,l,o,r,s,w,x;if((b?b.ownerDocument||b:v)!==n&&m(b),b=b||n,d=d||[],k=b.nodeType,"string"!=typeof a||!a||1!==k&&9!==k&&11!==k)return d;if(!e&&p){if(11!==k&&(f=_.exec(a)))if(j=f[1]){if(9===k){if(h=b.getElementById(j),!h||!h.parentNode)return d;if(h.id===j)return d.push(h),d}else if(b.ownerDocument&&(h=b.ownerDocument.getElementById(j))&&t(b,h)&&h.id===j)return d.push(h),d}else{if(f[2])return H.apply(d,b.getElementsByTagName(a)),d;if((j=f[3])&&c.getElementsByClassName)return H.apply(d,b.getElementsByClassName(j)),d}if(c.qsa&&(!q||!q.test(a))){if(s=r=u,w=b,x=1!==k&&a,1===k&&"object"!==b.nodeName.toLowerCase()){o=g(a),(r=b.getAttribute("id"))?s=r.replace(ba,"\\$&"):b.setAttribute("id",s),s="[id='"+s+"'] ",l=o.length;while(l--)o[l]=s+ra(o[l]);w=aa.test(a)&&pa(b.parentNode)||b,x=o.join(",")}if(x)try{return H.apply(d,w.querySelectorAll(x)),d}catch(y){}finally{r||b.removeAttribute("id")}}}return i(a.replace(R,"$1"),b,d,e)}function ha(){var a=[];function b(c,e){return a.push(c+" ")>d.cacheLength&&delete b[a.shift()],b[c+" "]=e}return b}function ia(a){return a[u]=!0,a}function ja(a){var b=n.createElement("div");try{return!!a(b)}catch(c){return!1}finally{b.parentNode&&b.parentNode.removeChild(b),b=null}}function ka(a,b){var c=a.split("|"),e=a.length;while(e--)d.attrHandle[c[e]]=b}function la(a,b){var c=b&&a,d=c&&1===a.nodeType&&1===b.nodeType&&(~b.sourceIndex||C)-(~a.sourceIndex||C);if(d)return d;if(c)while(c=c.nextSibling)if(c===b)return-1;return a?1:-1}function ma(a){return function(b){var c=b.nodeName.toLowerCase();return"input"===c&&b.type===a}}function na(a){return function(b){var c=b.nodeName.toLowerCase();return("input"===c||"button"===c)&&b.type===a}}function oa(a){return ia(function(b){return b=+b,ia(function(c,d){var e,f=a([],c.length,b),g=f.length;while(g--)c[e=f[g]]&&(c[e]=!(d[e]=c[e]))})})}function pa(a){return a&&"undefined"!=typeof a.getElementsByTagName&&a}c=ga.support={},f=ga.isXML=function(a){var b=a&&(a.ownerDocument||a).documentElement;return b?"HTML"!==b.nodeName:!1},m=ga.setDocument=function(a){var b,e,g=a?a.ownerDocument||a:v;return g!==n&&9===g.nodeType&&g.documentElement?(n=g,o=g.documentElement,e=g.defaultView,e&&e!==e.top&&(e.addEventListener?e.addEventListener("unload",ea,!1):e.attachEvent&&e.attachEvent("onunload",ea)),p=!f(g),c.attributes=ja(function(a){return a.className="i",!a.getAttribute("className")}),c.getElementsByTagName=ja(function(a){return a.appendChild(g.createComment("")),!a.getElementsByTagName("*").length}),c.getElementsByClassName=$.test(g.getElementsByClassName),c.getById=ja(function(a){return o.appendChild(a).id=u,!g.getElementsByName||!g.getElementsByName(u).length}),c.getById?(d.find.ID=function(a,b){if("undefined"!=typeof b.getElementById&&p){var c=b.getElementById(a);return c&&c.parentNode?[c]:[]}},d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){return a.getAttribute("id")===b}}):(delete d.find.ID,d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){var c="undefined"!=typeof a.getAttributeNode&&a.getAttributeNode("id");return c&&c.value===b}}),d.find.TAG=c.getElementsByTagName?function(a,b){return"undefined"!=typeof b.getElementsByTagName?b.getElementsByTagName(a):c.qsa?b.querySelectorAll(a):void 0}:function(a,b){var c,d=[],e=0,f=b.getElementsByTagName(a);if("*"===a){while(c=f[e++])1===c.nodeType&&d.push(c);return d}return f},d.find.CLASS=c.getElementsByClassName&&function(a,b){return p?b.getElementsByClassName(a):void 0},r=[],q=[],(c.qsa=$.test(g.querySelectorAll))&&(ja(function(a){o.appendChild(a).innerHTML="<a id='"+u+"'></a><select id='"+u+"-\f]' msallowcapture=''><option selected=''></option></select>",a.querySelectorAll("[msallowcapture^='']").length&&q.push("[*^$]="+L+"*(?:''|\"\")"),a.querySelectorAll("[selected]").length||q.push("\\["+L+"*(?:value|"+K+")"),a.querySelectorAll("[id~="+u+"-]").length||q.push("~="),a.querySelectorAll(":checked").length||q.push(":checked"),a.querySelectorAll("a#"+u+"+*").length||q.push(".#.+[+~]")}),ja(function(a){var b=g.createElement("input");b.setAttribute("type","hidden"),a.appendChild(b).setAttribute("name","D"),a.querySelectorAll("[name=d]").length&&q.push("name"+L+"*[*^$|!~]?="),a.querySelectorAll(":enabled").length||q.push(":enabled",":disabled"),a.querySelectorAll("*,:x"),q.push(",.*:")})),(c.matchesSelector=$.test(s=o.matches||o.webkitMatchesSelector||o.mozMatchesSelector||o.oMatchesSelector||o.msMatchesSelector))&&ja(function(a){c.disconnectedMatch=s.call(a,"div"),s.call(a,"[s!='']:x"),r.push("!=",P)}),q=q.length&&new RegExp(q.join("|")),r=r.length&&new RegExp(r.join("|")),b=$.test(o.compareDocumentPosition),t=b||$.test(o.contains)?function(a,b){var c=9===a.nodeType?a.documentElement:a,d=b&&b.parentNode;return a===d||!(!d||1!==d.nodeType||!(c.contains?c.contains(d):a.compareDocumentPosition&&16&a.compareDocumentPosition(d)))}:function(a,b){if(b)while(b=b.parentNode)if(b===a)return!0;return!1},B=b?function(a,b){if(a===b)return l=!0,0;var d=!a.compareDocumentPosition-!b.compareDocumentPosition;return d?d:(d=(a.ownerDocument||a)===(b.ownerDocument||b)?a.compareDocumentPosition(b):1,1&d||!c.sortDetached&&b.compareDocumentPosition(a)===d?a===g||a.ownerDocument===v&&t(v,a)?-1:b===g||b.ownerDocument===v&&t(v,b)?1:k?J(k,a)-J(k,b):0:4&d?-1:1)}:function(a,b){if(a===b)return l=!0,0;var c,d=0,e=a.parentNode,f=b.parentNode,h=[a],i=[b];if(!e||!f)return a===g?-1:b===g?1:e?-1:f?1:k?J(k,a)-J(k,b):0;if(e===f)return la(a,b);c=a;while(c=c.parentNode)h.unshift(c);c=b;while(c=c.parentNode)i.unshift(c);while(h[d]===i[d])d++;return d?la(h[d],i[d]):h[d]===v?-1:i[d]===v?1:0},g):n},ga.matches=function(a,b){return ga(a,null,null,b)},ga.matchesSelector=function(a,b){if((a.ownerDocument||a)!==n&&m(a),b=b.replace(U,"='$1']"),!(!c.matchesSelector||!p||r&&r.test(b)||q&&q.test(b)))try{var d=s.call(a,b);if(d||c.disconnectedMatch||a.document&&11!==a.document.nodeType)return d}catch(e){}return ga(b,n,null,[a]).length>0},ga.contains=function(a,b){return(a.ownerDocument||a)!==n&&m(a),t(a,b)},ga.attr=function(a,b){(a.ownerDocument||a)!==n&&m(a);var e=d.attrHandle[b.toLowerCase()],f=e&&D.call(d.attrHandle,b.toLowerCase())?e(a,b,!p):void 0;return void 0!==f?f:c.attributes||!p?a.getAttribute(b):(f=a.getAttributeNode(b))&&f.specified?f.value:null},ga.error=function(a){throw new Error("Syntax error, unrecognized expression: "+a)},ga.uniqueSort=function(a){var b,d=[],e=0,f=0;if(l=!c.detectDuplicates,k=!c.sortStable&&a.slice(0),a.sort(B),l){while(b=a[f++])b===a[f]&&(e=d.push(f));while(e--)a.splice(d[e],1)}return k=null,a},e=ga.getText=function(a){var b,c="",d=0,f=a.nodeType;if(f){if(1===f||9===f||11===f){if("string"==typeof a.textContent)return a.textContent;for(a=a.firstChild;a;a=a.nextSibling)c+=e(a)}else if(3===f||4===f)return a.nodeValue}else while(b=a[d++])c+=e(b);return c},d=ga.selectors={cacheLength:50,createPseudo:ia,match:X,attrHandle:{},find:{},relative:{">":{dir:"parentNode",first:!0}," ":{dir:"parentNode"},"+":{dir:"previousSibling",first:!0},"~":{dir:"previousSibling"}},preFilter:{ATTR:function(a){return a[1]=a[1].replace(ca,da),a[3]=(a[3]||a[4]||a[5]||"").replace(ca,da),"~="===a[2]&&(a[3]=" "+a[3]+" "),a.slice(0,4)},CHILD:function(a){return a[1]=a[1].toLowerCase(),"nth"===a[1].slice(0,3)?(a[3]||ga.error(a[0]),a[4]=+(a[4]?a[5]+(a[6]||1):2*("even"===a[3]||"odd"===a[3])),a[5]=+(a[7]+a[8]||"odd"===a[3])):a[3]&&ga.error(a[0]),a},PSEUDO:function(a){var b,c=!a[6]&&a[2];return X.CHILD.test(a[0])?null:(a[3]?a[2]=a[4]||a[5]||"":c&&V.test(c)&&(b=g(c,!0))&&(b=c.indexOf(")",c.length-b)-c.length)&&(a[0]=a[0].slice(0,b),a[2]=c.slice(0,b)),a.slice(0,3))}},filter:{TAG:function(a){var b=a.replace(ca,da).toLowerCase();return"*"===a?function(){return!0}:function(a){return a.nodeName&&a.nodeName.toLowerCase()===b}},CLASS:function(a){var b=y[a+" "];return b||(b=new RegExp("(^|"+L+")"+a+"("+L+"|$)"))&&y(a,function(a){return b.test("string"==typeof a.className&&a.className||"undefined"!=typeof a.getAttribute&&a.getAttribute("class")||"")})},ATTR:function(a,b,c){return function(d){var e=ga.attr(d,a);return null==e?"!="===b:b?(e+="","="===b?e===c:"!="===b?e!==c:"^="===b?c&&0===e.indexOf(c):"*="===b?c&&e.indexOf(c)>-1:"$="===b?c&&e.slice(-c.length)===c:"~="===b?(" "+e.replace(Q," ")+" ").indexOf(c)>-1:"|="===b?e===c||e.slice(0,c.length+1)===c+"-":!1):!0}},CHILD:function(a,b,c,d,e){var f="nth"!==a.slice(0,3),g="last"!==a.slice(-4),h="of-type"===b;return 1===d&&0===e?function(a){return!!a.parentNode}:function(b,c,i){var j,k,l,m,n,o,p=f!==g?"nextSibling":"previousSibling",q=b.parentNode,r=h&&b.nodeName.toLowerCase(),s=!i&&!h;if(q){if(f){while(p){l=b;while(l=l[p])if(h?l.nodeName.toLowerCase()===r:1===l.nodeType)return!1;o=p="only"===a&&!o&&"nextSibling"}return!0}if(o=[g?q.firstChild:q.lastChild],g&&s){k=q[u]||(q[u]={}),j=k[a]||[],n=j[0]===w&&j[1],m=j[0]===w&&j[2],l=n&&q.childNodes[n];while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if(1===l.nodeType&&++m&&l===b){k[a]=[w,n,m];break}}else if(s&&(j=(b[u]||(b[u]={}))[a])&&j[0]===w)m=j[1];else while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if((h?l.nodeName.toLowerCase()===r:1===l.nodeType)&&++m&&(s&&((l[u]||(l[u]={}))[a]=[w,m]),l===b))break;return m-=e,m===d||m%d===0&&m/d>=0}}},PSEUDO:function(a,b){var c,e=d.pseudos[a]||d.setFilters[a.toLowerCase()]||ga.error("unsupported pseudo: "+a);return e[u]?e(b):e.length>1?(c=[a,a,"",b],d.setFilters.hasOwnProperty(a.toLowerCase())?ia(function(a,c){var d,f=e(a,b),g=f.length;while(g--)d=J(a,f[g]),a[d]=!(c[d]=f[g])}):function(a){return e(a,0,c)}):e}},pseudos:{not:ia(function(a){var b=[],c=[],d=h(a.replace(R,"$1"));return d[u]?ia(function(a,b,c,e){var f,g=d(a,null,e,[]),h=a.length;while(h--)(f=g[h])&&(a[h]=!(b[h]=f))}):function(a,e,f){return b[0]=a,d(b,null,f,c),b[0]=null,!c.pop()}}),has:ia(function(a){return function(b){return ga(a,b).length>0}}),contains:ia(function(a){return a=a.replace(ca,da),function(b){return(b.textContent||b.innerText||e(b)).indexOf(a)>-1}}),lang:ia(function(a){return W.test(a||"")||ga.error("unsupported lang: "+a),a=a.replace(ca,da).toLowerCase(),function(b){var c;do if(c=p?b.lang:b.getAttribute("xml:lang")||b.getAttribute("lang"))return c=c.toLowerCase(),c===a||0===c.indexOf(a+"-");while((b=b.parentNode)&&1===b.nodeType);return!1}}),target:function(b){var c=a.location&&a.location.hash;return c&&c.slice(1)===b.id},root:function(a){return a===o},focus:function(a){return a===n.activeElement&&(!n.hasFocus||n.hasFocus())&&!!(a.type||a.href||~a.tabIndex)},enabled:function(a){return a.disabled===!1},disabled:function(a){return a.disabled===!0},checked:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&!!a.checked||"option"===b&&!!a.selected},selected:function(a){return a.parentNode&&a.parentNode.selectedIndex,a.selected===!0},empty:function(a){for(a=a.firstChild;a;a=a.nextSibling)if(a.nodeType<6)return!1;return!0},parent:function(a){return!d.pseudos.empty(a)},header:function(a){return Z.test(a.nodeName)},input:function(a){return Y.test(a.nodeName)},button:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&"button"===a.type||"button"===b},text:function(a){var b;return"input"===a.nodeName.toLowerCase()&&"text"===a.type&&(null==(b=a.getAttribute("type"))||"text"===b.toLowerCase())},first:oa(function(){return[0]}),last:oa(function(a,b){return[b-1]}),eq:oa(function(a,b,c){return[0>c?c+b:c]}),even:oa(function(a,b){for(var c=0;b>c;c+=2)a.push(c);return a}),odd:oa(function(a,b){for(var c=1;b>c;c+=2)a.push(c);return a}),lt:oa(function(a,b,c){for(var d=0>c?c+b:c;--d>=0;)a.push(d);return a}),gt:oa(function(a,b,c){for(var d=0>c?c+b:c;++d<b;)a.push(d);return a})}},d.pseudos.nth=d.pseudos.eq;for(b in{radio:!0,checkbox:!0,file:!0,password:!0,image:!0})d.pseudos[b]=ma(b);for(b in{submit:!0,reset:!0})d.pseudos[b]=na(b);function qa(){}qa.prototype=d.filters=d.pseudos,d.setFilters=new qa,g=ga.tokenize=function(a,b){var c,e,f,g,h,i,j,k=z[a+" "];if(k)return b?0:k.slice(0);h=a,i=[],j=d.preFilter;while(h){(!c||(e=S.exec(h)))&&(e&&(h=h.slice(e[0].length)||h),i.push(f=[])),c=!1,(e=T.exec(h))&&(c=e.shift(),f.push({value:c,type:e[0].replace(R," ")}),h=h.slice(c.length));for(g in d.filter)!(e=X[g].exec(h))||j[g]&&!(e=j[g](e))||(c=e.shift(),f.push({value:c,type:g,matches:e}),h=h.slice(c.length));if(!c)break}return b?h.length:h?ga.error(a):z(a,i).slice(0)};function ra(a){for(var b=0,c=a.length,d="";c>b;b++)d+=a[b].value;return d}function sa(a,b,c){var d=b.dir,e=c&&"parentNode"===d,f=x++;return b.first?function(b,c,f){while(b=b[d])if(1===b.nodeType||e)return a(b,c,f)}:function(b,c,g){var h,i,j=[w,f];if(g){while(b=b[d])if((1===b.nodeType||e)&&a(b,c,g))return!0}else while(b=b[d])if(1===b.nodeType||e){if(i=b[u]||(b[u]={}),(h=i[d])&&h[0]===w&&h[1]===f)return j[2]=h[2];if(i[d]=j,j[2]=a(b,c,g))return!0}}}function ta(a){return a.length>1?function(b,c,d){var e=a.length;while(e--)if(!a[e](b,c,d))return!1;return!0}:a[0]}function ua(a,b,c){for(var d=0,e=b.length;e>d;d++)ga(a,b[d],c);return c}function va(a,b,c,d,e){for(var f,g=[],h=0,i=a.length,j=null!=b;i>h;h++)(f=a[h])&&(!c||c(f,d,e))&&(g.push(f),j&&b.push(h));return g}function wa(a,b,c,d,e,f){return d&&!d[u]&&(d=wa(d)),e&&!e[u]&&(e=wa(e,f)),ia(function(f,g,h,i){var j,k,l,m=[],n=[],o=g.length,p=f||ua(b||"*",h.nodeType?[h]:h,[]),q=!a||!f&&b?p:va(p,m,a,h,i),r=c?e||(f?a:o||d)?[]:g:q;if(c&&c(q,r,h,i),d){j=va(r,n),d(j,[],h,i),k=j.length;while(k--)(l=j[k])&&(r[n[k]]=!(q[n[k]]=l))}if(f){if(e||a){if(e){j=[],k=r.length;while(k--)(l=r[k])&&j.push(q[k]=l);e(null,r=[],j,i)}k=r.length;while(k--)(l=r[k])&&(j=e?J(f,l):m[k])>-1&&(f[j]=!(g[j]=l))}}else r=va(r===g?r.splice(o,r.length):r),e?e(null,g,r,i):H.apply(g,r)})}function xa(a){for(var b,c,e,f=a.length,g=d.relative[a[0].type],h=g||d.relative[" "],i=g?1:0,k=sa(function(a){return a===b},h,!0),l=sa(function(a){return J(b,a)>-1},h,!0),m=[function(a,c,d){var e=!g&&(d||c!==j)||((b=c).nodeType?k(a,c,d):l(a,c,d));return b=null,e}];f>i;i++)if(c=d.relative[a[i].type])m=[sa(ta(m),c)];else{if(c=d.filter[a[i].type].apply(null,a[i].matches),c[u]){for(e=++i;f>e;e++)if(d.relative[a[e].type])break;return wa(i>1&&ta(m),i>1&&ra(a.slice(0,i-1).concat({value:" "===a[i-2].type?"*":""})).replace(R,"$1"),c,e>i&&xa(a.slice(i,e)),f>e&&xa(a=a.slice(e)),f>e&&ra(a))}m.push(c)}return ta(m)}function ya(a,b){var c=b.length>0,e=a.length>0,f=function(f,g,h,i,k){var l,m,o,p=0,q="0",r=f&&[],s=[],t=j,u=f||e&&d.find.TAG("*",k),v=w+=null==t?1:Math.random()||.1,x=u.length;for(k&&(j=g!==n&&g);q!==x&&null!=(l=u[q]);q++){if(e&&l){m=0;while(o=a[m++])if(o(l,g,h)){i.push(l);break}k&&(w=v)}c&&((l=!o&&l)&&p--,f&&r.push(l))}if(p+=q,c&&q!==p){m=0;while(o=b[m++])o(r,s,g,h);if(f){if(p>0)while(q--)r[q]||s[q]||(s[q]=F.call(i));s=va(s)}H.apply(i,s),k&&!f&&s.length>0&&p+b.length>1&&ga.uniqueSort(i)}return k&&(w=v,j=t),r};return c?ia(f):f}return h=ga.compile=function(a,b){var c,d=[],e=[],f=A[a+" "];if(!f){b||(b=g(a)),c=b.length;while(c--)f=xa(b[c]),f[u]?d.push(f):e.push(f);f=A(a,ya(e,d)),f.selector=a}return f},i=ga.select=function(a,b,e,f){var i,j,k,l,m,n="function"==typeof a&&a,o=!f&&g(a=n.selector||a);if(e=e||[],1===o.length){if(j=o[0]=o[0].slice(0),j.length>2&&"ID"===(k=j[0]).type&&c.getById&&9===b.nodeType&&p&&d.relative[j[1].type]){if(b=(d.find.ID(k.matches[0].replace(ca,da),b)||[])[0],!b)return e;n&&(b=b.parentNode),a=a.slice(j.shift().value.length)}i=X.needsContext.test(a)?0:j.length;while(i--){if(k=j[i],d.relative[l=k.type])break;if((m=d.find[l])&&(f=m(k.matches[0].replace(ca,da),aa.test(j[0].type)&&pa(b.parentNode)||b))){if(j.splice(i,1),a=f.length&&ra(j),!a)return H.apply(e,f),e;break}}}return(n||h(a,o))(f,b,!p,e,aa.test(a)&&pa(b.parentNode)||b),e},c.sortStable=u.split("").sort(B).join("")===u,c.detectDuplicates=!!l,m(),c.sortDetached=ja(function(a){return 1&a.compareDocumentPosition(n.createElement("div"))}),ja(function(a){return a.innerHTML="<a href='#'></a>","#"===a.firstChild.getAttribute("href")})||ka("type|href|height|width",function(a,b,c){return c?void 0:a.getAttribute(b,"type"===b.toLowerCase()?1:2)}),c.attributes&&ja(function(a){return a.innerHTML="<input/>",a.firstChild.setAttribute("value",""),""===a.firstChild.getAttribute("value")})||ka("value",function(a,b,c){return c||"input"!==a.nodeName.toLowerCase()?void 0:a.defaultValue}),ja(function(a){return null==a.getAttribute("disabled")})||ka(K,function(a,b,c){var d;return c?void 0:a[b]===!0?b.toLowerCase():(d=a.getAttributeNode(b))&&d.specified?d.value:null}),ga}(a);m.find=s,m.expr=s.selectors,m.expr[":"]=m.expr.pseudos,m.unique=s.uniqueSort,m.text=s.getText,m.isXMLDoc=s.isXML,m.contains=s.contains;var t=m.expr.match.needsContext,u=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,v=/^.[^:#\[\.,]*$/;function w(a,b,c){if(m.isFunction(b))return m.grep(a,function(a,d){return!!b.call(a,d,a)!==c});if(b.nodeType)return m.grep(a,function(a){return a===b!==c});if("string"==typeof b){if(v.test(b))return m.filter(b,a,c);b=m.filter(b,a)}return m.grep(a,function(a){return m.inArray(a,b)>=0!==c})}m.filter=function(a,b,c){var d=b[0];return c&&(a=":not("+a+")"),1===b.length&&1===d.nodeType?m.find.matchesSelector(d,a)?[d]:[]:m.find.matches(a,m.grep(b,function(a){return 1===a.nodeType}))},m.fn.extend({find:function(a){var b,c=[],d=this,e=d.length;if("string"!=typeof a)return this.pushStack(m(a).filter(function(){for(b=0;e>b;b++)if(m.contains(d[b],this))return!0}));for(b=0;e>b;b++)m.find(a,d[b],c);return c=this.pushStack(e>1?m.unique(c):c),c.selector=this.selector?this.selector+" "+a:a,c},filter:function(a){return this.pushStack(w(this,a||[],!1))},not:function(a){return this.pushStack(w(this,a||[],!0))},is:function(a){return!!w(this,"string"==typeof a&&t.test(a)?m(a):a||[],!1).length}});var x,y=a.document,z=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,A=m.fn.init=function(a,b){var c,d;if(!a)return this;if("string"==typeof a){if(c="<"===a.charAt(0)&&">"===a.charAt(a.length-1)&&a.length>=3?[null,a,null]:z.exec(a),!c||!c[1]&&b)return!b||b.jquery?(b||x).find(a):this.constructor(b).find(a);if(c[1]){if(b=b instanceof m?b[0]:b,m.merge(this,m.parseHTML(c[1],b&&b.nodeType?b.ownerDocument||b:y,!0)),u.test(c[1])&&m.isPlainObject(b))for(c in b)m.isFunction(this[c])?this[c](b[c]):this.attr(c,b[c]);return this}if(d=y.getElementById(c[2]),d&&d.parentNode){if(d.id!==c[2])return x.find(a);this.length=1,this[0]=d}return this.context=y,this.selector=a,this}return a.nodeType?(this.context=this[0]=a,this.length=1,this):m.isFunction(a)?"undefined"!=typeof x.ready?x.ready(a):a(m):(void 0!==a.selector&&(this.selector=a.selector,this.context=a.context),m.makeArray(a,this))};A.prototype=m.fn,x=m(y);var B=/^(?:parents|prev(?:Until|All))/,C={children:!0,contents:!0,next:!0,prev:!0};m.extend({dir:function(a,b,c){var d=[],e=a[b];while(e&&9!==e.nodeType&&(void 0===c||1!==e.nodeType||!m(e).is(c)))1===e.nodeType&&d.push(e),e=e[b];return d},sibling:function(a,b){for(var c=[];a;a=a.nextSibling)1===a.nodeType&&a!==b&&c.push(a);return c}}),m.fn.extend({has:function(a){var b,c=m(a,this),d=c.length;return this.filter(function(){for(b=0;d>b;b++)if(m.contains(this,c[b]))return!0})},closest:function(a,b){for(var c,d=0,e=this.length,f=[],g=t.test(a)||"string"!=typeof a?m(a,b||this.context):0;e>d;d++)for(c=this[d];c&&c!==b;c=c.parentNode)if(c.nodeType<11&&(g?g.index(c)>-1:1===c.nodeType&&m.find.matchesSelector(c,a))){f.push(c);break}return this.pushStack(f.length>1?m.unique(f):f)},index:function(a){return a?"string"==typeof a?m.inArray(this[0],m(a)):m.inArray(a.jquery?a[0]:a,this):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},add:function(a,b){return this.pushStack(m.unique(m.merge(this.get(),m(a,b))))},addBack:function(a){return this.add(null==a?this.prevObject:this.prevObject.filter(a))}});function D(a,b){do a=a[b];while(a&&1!==a.nodeType);return a}m.each({parent:function(a){var b=a.parentNode;return b&&11!==b.nodeType?b:null},parents:function(a){return m.dir(a,"parentNode")},parentsUntil:function(a,b,c){return m.dir(a,"parentNode",c)},next:function(a){return D(a,"nextSibling")},prev:function(a){return D(a,"previousSibling")},nextAll:function(a){return m.dir(a,"nextSibling")},prevAll:function(a){return m.dir(a,"previousSibling")},nextUntil:function(a,b,c){return m.dir(a,"nextSibling",c)},prevUntil:function(a,b,c){return m.dir(a,"previousSibling",c)},siblings:function(a){return m.sibling((a.parentNode||{}).firstChild,a)},children:function(a){return m.sibling(a.firstChild)},contents:function(a){return m.nodeName(a,"iframe")?a.contentDocument||a.contentWindow.document:m.merge([],a.childNodes)}},function(a,b){m.fn[a]=function(c,d){var e=m.map(this,b,c);return"Until"!==a.slice(-5)&&(d=c),d&&"string"==typeof d&&(e=m.filter(d,e)),this.length>1&&(C[a]||(e=m.unique(e)),B.test(a)&&(e=e.reverse())),this.pushStack(e)}});var E=/\S+/g,F={};function G(a){var b=F[a]={};return m.each(a.match(E)||[],function(a,c){b[c]=!0}),b}m.Callbacks=function(a){a="string"==typeof a?F[a]||G(a):m.extend({},a);var b,c,d,e,f,g,h=[],i=!a.once&&[],j=function(l){for(c=a.memory&&l,d=!0,f=g||0,g=0,e=h.length,b=!0;h&&e>f;f++)if(h[f].apply(l[0],l[1])===!1&&a.stopOnFalse){c=!1;break}b=!1,h&&(i?i.length&&j(i.shift()):c?h=[]:k.disable())},k={add:function(){if(h){var d=h.length;!function f(b){m.each(b,function(b,c){var d=m.type(c);"function"===d?a.unique&&k.has(c)||h.push(c):c&&c.length&&"string"!==d&&f(c)})}(arguments),b?e=h.length:c&&(g=d,j(c))}return this},remove:function(){return h&&m.each(arguments,function(a,c){var d;while((d=m.inArray(c,h,d))>-1)h.splice(d,1),b&&(e>=d&&e--,f>=d&&f--)}),this},has:function(a){return a?m.inArray(a,h)>-1:!(!h||!h.length)},empty:function(){return h=[],e=0,this},disable:function(){return h=i=c=void 0,this},disabled:function(){return!h},lock:function(){return i=void 0,c||k.disable(),this},locked:function(){return!i},fireWith:function(a,c){return!h||d&&!i||(c=c||[],c=[a,c.slice?c.slice():c],b?i.push(c):j(c)),this},fire:function(){return k.fireWith(this,arguments),this},fired:function(){return!!d}};return k},m.extend({Deferred:function(a){var b=[["resolve","done",m.Callbacks("once memory"),"resolved"],["reject","fail",m.Callbacks("once memory"),"rejected"],["notify","progress",m.Callbacks("memory")]],c="pending",d={state:function(){return c},always:function(){return e.done(arguments).fail(arguments),this},then:function(){var a=arguments;return m.Deferred(function(c){m.each(b,function(b,f){var g=m.isFunction(a[b])&&a[b];e[f[1]](function(){var a=g&&g.apply(this,arguments);a&&m.isFunction(a.promise)?a.promise().done(c.resolve).fail(c.reject).progress(c.notify):c[f[0]+"With"](this===d?c.promise():this,g?[a]:arguments)})}),a=null}).promise()},promise:function(a){return null!=a?m.extend(a,d):d}},e={};return d.pipe=d.then,m.each(b,function(a,f){var g=f[2],h=f[3];d[f[1]]=g.add,h&&g.add(function(){c=h},b[1^a][2].disable,b[2][2].lock),e[f[0]]=function(){return e[f[0]+"With"](this===e?d:this,arguments),this},e[f[0]+"With"]=g.fireWith}),d.promise(e),a&&a.call(e,e),e},when:function(a){var b=0,c=d.call(arguments),e=c.length,f=1!==e||a&&m.isFunction(a.promise)?e:0,g=1===f?a:m.Deferred(),h=function(a,b,c){return function(e){b[a]=this,c[a]=arguments.length>1?d.call(arguments):e,c===i?g.notifyWith(b,c):--f||g.resolveWith(b,c)}},i,j,k;if(e>1)for(i=new Array(e),j=new Array(e),k=new Array(e);e>b;b++)c[b]&&m.isFunction(c[b].promise)?c[b].promise().done(h(b,k,c)).fail(g.reject).progress(h(b,j,i)):--f;return f||g.resolveWith(k,c),g.promise()}});var H;m.fn.ready=function(a){return m.ready.promise().done(a),this},m.extend({isReady:!1,readyWait:1,holdReady:function(a){a?m.readyWait++:m.ready(!0)},ready:function(a){if(a===!0?!--m.readyWait:!m.isReady){if(!y.body)return setTimeout(m.ready);m.isReady=!0,a!==!0&&--m.readyWait>0||(H.resolveWith(y,[m]),m.fn.triggerHandler&&(m(y).triggerHandler("ready"),m(y).off("ready")))}}});function I(){y.addEventListener?(y.removeEventListener("DOMContentLoaded",J,!1),a.removeEventListener("load",J,!1)):(y.detachEvent("onreadystatechange",J),a.detachEvent("onload",J))}function J(){(y.addEventListener||"load"===event.type||"complete"===y.readyState)&&(I(),m.ready())}m.ready.promise=function(b){if(!H)if(H=m.Deferred(),"complete"===y.readyState)setTimeout(m.ready);else if(y.addEventListener)y.addEventListener("DOMContentLoaded",J,!1),a.addEventListener("load",J,!1);else{y.attachEvent("onreadystatechange",J),a.attachEvent("onload",J);var c=!1;try{c=null==a.frameElement&&y.documentElement}catch(d){}c&&c.doScroll&&!function e(){if(!m.isReady){try{c.doScroll("left")}catch(a){return setTimeout(e,50)}I(),m.ready()}}()}return H.promise(b)};var K="undefined",L;for(L in m(k))break;k.ownLast="0"!==L,k.inlineBlockNeedsLayout=!1,m(function(){var a,b,c,d;c=y.getElementsByTagName("body")[0],c&&c.style&&(b=y.createElement("div"),d=y.createElement("div"),d.style.cssText="position:absolute;border:0;width:0;height:0;top:0;left:-9999px",c.appendChild(d).appendChild(b),typeof b.style.zoom!==K&&(b.style.cssText="display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1",k.inlineBlockNeedsLayout=a=3===b.offsetWidth,a&&(c.style.zoom=1)),c.removeChild(d))}),function(){var a=y.createElement("div");if(null==k.deleteExpando){k.deleteExpando=!0;try{delete a.test}catch(b){k.deleteExpando=!1}}a=null}(),m.acceptData=function(a){var b=m.noData[(a.nodeName+" ").toLowerCase()],c=+a.nodeType||1;return 1!==c&&9!==c?!1:!b||b!==!0&&a.getAttribute("classid")===b};var M=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,N=/([A-Z])/g;function O(a,b,c){if(void 0===c&&1===a.nodeType){var d="data-"+b.replace(N,"-$1").toLowerCase();if(c=a.getAttribute(d),"string"==typeof c){try{c="true"===c?!0:"false"===c?!1:"null"===c?null:+c+""===c?+c:M.test(c)?m.parseJSON(c):c}catch(e){}m.data(a,b,c)}else c=void 0}return c}function P(a){var b;for(b in a)if(("data"!==b||!m.isEmptyObject(a[b]))&&"toJSON"!==b)return!1;
@@ -2806,529 +2806,347 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data types</h1>
+<h1 class="title toc-ignore">Files</h1>
 <h4 class="author"><em>LT</em></h4>
 
 </div>
 
 
-<p>We have seen how to store information inside a variable.</p>
-<pre class="r"><code>x = 10
-x</code></pre>
-<pre><code>## [1] 10</code></pre>
-<p>So far, we have just looked at storing single numbers. R can store different kinds of information, and organize it in different ways.</p>
-<div id="vectors" class="section level1">
-<h1>Vectors</h1>
-<p>We can also store a series of values together in the same variable. This is called a <strong>vector</strong>. We can create a vector using the <code>c()</code> function to stick together multiple values. ‘c’ stands for ‘combine’ (or perhaps ‘concatenate’, meaning ‘stick together’).</p>
-<p>Vectors are useful for storing multiple observations of the same thing. For example, several people’s scores on a test:</p>
-<pre class="r"><code>score = c(42,65,64,69,95,20)
-score</code></pre>
-<pre><code>## [1] 42 65 64 69 95 20</code></pre>
-<p>The values in a vector are stored in order. Each has a position in the vector, called its <strong>index</strong>. We can pick out one value from a vector by placing its index in square parentheses <code>[]</code> after the name of the vector.</p>
-<p>For example to get the 3rd score:</p>
-<pre class="r"><code>score[3]</code></pre>
-<pre><code>## [1] 64</code></pre>
-<p>We can use a number stored inside a variable to index a vector. So if we use a variable that stores the number 3 as the index, we get the 3rd value in the vector.</p>
-<pre class="r"><code>x = 3
-score[x]</code></pre>
-<pre><code>## [1] 64</code></pre>
-<p>Indexing can be used to overwrite one of the values, using <code>=</code>.</p>
-<pre class="r"><code>score[3] = 65
-score</code></pre>
-<pre><code>## [1] 42 65 65 69 95 20</code></pre>
-<p>The <code>:</code> symbol specifies a range of numbers. We can use this to get a range of values from a vector.</p>
-<p>For example to get the 3rd, 4th, and 5th scores:</p>
-<pre class="r"><code>score[3:5]</code></pre>
-<pre><code>## [1] 65 69 95</code></pre>
-<p><code>:</code> can also be used to create a vector containing a range of numbers.</p>
-<pre class="r"><code>some_numbers = 1:5
-some_numbers</code></pre>
-<pre><code>## [1] 1 2 3 4 5</code></pre>
-<p>The <code>c()</code> function can also add new values to a vector.</p>
-<pre class="r"><code>c(score,42,90)</code></pre>
-<pre><code>## [1] 42 65 65 69 95 20 42 90</code></pre>
-<p>Remember that the original variable is not changed unless we use <code>=</code> to overwrite it.</p>
-<pre class="r"><code>score</code></pre>
-<pre><code>## [1] 42 65 65 69 95 20</code></pre>
-<pre class="r"><code>score = c(score,42,90)
-score</code></pre>
-<pre><code>## [1] 42 65 65 69 95 20 42 90</code></pre>
-<p>If we apply a mathematical operation to a vector, the operation will be performed on every value in the vector.</p>
-<pre class="r"><code>score / 100</code></pre>
-<pre><code>## [1] 0.42 0.65 0.65 0.69 0.95 0.20 0.42 0.90</code></pre>
-<p>If we apply a mathematical operation to two vectors of the same length, the operation will be performed on pairs of values where one value comes from one vector, and the other value comes from the corresponding position in the other vector.</p>
-<p>For example, we might use this to combine two pieces of information about the same people:</p>
-<pre class="r"><code>score2 = c(20,39,20,96,50,50,80,40)
-
-total = score + score2
-total</code></pre>
-<pre><code>## [1]  62 104  85 165 145  70 122 130</code></pre>
-<p>If we try to do math with vectors of different lengths, R will still work out the answer for the parts of the vectors that match up, but it will print out a warning.</p>
-<p>We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that part of our program is wrong.</p>
-<pre class="r"><code>score3 = c(12,21,18,100,66)
-
-score + score3</code></pre>
-<pre><code>## Warning in score + score3: longer object length is not a multiple of
-## shorter object length</code></pre>
-<pre><code>## [1]  54  86  83 169 161  32  63 108</code></pre>
-<p>There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names.</p>
-<pre class="r"><code>mean(score)</code></pre>
-<pre><code>## [1] 61</code></pre>
-<pre class="r"><code>median(score)</code></pre>
-<pre><code>## [1] 65</code></pre>
-<pre class="r"><code>min(score)</code></pre>
-<pre><code>## [1] 20</code></pre>
-<pre class="r"><code>max(score)</code></pre>
-<pre><code>## [1] 95</code></pre>
-<pre class="r"><code>range(score) # (note that this outputs two values: the minimum and the maximum)</code></pre>
-<pre><code>## [1] 20 95</code></pre>
-<pre class="r"><code>IQR(score) # (InterQuartile Range; the range of the middle half of the values)</code></pre>
-<pre><code>## [1] 32.25</code></pre>
-<pre class="r"><code>length(score)</code></pre>
-<pre><code>## [1] 8</code></pre>
-<pre class="r"><code>sd(score) # (Standard Deviation)</code></pre>
-<pre><code>## [1] 25.34336</code></pre>
-<p>The <code>summary()</code> function prints out several pieces of information. This is useful for getting a quick overview.</p>
-<pre class="r"><code>summary(score)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   20.00   42.00   65.00   61.00   74.25   95.00</code></pre>
-<p>If we have a vector in which some values are repeated, the <code>unique()</code> function tells us what values are in the vector, but without including the repeats. <code>table()</code> tells us how often each value occurs.</p>
-<pre class="r"><code>unique(score)</code></pre>
-<pre><code>## [1] 42 65 69 95 20 90</code></pre>
-<pre class="r"><code>table(score)</code></pre>
-<pre><code>## score
-## 20 42 65 69 90 95 
-##  1  2  2  1  1  1</code></pre>
-<p>Apart from <code>c()</code>, R has some other useful functions for creating vectors. We have already seen how to use the <code>seq()</code> function. Its output is a vector.</p>
-<pre class="r"><code>more_numbers = seq(from=10, to=100, by=10)
-more_numbers</code></pre>
-<pre><code>##  [1]  10  20  30  40  50  60  70  80  90 100</code></pre>
-<p>Another is <code>rep()</code>. This repeats a value a certain number of times. The <code>times</code> argument specifies how many times to repeat the value.</p>
-<pre class="r"><code>x = rep(2, times=10)
-x</code></pre>
-<pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2</code></pre>
-<p>It is not so often useful to repeat a single value. But <code>rep()</code> can also repeat a vector. This can be useful for creating an alternating sequence, for example to designate group memberships.</p>
-<pre class="r"><code>group = rep(c(1,2), times=4)
-group</code></pre>
-<pre><code>## [1] 1 2 1 2 1 2 1 2</code></pre>
-<p>Alternatively, the <code>each</code> argument repeats each value in the vector a certain number of times. This results in a vector with repeats of the same value all following one another instead of alternating.</p>
-<pre class="r"><code>group = rep(c(1,2), each=4)
-group</code></pre>
-<pre><code>## [1] 1 1 1 1 2 2 2 2</code></pre>
-</div>
-<div id="character-strings" class="section level1">
-<h1>Character strings</h1>
-<p>As well as numbers, R can store pieces of text. If we want something to be treated as text, we must enclose it in quotation marks <code>&quot;&quot;</code>. Otherwise, R will think that we mean the name of a variable.</p>
-<pre class="r"><code>name = &quot;Ronald&quot;
-name</code></pre>
-<pre><code>## [1] &quot;Ronald&quot;</code></pre>
-<p>Single quotation marks <code>''</code> work as well. It doesn’t matter which you use. Just be consistent.</p>
-<pre class="r"><code>name = 'Ronald'
-name</code></pre>
-<pre><code>## [1] &quot;Ronald&quot;</code></pre>
-<p>Remember that if you forget the quotation marks, R will think that you mean the name of a variable, and this will usually result in an error.</p>
-<pre class="r"><code>name = Ronald</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): object 'Ronald' not found</code></pre>
-<p>We can also treat numbers as text, by enclosing them in quotation marks. R will not treat the result as an actual number, and we cannot perform mathematical operations on text containing numbers.</p>
-<pre class="r"><code>y = &quot;10&quot;
-y + 1</code></pre>
-<pre><code>## Error in y + 1: non-numeric argument to binary operator</code></pre>
-<p>If we are unsure whether our variables are text or numbers, we can check, using the <code>class()</code> function. This tells us what <strong>class</strong> (i.e. what type of data) the variable stores.</p>
-<pre class="r"><code>class(x)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>class(y)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<p>R calls numbers <strong>numeric</strong> and text <strong>character</strong>.</p>
-<p>We can convert variables from one type of data to another, using functions that begin <code>as.</code>, followed by the name of the class we want to convert the contents into.</p>
-<pre class="r"><code>x = as.character(x)
-x</code></pre>
-<pre><code>##  [1] &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot;</code></pre>
-<pre class="r"><code>y = as.numeric(y)
-y</code></pre>
-<pre><code>## [1] 10</code></pre>
-<p>We can also have vectors of text, just as we can have vectors of numbers. The use of <code>c()</code> and <code>rep()</code> for creating vectors is the same for text as it is for numbers.</p>
-<pre class="r"><code>name = c(&quot;Ronald&quot;, &quot;Deborah&quot;, &quot;Florence&quot;, &quot;William&quot;)
-name</code></pre>
-<pre><code>## [1] &quot;Ronald&quot;   &quot;Deborah&quot;  &quot;Florence&quot; &quot;William&quot;</code></pre>
-<pre class="r"><code>group = rep(c(&quot;A&quot;,&quot;B&quot;), each=2)
-group</code></pre>
-<pre><code>## [1] &quot;A&quot; &quot;A&quot; &quot;B&quot; &quot;B&quot;</code></pre>
-<p>There are also some useful R functions for working with text.</p>
-<p><code>nchar()</code> tells us how many characters are in the piece of text. Note that this includes spaces and punctuation.</p>
-<pre class="r"><code>word = &quot;supercalifragilisticexpialidocious&quot; 
-nchar(word)</code></pre>
-<pre><code>## [1] 34</code></pre>
-<pre class="r"><code>nchar(&quot;Hello world.&quot;)</code></pre>
-<pre><code>## [1] 12</code></pre>
-<p>Beware that the <code>length()</code> function counts the length of a vector, and not the length of a single piece of text. The length of a single piece of text is 1 (because a single word is a character vector with only one value in it).</p>
-<pre class="r"><code>length(word)</code></pre>
-<pre><code>## [1] 1</code></pre>
-<p>Indexing works the same for character vectors as for numeric vectors.</p>
-<pre class="r"><code>name[3]</code></pre>
-<pre><code>## [1] &quot;Florence&quot;</code></pre>
-<p>The <code>paste()</code> function sticks separate text variables together into one piece of text. Note that this is different from <code>c()</code>. Whereas <code>c()</code> creates a character vector in which the separate pieces of text remain as separate values, <code>paste()</code> creates a new single piece of text.</p>
-<pre class="r"><code>name1 = &quot;Ronald&quot;
-name2 = &quot;Fisher&quot;
-
-paste(name1, name2)</code></pre>
-<pre><code>## [1] &quot;Ronald Fisher&quot;</code></pre>
-<p>We can see that <code>paste()</code> has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the <code>sep</code> argument. One common use of this is to join text with no intervening characters, in which case we specify <code>sep</code> as an empty piece of text <code>&quot;&quot;</code>.</p>
-<pre class="r"><code>paste(name2, name1, sep=&quot;,&quot;)</code></pre>
-<pre><code>## [1] &quot;Fisher,Ronald&quot;</code></pre>
-<pre class="r"><code>paste(name1, &quot;A&quot;, sep=&quot;&quot;)</code></pre>
-<pre><code>## [1] &quot;RonaldA&quot;</code></pre>
-<p><code>paste()</code> can also paste together text and numbers.</p>
-<pre class="r"><code>paste(name1, 1, sep=&quot;&quot;)</code></pre>
-<pre><code>## [1] &quot;Ronald1&quot;</code></pre>
-<p>And it can paste together two character vectors, in which case the result is like the result of a mathematical operation on two numeric vectors: Each value in one vector is combined with the corresponding value in the other.</p>
-<pre class="r"><code>paste(name, group, sep=&quot;&quot;)</code></pre>
-<pre><code>## [1] &quot;RonaldA&quot;   &quot;DeborahA&quot;  &quot;FlorenceB&quot; &quot;WilliamB&quot;</code></pre>
-<p>R insists that all the values in a vector be of the same class. If we try to combine text and numbers, for example with <code>c()</code>, then R will convert (or ‘<strong>coerce</strong>’) the numbers into characters.</p>
-<pre class="r"><code>group = c(&quot;A&quot;,&quot;B&quot;,1,2)
-group</code></pre>
-<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;1&quot; &quot;2&quot;</code></pre>
-<pre class="r"><code>class(group)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>class(group[3])</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-</div>
-<div id="factors" class="section level1">
-<h1>Factors</h1>
-<p>Often, we will want to use text to represent categories, for example things like sex, group, language, and so on. We can use character vectors to do this, but R also provides another option. A <strong>factor</strong> is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the <strong>levels</strong> of the factor.</p>
-<p>We can create a factor using the <code>factor()</code> function. We input a vector of category memberships.</p>
-<pre class="r"><code>sex = factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;))
-class(sex)</code></pre>
-<pre><code>## [1] &quot;factor&quot;</code></pre>
-<p>We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from. Applied to a factor, the <code>summary()</code> function tells us how many values are in each category. This is the same information as we get from <code>table()</code>.</p>
-<pre class="r"><code>sex</code></pre>
-<pre><code>## [1] male   female female male  
-## Levels: female male</code></pre>
-<pre class="r"><code>summary(sex)</code></pre>
-<pre><code>## female   male 
-##      2      2</code></pre>
-<pre class="r"><code>table(sex)</code></pre>
-<pre><code>## sex
-## female   male 
-##      2      2</code></pre>
-<p>By default the levels are arranged in alphabetical order. This shows up in summaries and tables. Later, when we start creating plots of data, the order of the levels will also determine the order in which they are shown on a plot.</p>
-<p>If we want, we can specify the possible levels using the <code>levels</code> argument. This allows us to specify that certain categories are possible, even if they do not appear in our data. Absent levels will still appear in a table, with a count of 0. Specifying the levels also allows us to determine their order, to make it other than alphabetical.</p>
-<pre class="r"><code>sex = factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;), levels=c(&quot;male&quot;,&quot;female&quot;,&quot;other&quot;))
-sex</code></pre>
-<pre><code>## [1] male   female female male  
-## Levels: male female other</code></pre>
-<pre class="r"><code>table(sex)</code></pre>
-<pre><code>## sex
-##   male female  other 
-##      2      2      0</code></pre>
-<p>The <code>levels()</code> function tells us what levels a factor has, and <code>nlevels()</code> tells us how many levels.</p>
-<pre class="r"><code>levels(sex)</code></pre>
-<pre><code>## [1] &quot;male&quot;   &quot;female&quot; &quot;other&quot;</code></pre>
-<pre class="r"><code>nlevels(sex)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<p>As with numeric and character vectors, we can convert other types of data into a factor using <code>as.factor()</code>.</p>
-<p>One of the main uses of this is to convert a vector of numbers that represent ID numbers, which are really just categories.</p>
-<pre class="r"><code>id = rep(1:3, each=10)
-id</code></pre>
-<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3</code></pre>
-<pre class="r"><code>id = as.factor(id)
-id</code></pre>
-<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
-## Levels: 1 2 3</code></pre>
-<p>Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them more often.</p>
-</div>
-<div id="data-frames" class="section level1">
-<h1>Data frames</h1>
-<p>In the examples above, we stored data in vectors of various kinds. Most of the time we will have several vectors, each describing a separate variable from the same set of data.</p>
-<p>For example, we might have a vector recording some people’s age, and a vector recording those same people’s sex, and another recording their location.</p>
-<pre class="r"><code>age = c(36,64,40,53,29)
-sex = factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;,&quot;female&quot;), levels=c(&quot;female&quot;,&quot;male&quot;,&quot;other&quot;))
-location = c(&quot;Germany&quot;,&quot;UK&quot;,&quot;France&quot;,&quot;UK&quot;,&quot;Ireland&quot;)</code></pre>
-<p>If we want the age, sex, and location of the first person, we have to index each of the vectors separately.</p>
-<pre class="r"><code>age[1]</code></pre>
-<pre><code>## [1] 36</code></pre>
-<pre class="r"><code>sex[1]</code></pre>
-<pre><code>## [1] male
-## Levels: female male other</code></pre>
-<pre class="r"><code>location[1]</code></pre>
-<pre><code>## [1] &quot;Germany&quot;</code></pre>
-<p>If all of these vectors refer to the same people in the same order, it would be convenient to group them all as one object, as a sort of table or spreadsheet. Then we could get a better overview of our entire set of data, and handle it more conveniently.</p>
-<p>A <strong>data frame</strong> is group of vectors that are organized in columns, so that each row contains values from each vector that all refer to the same unit of observation (for example the same person). The result is like a spreadsheet, with numbered rows and named columns.</p>
-<p>The <code>data.frame()</code> function creates a data frame. If we have already created the columns as vectors, we can just input them directly. The names of the vectors become the names of the columns.</p>
-<pre class="r"><code>d = data.frame(age, sex, location)
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>Alternatively, if we haven’t yet created the columns as separate vectors, we can create them directly within the parentheses of the <code>data.frame()</code> function. In this case, we need to assign names to the columns using <code>=</code>, so that R knows what the columns should be named.</p>
-<p>Since this makes for quite a long command, we can break the command up over a few lines. As long as we separate the lines after commas, R will still interpret this as one command. Splitting a command over multiple lines makes no difference to the result, but it makes our program a bit easier to read.</p>
-<pre class="r"><code>d = data.frame(age=c(36,64,40,53,29),
-               sex=factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;,&quot;female&quot;),
-                          levels=c(&quot;female&quot;,&quot;male&quot;,&quot;other&quot;)),
-               location=c(&quot;Germany&quot;,&quot;UK&quot;,&quot;France&quot;,&quot;UK&quot;,&quot;Ireland&quot;))
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>The resulting variable is a data frame.</p>
-<pre class="r"><code>class(d)</code></pre>
+<div id="loading-data" class="section level1">
+<h1>Loading data</h1>
+<p>We have seen how to create data frames to organize data. For a large set of data, typing the individual values into an R script would be extremely tedious. Much more often we will load data from a file.</p>
+<p>(Later on, we will still occasionally create our own data frames, if we want to generate simulated data, or data for a short demonstration or graphic.)</p>
+<p>R can load data from many different file types. We will look at three common ones here:</p>
+<ul>
+<li>R data files</li>
+<li>delimited text files</li>
+<li>the internet</li>
+</ul>
+<div id="rdata" class="section level2">
+<h2>RData</h2>
+<p>R has its own data format. If we or somebody else has processed some data using R, then the result may already be in R format. We can recognize such files by the file suffix <em>.RData</em>, and they can be loaded using the <code>load()</code> function. The input to <code>load()</code> is the name of the R data file we want to load. The names of files and folders are enclosed in quotation marks, which distinguishes them from the names of variables and functions.</p>
+<p>Remember that R will look for data files in our current working directory, which we can find out using <code>getwd()</code>. If the file is located in a subfolder within that folder, then we can supply the name of the subfolder, along with the file path separator <code>/</code>. The data files for these tutorials are stored in a subfolder called ‘data’.</p>
+<pre class="r"><code>load(&quot;data/birth_weights.RData&quot;)</code></pre>
+<p><code>load()</code> is one of the very few functions that changes the contents of our workspace without us having to assign anything into a variable using <code>=</code>. The variables in an R data file have already been named and their contents assigned by whoever produced the file. When we load a file, the variables it contains appear in our workspace.</p>
+<p>Our example R data file contains just one variable, and it is a data frame called ‘bw’.</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>## [1] &quot;bw&quot;</code></pre>
+<pre class="r"><code>class(bw)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under <strong>Data</strong>. R tells us there how many ‘observations’ (i.e. rows) there are in the data frame, and how many ‘variables’ (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet (or you can achieve this using the <code>View()</code> function, with the name of the data frame as input). If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.</p>
-<p>We can index data frames using the square parentheses, just as we index vectors. However, we need to say both which row we want, and which column. We give the row index first, then the column index.</p>
-<p>For example, to get the value in the 3rd row and 2nd column:</p>
-<pre class="r"><code>d[3,2]</code></pre>
-<pre><code>## [1] female
-## Levels: female male other</code></pre>
-<p>But since the columns have names, it is much better to use these names to index them. This way, we can be clearer about what piece of information we are retrieving from the data frame. Here, we must enclose the names of the column in quotation marks.</p>
-<p>So this is better:</p>
-<pre class="r"><code>d[3,&quot;sex&quot;]</code></pre>
-<pre><code>## [1] female
-## Levels: female male other</code></pre>
-<p>If we want to get all the columns or all the rows, we can just omit the row or column index. But we still have to enter the comma that separates the row index from the column index, to make it clear which we want to omit.</p>
-<pre class="r"><code>d[3,]</code></pre>
+<p><strong>bw</strong> stands here for <strong>b</strong>irth <strong>w</strong>eights. The data frame records the weights of newborn babies, along with several pieces of information about their mothers. To see the data in R, we can just type the name of the variable in the console, as we have seen before.</p>
+<pre class="r"><code>bw</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"40","2":"female","3":"France","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Birth_weight"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Weight"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Age"],"name":[3],"type":["int"],"align":["right"]},{"label":["Smoker"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["Race"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Hypertension"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["Visits"],"name":[7],"type":["int"],"align":["right"]}],"data":[{"1":"2.523","2":"82.55374","3":"19","4":"no","5":"black","6":"no","7":"0","_rn_":"1"},{"1":"2.551","2":"70.30676","3":"33","4":"no","5":"other","6":"no","7":"3","_rn_":"2"},{"1":"2.557","2":"47.62716","3":"20","4":"yes","5":"white","6":"no","7":"1","_rn_":"3"},{"1":"2.594","2":"48.98794","3":"21","4":"yes","5":"white","6":"no","7":"2","_rn_":"4"},{"1":"2.600","2":"48.53434","3":"18","4":"yes","5":"white","6":"no","7":"0","_rn_":"5"},{"1":"2.622","2":"56.24541","3":"21","4":"no","5":"other","6":"no","7":"0","_rn_":"6"},{"1":"2.637","2":"53.52386","3":"22","4":"no","5":"white","6":"no","7":"1","_rn_":"7"},{"1":"2.637","2":"46.71998","3":"17","4":"no","5":"other","6":"no","7":"1","_rn_":"8"},{"1":"2.663","2":"55.79182","3":"29","4":"yes","5":"white","6":"no","7":"1","_rn_":"9"},{"1":"2.665","2":"51.25590","3":"26","4":"yes","5":"white","6":"no","7":"0","_rn_":"10"},{"1":"2.722","2":"43.09124","3":"19","4":"no","5":"other","6":"no","7":"0","_rn_":"11"},{"1":"2.733","2":"68.03880","3":"19","4":"no","5":"other","6":"no","7":"1","_rn_":"12"},{"1":"2.751","2":"43.09124","3":"22","4":"no","5":"other","6":"yes","7":"0","_rn_":"13"},{"1":"2.750","2":"48.53434","3":"30","4":"no","5":"other","6":"no","7":"2","_rn_":"14"},{"1":"2.769","2":"45.35920","3":"18","4":"yes","5":"white","6":"no","7":"0","_rn_":"15"},{"1":"2.769","2":"45.35920","3":"18","4":"yes","5":"white","6":"no","7":"0","_rn_":"16"},{"1":"2.778","2":"44.45202","3":"15","4":"no","5":"black","6":"no","7":"0","_rn_":"17"},{"1":"2.782","2":"53.52386","3":"25","4":"yes","5":"white","6":"no","7":"3","_rn_":"18"},{"1":"2.807","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"19"},{"1":"2.821","2":"54.43104","3":"28","4":"yes","5":"white","6":"no","7":"1","_rn_":"20"},{"1":"2.835","2":"54.88463","3":"32","4":"no","5":"other","6":"no","7":"2","_rn_":"21"},{"1":"2.835","2":"45.35920","3":"31","4":"no","5":"white","6":"no","7":"3","_rn_":"22"},{"1":"2.836","2":"91.62558","3":"36","4":"no","5":"white","6":"no","7":"1","_rn_":"23"},{"1":"2.863","2":"54.43104","3":"28","4":"no","5":"other","6":"no","7":"0","_rn_":"24"},{"1":"2.877","2":"54.43104","3":"25","4":"no","5":"other","6":"no","7":"2","_rn_":"25"},{"1":"2.877","2":"75.74986","3":"28","4":"no","5":"white","6":"no","7":"0","_rn_":"26"},{"1":"2.906","2":"55.33822","3":"17","4":"yes","5":"white","6":"no","7":"0","_rn_":"27"},{"1":"2.920","2":"68.03880","3":"29","4":"no","5":"white","6":"no","7":"2","_rn_":"28"},{"1":"2.920","2":"76.20346","3":"26","4":"yes","5":"black","6":"no","7":"0","_rn_":"29"},{"1":"2.920","2":"51.25590","3":"17","4":"no","5":"black","6":"no","7":"1","_rn_":"30"},{"1":"2.920","2":"51.25590","3":"17","4":"no","5":"black","6":"no","7":"1","_rn_":"31"},{"1":"2.948","2":"40.82328","3":"24","4":"yes","5":"white","6":"no","7":"1","_rn_":"32"},{"1":"2.948","2":"54.88463","3":"35","4":"yes","5":"black","6":"no","7":"1","_rn_":"33"},{"1":"2.977","2":"70.30676","3":"25","4":"no","5":"white","6":"no","7":"1","_rn_":"34"},{"1":"2.977","2":"56.69900","3":"25","4":"no","5":"black","6":"no","7":"0","_rn_":"35"},{"1":"2.977","2":"63.50288","3":"29","4":"yes","5":"white","6":"no","7":"2","_rn_":"36"},{"1":"2.977","2":"62.59570","3":"19","4":"yes","5":"white","6":"no","7":"2","_rn_":"37"},{"1":"2.922","2":"56.24541","3":"27","4":"yes","5":"white","6":"no","7":"0","_rn_":"38"},{"1":"3.005","2":"97.52228","3":"31","4":"yes","5":"white","6":"no","7":"2","_rn_":"39"},{"1":"3.033","2":"49.44153","3":"33","4":"yes","5":"white","6":"no","7":"1","_rn_":"40"},{"1":"3.042","2":"83.91452","3":"21","4":"yes","5":"black","6":"no","7":"2","_rn_":"41"},{"1":"3.062","2":"85.72889","3":"19","4":"no","5":"white","6":"no","7":"2","_rn_":"42"},{"1":"3.062","2":"58.96696","3":"23","4":"no","5":"black","6":"no","7":"1","_rn_":"43"},{"1":"3.062","2":"72.57472","3":"21","4":"no","5":"white","6":"no","7":"0","_rn_":"44"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0","_rn_":"45"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0","_rn_":"46"},{"1":"3.080","2":"59.87414","3":"32","4":"no","5":"white","6":"no","7":"4","_rn_":"47"},{"1":"3.090","2":"59.87414","3":"19","4":"no","5":"other","6":"no","7":"0","_rn_":"48"},{"1":"3.090","2":"52.16308","3":"24","4":"no","5":"white","6":"no","7":"2","_rn_":"49"},{"1":"3.090","2":"38.55532","3":"22","4":"yes","5":"other","6":"no","7":"0","_rn_":"50"},{"1":"3.100","2":"54.43104","3":"22","4":"no","5":"white","6":"yes","7":"1","_rn_":"51"},{"1":"3.104","2":"58.05978","3":"23","4":"no","5":"other","6":"no","7":"0","_rn_":"52"},{"1":"3.132","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"0","_rn_":"53"},{"1":"3.147","2":"43.09124","3":"30","4":"yes","5":"white","6":"no","7":"2","_rn_":"54"},{"1":"3.175","2":"52.16308","3":"19","4":"no","5":"other","6":"no","7":"0","_rn_":"55"},{"1":"3.175","2":"49.89512","3":"16","4":"no","5":"other","6":"no","7":"0","_rn_":"56"},{"1":"3.203","2":"49.89512","3":"21","4":"yes","5":"other","6":"no","7":"0","_rn_":"57"},{"1":"3.203","2":"69.39958","3":"30","4":"no","5":"other","6":"no","7":"0","_rn_":"58"},{"1":"3.203","2":"46.71998","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"59"},{"1":"3.225","2":"53.97745","3":"17","4":"no","5":"other","6":"no","7":"0","_rn_":"60"},{"1":"3.225","2":"53.97745","3":"17","4":"no","5":"other","6":"no","7":"0","_rn_":"61"},{"1":"3.232","2":"53.97745","3":"23","4":"no","5":"other","6":"no","7":"2","_rn_":"62"},{"1":"3.232","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0","_rn_":"63"},{"1":"3.234","2":"63.50288","3":"28","4":"no","5":"white","6":"no","7":"0","_rn_":"64"},{"1":"3.260","2":"60.32774","3":"26","4":"yes","5":"other","6":"no","7":"0","_rn_":"65"},{"1":"3.274","2":"76.65705","3":"20","4":"no","5":"other","6":"no","7":"1","_rn_":"66"},{"1":"3.274","2":"52.16308","3":"24","4":"no","5":"other","6":"no","7":"2","_rn_":"67"},{"1":"3.303","2":"113.39800","3":"28","4":"yes","5":"other","6":"no","7":"6","_rn_":"68"},{"1":"3.317","2":"63.95647","3":"20","4":"no","5":"white","6":"no","7":"1","_rn_":"69"},{"1":"3.317","2":"71.66754","3":"22","4":"no","5":"black","6":"no","7":"2","_rn_":"70"},{"1":"3.317","2":"50.80230","3":"22","4":"yes","5":"white","6":"no","7":"0","_rn_":"71"},{"1":"3.321","2":"68.03880","3":"31","4":"yes","5":"other","6":"no","7":"2","_rn_":"72"},{"1":"3.331","2":"52.16308","3":"23","4":"yes","5":"other","6":"no","7":"1","_rn_":"73"},{"1":"3.374","2":"50.80230","3":"16","4":"no","5":"black","6":"no","7":"0","_rn_":"74"},{"1":"3.374","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0","_rn_":"75"},{"1":"3.402","2":"103.87257","3":"18","4":"no","5":"black","6":"no","7":"0","_rn_":"76"},{"1":"3.416","2":"63.50288","3":"25","4":"no","5":"white","6":"no","7":"1","_rn_":"77"},{"1":"3.430","2":"60.78133","3":"32","4":"yes","5":"white","6":"no","7":"4","_rn_":"78"},{"1":"3.444","2":"54.88463","3":"20","4":"yes","5":"black","6":"no","7":"0","_rn_":"79"},{"1":"3.459","2":"86.18248","3":"23","4":"no","5":"white","6":"no","7":"0","_rn_":"80"},{"1":"3.460","2":"59.42055","3":"22","4":"no","5":"white","6":"no","7":"1","_rn_":"81"},{"1":"3.473","2":"77.11064","3":"32","4":"no","5":"white","6":"no","7":"0","_rn_":"82"},{"1":"3.544","2":"49.89512","3":"30","4":"no","5":"other","6":"no","7":"0","_rn_":"83"},{"1":"3.487","2":"57.60618","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"84"},{"1":"3.544","2":"55.79182","3":"23","4":"no","5":"other","6":"no","7":"0","_rn_":"85"},{"1":"3.572","2":"54.43104","3":"17","4":"yes","5":"other","6":"no","7":"0","_rn_":"86"},{"1":"3.572","2":"47.62716","3":"19","4":"no","5":"other","6":"no","7":"0","_rn_":"87"},{"1":"3.586","2":"58.96696","3":"23","4":"no","5":"white","6":"no","7":"0","_rn_":"88"},{"1":"3.600","2":"79.37860","3":"36","4":"no","5":"white","6":"no","7":"0","_rn_":"89"},{"1":"3.614","2":"56.69900","3":"22","4":"no","5":"white","6":"no","7":"1","_rn_":"90"},{"1":"3.614","2":"60.32774","3":"24","4":"no","5":"white","6":"no","7":"0","_rn_":"91"},{"1":"3.629","2":"60.78133","3":"21","4":"no","5":"other","6":"no","7":"2","_rn_":"92"},{"1":"3.629","2":"106.59412","3":"19","4":"yes","5":"white","6":"yes","7":"0","_rn_":"93"},{"1":"3.637","2":"43.09124","3":"25","4":"yes","5":"white","6":"no","7":"0","_rn_":"94"},{"1":"3.643","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0","_rn_":"95"},{"1":"3.651","2":"61.23492","3":"29","4":"no","5":"white","6":"no","7":"1","_rn_":"96"},{"1":"3.651","2":"69.85317","3":"29","4":"no","5":"white","6":"no","7":"1","_rn_":"97"},{"1":"3.651","2":"66.67802","3":"19","4":"yes","5":"white","6":"no","7":"0","_rn_":"98"},{"1":"3.651","2":"66.67802","3":"19","4":"yes","5":"white","6":"no","7":"0","_rn_":"99"},{"1":"3.699","2":"62.14210","3":"30","4":"no","5":"white","6":"no","7":"1","_rn_":"100"},{"1":"3.728","2":"49.89512","3":"24","4":"no","5":"white","6":"no","7":"1","_rn_":"101"},{"1":"3.756","2":"83.46093","3":"19","4":"yes","5":"white","6":"yes","7":"0","_rn_":"102"},{"1":"3.770","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0","_rn_":"103"},{"1":"3.770","2":"49.89512","3":"23","4":"no","5":"white","6":"no","7":"1","_rn_":"104"},{"1":"3.770","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"105"},{"1":"3.790","2":"109.31567","3":"25","4":"no","5":"black","6":"yes","7":"0","_rn_":"106"},{"1":"3.799","2":"50.80230","3":"30","4":"no","5":"white","6":"no","7":"1","_rn_":"107"},{"1":"3.827","2":"76.65705","3":"22","4":"no","5":"white","6":"no","7":"0","_rn_":"108"},{"1":"3.856","2":"54.43104","3":"18","4":"yes","5":"white","6":"no","7":"2","_rn_":"109"},{"1":"3.860","2":"77.11064","3":"16","4":"no","5":"black","6":"no","7":"4","_rn_":"110"},{"1":"3.860","2":"84.36811","3":"32","4":"no","5":"white","6":"no","7":"2","_rn_":"111"},{"1":"3.884","2":"54.43104","3":"18","4":"no","5":"other","6":"no","7":"1","_rn_":"112"},{"1":"3.884","2":"58.96696","3":"29","4":"yes","5":"white","6":"no","7":"2","_rn_":"113"},{"1":"3.912","2":"53.07026","3":"33","4":"no","5":"white","6":"no","7":"1","_rn_":"114"},{"1":"3.940","2":"77.11064","3":"20","4":"yes","5":"white","6":"no","7":"0","_rn_":"115"},{"1":"3.941","2":"60.78133","3":"28","4":"no","5":"other","6":"no","7":"1","_rn_":"116"},{"1":"3.941","2":"61.23492","3":"14","4":"no","5":"white","6":"no","7":"0","_rn_":"117"},{"1":"3.969","2":"58.96696","3":"28","4":"no","5":"other","6":"no","7":"0","_rn_":"118"},{"1":"3.983","2":"54.43104","3":"25","4":"no","5":"white","6":"no","7":"2","_rn_":"119"},{"1":"3.997","2":"43.09124","3":"16","4":"no","5":"other","6":"no","7":"1","_rn_":"120"},{"1":"3.997","2":"71.66754","3":"20","4":"no","5":"white","6":"no","7":"1","_rn_":"121"},{"1":"4.054","2":"72.57472","3":"26","4":"no","5":"other","6":"no","7":"0","_rn_":"122"},{"1":"4.054","2":"52.16308","3":"21","4":"no","5":"white","6":"no","7":"1","_rn_":"123"},{"1":"4.111","2":"58.51337","3":"22","4":"no","5":"white","6":"no","7":"0","_rn_":"124"},{"1":"4.153","2":"58.96696","3":"25","4":"no","5":"white","6":"no","7":"2","_rn_":"125"},{"1":"4.167","2":"54.43104","3":"31","4":"no","5":"white","6":"no","7":"2","_rn_":"126"},{"1":"4.174","2":"77.11064","3":"35","4":"no","5":"white","6":"no","7":"1","_rn_":"127"},{"1":"4.238","2":"54.43104","3":"19","4":"yes","5":"white","6":"no","7":"0","_rn_":"128"},{"1":"4.593","2":"52.61667","3":"24","4":"no","5":"white","6":"no","7":"1","_rn_":"129"},{"1":"4.990","2":"55.79182","3":"45","4":"no","5":"white","6":"no","7":"1","_rn_":"130"},{"1":"0.709","2":"54.43104","3":"28","4":"yes","5":"other","6":"no","7":"0","_rn_":"131"},{"1":"1.021","2":"58.96696","3":"29","4":"no","5":"white","6":"no","7":"2","_rn_":"132"},{"1":"1.135","2":"84.82170","3":"34","4":"yes","5":"black","6":"yes","7":"0","_rn_":"133"},{"1":"1.330","2":"47.62716","3":"25","4":"no","5":"other","6":"yes","7":"0","_rn_":"134"},{"1":"1.474","2":"38.55532","3":"25","4":"no","5":"other","6":"no","7":"0","_rn_":"135"},{"1":"1.588","2":"68.03880","3":"27","4":"no","5":"other","6":"no","7":"0","_rn_":"136"},{"1":"1.588","2":"43.99842","3":"23","4":"no","5":"other","6":"no","7":"1","_rn_":"137"},{"1":"1.701","2":"58.05978","3":"24","4":"no","5":"black","6":"no","7":"1","_rn_":"138"},{"1":"1.729","2":"59.87414","3":"24","4":"no","5":"other","6":"yes","7":"0","_rn_":"139"},{"1":"1.790","2":"74.84268","3":"21","4":"yes","5":"white","6":"yes","7":"1","_rn_":"140"},{"1":"1.818","2":"47.62716","3":"32","4":"yes","5":"white","6":"no","7":"0","_rn_":"141"},{"1":"1.885","2":"41.27687","3":"19","4":"yes","5":"white","6":"no","7":"0","_rn_":"142"},{"1":"1.893","2":"52.16308","3":"25","4":"no","5":"other","6":"no","7":"0","_rn_":"143"},{"1":"1.899","2":"58.96696","3":"16","4":"no","5":"other","6":"no","7":"1","_rn_":"144"},{"1":"1.928","2":"41.73046","3":"25","4":"yes","5":"white","6":"no","7":"0","_rn_":"145"},{"1":"1.928","2":"68.03880","3":"20","4":"yes","5":"white","6":"no","7":"2","_rn_":"146"},{"1":"1.928","2":"90.71840","3":"21","4":"no","5":"black","6":"no","7":"2","_rn_":"147"},{"1":"1.936","2":"70.30676","3":"24","4":"yes","5":"white","6":"no","7":"0","_rn_":"148"},{"1":"1.970","2":"46.71998","3":"21","4":"no","5":"other","6":"no","7":"0","_rn_":"149"},{"1":"2.055","2":"56.69900","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"150"},{"1":"2.055","2":"40.36969","3":"25","4":"no","5":"other","6":"no","7":"1","_rn_":"151"},{"1":"2.082","2":"46.26638","3":"19","4":"no","5":"white","6":"no","7":"2","_rn_":"152"},{"1":"2.084","2":"50.80230","3":"19","4":"yes","5":"white","6":"no","7":"0","_rn_":"153"},{"1":"2.084","2":"53.07026","3":"26","4":"yes","5":"white","6":"no","7":"0","_rn_":"154"},{"1":"2.100","2":"62.59570","3":"24","4":"no","5":"white","6":"no","7":"0","_rn_":"155"},{"1":"2.125","2":"58.96696","3":"17","4":"yes","5":"other","6":"no","7":"0","_rn_":"156"},{"1":"2.126","2":"54.43104","3":"20","4":"yes","5":"black","6":"no","7":"3","_rn_":"157"},{"1":"2.187","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1","_rn_":"158"},{"1":"2.187","2":"58.96696","3":"27","4":"no","5":"black","6":"no","7":"0","_rn_":"159"},{"1":"2.211","2":"36.28736","3":"20","4":"yes","5":"other","6":"no","7":"0","_rn_":"160"},{"1":"2.225","2":"49.89512","3":"17","4":"yes","5":"white","6":"no","7":"0","_rn_":"161"},{"1":"2.240","2":"47.62716","3":"25","4":"no","5":"other","6":"no","7":"1","_rn_":"162"},{"1":"2.240","2":"49.44153","3":"20","4":"no","5":"other","6":"no","7":"0","_rn_":"163"},{"1":"2.282","2":"67.13162","3":"18","4":"no","5":"other","6":"no","7":"0","_rn_":"164"},{"1":"2.296","2":"49.89512","3":"18","4":"yes","5":"black","6":"no","7":"0","_rn_":"165"},{"1":"2.296","2":"54.88463","3":"20","4":"yes","5":"white","6":"no","7":"0","_rn_":"166"},{"1":"2.301","2":"45.35920","3":"21","4":"no","5":"other","6":"no","7":"4","_rn_":"167"},{"1":"2.325","2":"43.54483","3":"26","4":"no","5":"other","6":"no","7":"0","_rn_":"168"},{"1":"2.353","2":"46.26638","3":"31","4":"yes","5":"white","6":"no","7":"1","_rn_":"169"},{"1":"2.353","2":"49.89512","3":"15","4":"no","5":"white","6":"no","7":"0","_rn_":"170"},{"1":"2.367","2":"84.82170","3":"23","4":"yes","5":"black","6":"no","7":"1","_rn_":"171"},{"1":"2.381","2":"55.33822","3":"20","4":"yes","5":"black","6":"no","7":"0","_rn_":"172"},{"1":"2.381","2":"47.62716","3":"24","4":"yes","5":"black","6":"no","7":"0","_rn_":"173"},{"1":"2.381","2":"52.16308","3":"15","4":"no","5":"other","6":"no","7":"0","_rn_":"174"},{"1":"2.410","2":"54.43104","3":"23","4":"no","5":"other","6":"no","7":"0","_rn_":"175"},{"1":"2.410","2":"64.41006","3":"30","4":"yes","5":"white","6":"no","7":"0","_rn_":"176"},{"1":"2.410","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1","_rn_":"177"},{"1":"2.414","2":"54.43104","3":"17","4":"yes","5":"white","6":"no","7":"3","_rn_":"178"},{"1":"2.424","2":"49.89512","3":"23","4":"yes","5":"white","6":"no","7":"0","_rn_":"179"},{"1":"2.438","2":"54.43104","3":"17","4":"no","5":"black","6":"no","7":"2","_rn_":"180"},{"1":"2.442","2":"69.85317","3":"26","4":"no","5":"other","6":"yes","7":"1","_rn_":"181"},{"1":"2.450","2":"47.62716","3":"20","4":"no","5":"other","6":"no","7":"3","_rn_":"182"},{"1":"2.466","2":"86.18248","3":"26","4":"yes","5":"white","6":"no","7":"0","_rn_":"183"},{"1":"2.466","2":"45.81279","3":"14","4":"yes","5":"other","6":"no","7":"0","_rn_":"184"},{"1":"2.466","2":"43.09124","3":"28","4":"yes","5":"white","6":"no","7":"2","_rn_":"185"},{"1":"2.495","2":"45.35920","3":"14","4":"no","5":"other","6":"no","7":"2","_rn_":"186"},{"1":"2.495","2":"42.63765","3":"23","4":"yes","5":"other","6":"no","7":"0","_rn_":"187"},{"1":"2.495","2":"64.41006","3":"17","4":"no","5":"black","6":"yes","7":"0","_rn_":"188"},{"1":"2.495","2":"58.96696","3":"21","4":"yes","5":"white","6":"yes","7":"3","_rn_":"189"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<pre class="r"><code>d[,&quot;sex&quot;]</code></pre>
-<pre><code>## [1] male   female female male   female
-## Levels: female male other</code></pre>
-<p>An alternative way of picking out one entire column from a data frame is with the dollar symbol <code>$</code>, followed by the name of the column. We can follow this with the number of a row if we want.</p>
-<pre class="r"><code>d$sex</code></pre>
-<pre><code>## [1] male   female female male   female
-## Levels: female male other</code></pre>
-<pre class="r"><code>d$sex[3]</code></pre>
-<pre><code>## [1] female
-## Levels: female male other</code></pre>
-<p>We can pick out multiple columns by using a vector of column names as the column index.</p>
-<pre class="r"><code>d[,c(&quot;age&quot;,&quot;location&quot;)]</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["location"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"Germany"},{"1":"64","2":"UK"},{"1":"40","2":"France"},{"1":"53","2":"UK"},{"1":"29","2":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
+<p>We will explore these data later, but first we will learn how to load the same data from other formats.</p>
 </div>
-<p>We can also pick out ranges of rows, in the same way as we pick out ranges of values from a vector.</p>
-<pre class="r"><code>d[2:4,]</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"64","2":"female","3":"UK","_rn_":"2"},{"1":"40","2":"female","3":"France","_rn_":"3"},{"1":"53","2":"male","3":"UK","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>There are a few useful functions that can help us explore a data frame. <code>dim()</code> tells us the ‘dimensions’ of the data frame. That is, how many rows and how many columns it has. The output follows the general convention in R of rows first, columns second. There are also functions for finding out separately the number of rows and the number of columns.</p>
-<pre class="r"><code>dim(d)</code></pre>
-<pre><code>## [1] 5 3</code></pre>
-<pre class="r"><code>nrow(d)</code></pre>
-<pre><code>## [1] 5</code></pre>
-<pre class="r"><code>ncol(d)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<p>We can find out the names of the columns with the <code>names()</code> function. This function can also be used to change one or more of the column names.</p>
-<pre class="r"><code>names(d)</code></pre>
-<pre><code>## [1] &quot;age&quot;      &quot;sex&quot;      &quot;location&quot;</code></pre>
-<pre class="r"><code>names(d)[3] = &quot;country&quot;
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>The <code>summary()</code> function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.</p>
-<pre class="r"><code>summary(d)</code></pre>
-<pre><code>##       age           sex       country 
-##  Min.   :29.0   female:3   France :1  
-##  1st Qu.:36.0   male  :2   Germany:1  
-##  Median :40.0   other :0   Ireland:1  
-##  Mean   :44.4              UK     :2  
-##  3rd Qu.:53.0                         
-##  Max.   :64.0</code></pre>
-<p>The other functions that we have already seen for calculating something from a vector can also be applied to a single column of a data frame.</p>
-<pre class="r"><code>summary(d$country)</code></pre>
-<pre><code>##  France Germany Ireland      UK 
-##       1       1       1       2</code></pre>
-<pre class="r"><code>mean(d$age)</code></pre>
-<pre><code>## [1] 44.4</code></pre>
-<p>The <code>table()</code> function can be used to create a 2-by-2 table of the combinations of factor levels in a data frame.</p>
-<pre class="r"><code>table(d$sex, d$country)</code></pre>
-<pre><code>##         
-##          France Germany Ireland UK
-##   female      1       0       1  1
-##   male        0       1       0  1
-##   other       0       0       0  0</code></pre>
-<p>Adding to a data frame is not so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the <code>rbind()</code> function, which sticks together two (or more) data frames.</p>
-<pre class="r"><code>new_row = data.frame(age=25, sex=&quot;other&quot;, country=&quot;Germany&quot;)
-d = rbind(d, new_row)
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"},{"1":"25","2":"other","3":"Germany"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div id="logicals" class="section level1">
-<h1>Logicals</h1>
-<p>A <strong>logical</strong> variable is simply a variable that stores either the value <code>TRUE</code> or <code>FALSE</code>. These two words, written in uppercase, are used in R to denote things that can be the case or not the case.</p>
-<p>It is fairly rare that we want to create a logical vector directly, but we can, using <code>c()</code> just as for other vectors.</p>
-<pre class="r"><code>x = c(FALSE,TRUE,FALSE,TRUE,FALSE,FALSE)
-class(x)</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<p>Much more often, we will create a logical vector by asking whether a certain condition holds for each of the values in another vector.</p>
-<p>For example, we could ask whether each of the people in our data frame is over a certain age, using the ‘greater than’ operator <code>&gt;</code>:</p>
-<pre class="r"><code>d$age &gt; 40</code></pre>
-<pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
-<p>We see the answer for each of the values.</p>
-<p>There are several other operators for asking ‘true/false’ questions:</p>
+<div id="delimited-text" class="section level2">
+<h2>Delimited text</h2>
+<p>Although the RData format is convenient if we are doing all our work in R, it has some disadvantages. If we want to make our data available to people who do not work in R, then we need a more general format. And when we collect new data ourselves, it can be more convenient to enter the data into a spreadsheet or text file than into an R data frame.</p>
+<p>R can also load data from text files. These files just contain plain text, so they can be viewed and edited with a text editor such as Gedit or WordPad. Loading them into R is easiest when they have a certain format that structures them like a data frame:</p>
 <ul>
-<li><code>&lt;</code> less than</li>
-<li><code>&gt;=</code> greater than or equal to</li>
-<li><code>&lt;=</code> less than or equal to (not to be confused with <code>&lt;-</code>)</li>
-<li><code>==</code> equal to (not to be confused with <code>=</code>)</li>
-<li><code>!=</code> not equal to</li>
+<li>The first row of the file defines the names of the columns in our data frame (for example, things like age, sex, and so on).</li>
+<li>Subsequent rows each give one observation. For example one participant, or one trial of an experiment.</li>
+<li>On each row, the columns are separated (or <strong>delimited</strong>) by a certain character.</li>
 </ul>
-<pre class="r"><code>d$age &lt; 40</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE FALSE  TRUE  TRUE</code></pre>
-<pre class="r"><code>d$age &gt;= 40</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
-<pre class="r"><code>d$age &lt;= 40</code></pre>
-<pre><code>## [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE</code></pre>
-<pre class="r"><code>d$age == 40</code></pre>
-<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
-<p>Of these, only <code>==</code> and <code>!=</code> are applicable to character vectors or factors.</p>
-<pre class="r"><code>d$sex == &quot;male&quot;</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE  TRUE FALSE FALSE</code></pre>
-<pre class="r"><code>d$sex != &quot;male&quot;</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
-<p>If a logical vector is converted to numeric, the <code>FALSE</code> values become 0 and the <code>TRUE</code> values become 1. When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.</p>
-<p>For example, the mean of a vector of 0s and 1s is just the proportion of 1s, so for a logical statement the proportion of cases for which the statement is true. Likewise, the sum tells us the number of cases for which the statement is true.</p>
-<pre class="r"><code>mean(d$age &lt; 40)</code></pre>
-<pre><code>## [1] 0.5</code></pre>
-<pre class="r"><code>sum(d$age &lt; 40)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<p>There is one other logical symbol that can sometimes be useful. <code>%in%</code> asks whether each of the values in one vector is in another vector.</p>
-<p>For example to see which rows have ‘UK’ or ‘Germany’ in the ‘country’ column:</p>
-<pre class="r"><code>d$country %in% c(&quot;UK&quot;,&quot;Germany&quot;)</code></pre>
-<pre><code>## [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
-<p>We can combine or convert logical statements using further logical symbols:</p>
-<ul>
-<li><code>!</code> NOT</li>
-<li><code>&amp;</code> AND</li>
-<li><code>|</code> OR</li>
-</ul>
-<p>Some examples:</p>
-<pre class="r"><code>d$age &lt; 40 &amp; d$sex == &quot;male&quot; # (male and under 40)</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<pre class="r"><code>d$age &lt; 40 | d$sex == &quot;male&quot; # (male or under 40)</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
-<pre class="r"><code>!(d$age &lt; 40 | d$sex == &quot;male&quot;) # (neither male nor under 40)</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
-<p>We can use logical statements in the indexing parentheses <code>[]</code> to pick out only the values for which a statement is true.</p>
-<p>Some examples:</p>
-<pre class="r"><code>d$age[d$age &lt; 40] # (show the ages below 40)</code></pre>
-<pre><code>## [1] 36 29 25</code></pre>
-<pre class="r"><code>d$age[d$sex == &quot;male&quot;] # (show the men's ages)</code></pre>
-<pre><code>## [1] 36 53</code></pre>
-<p>If we want to pick out only those rows of a data frame for which a condition holds, we can use the <code>subset()</code> function. The first input to <code>subset()</code> is the data frame, and the second input is the condition. Because we have input the data frame, we do not need to also prepend the name of the data frame to the variables in the condition; they are assumed to refer to the columns of the data frame.</p>
-<pre class="r"><code>subset(d, age &lt; 40)</code></pre>
+<p>We can choose whichever character we like to separate the columns, but two common choices are the tab character or the comma. Here we will load a comma-separated text file. These files are typically given the file suffix <strong>csv</strong>, which stands for <strong>c</strong>omma <strong>s</strong>eparated <strong>v</strong>alues.</p>
+<p>The <code>read.table()</code> function reads a table of delimited values from a text file. The first input is the name of the file, just as for <code>load()</code>, and the <code>sep</code> argument (short for <strong>separator</strong>) specifies what character the file uses to separate the columns. Unlike R data files, the data from plain text files is not already organized into variables, so we need to assign the result of <code>read.table()</code> into a variable.</p>
+<pre class="r"><code>bw = read.table(&quot;data/birth_weights.csv&quot;, sep=&quot;,&quot;)
+
+class(bw)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>We can see that the resulting variable is a data frame containing the data almost as expected. However, if we compare with the same data loaded from the R data file above, we see a small problem.</p>
+<pre class="r"><code>bw</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany","_rn_":"1"},{"1":"29","2":"female","3":"Ireland","_rn_":"5"},{"1":"25","2":"other","3":"Germany","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["V1"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["V2"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["V3"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["V4"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["V5"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["V6"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["V7"],"name":[7],"type":["fctr"],"align":["left"]}],"data":[{"1":"Birth_weight","2":"Weight","3":"Age","4":"Smoker","5":"Race","6":"Hypertension","7":"Visits"},{"1":"2.523","2":"82.553744","3":"19","4":"no","5":"black","6":"no","7":"0"},{"1":"2.551","2":"70.30676","3":"33","4":"no","5":"other","6":"no","7":"3"},{"1":"2.557","2":"47.62716","3":"20","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.594","2":"48.987936","3":"21","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.6","2":"48.534344","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.622","2":"56.245408","3":"21","4":"no","5":"other","6":"no","7":"0"},{"1":"2.637","2":"53.523856","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"2.637","2":"46.719976","3":"17","4":"no","5":"other","6":"no","7":"1"},{"1":"2.663","2":"55.791816","3":"29","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.665","2":"51.255896","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.722","2":"43.09124","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"2.733","2":"68.0388","3":"19","4":"no","5":"other","6":"no","7":"1"},{"1":"2.751","2":"43.09124","3":"22","4":"no","5":"other","6":"yes","7":"0"},{"1":"2.75","2":"48.534344","3":"30","4":"no","5":"other","6":"no","7":"2"},{"1":"2.769","2":"45.3592","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.769","2":"45.3592","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.778","2":"44.452016","3":"15","4":"no","5":"black","6":"no","7":"0"},{"1":"2.782","2":"53.523856","3":"25","4":"yes","5":"white","6":"no","7":"3"},{"1":"2.807","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.821","2":"54.43104","3":"28","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.835","2":"54.884632","3":"32","4":"no","5":"other","6":"no","7":"2"},{"1":"2.835","2":"45.3592","3":"31","4":"no","5":"white","6":"no","7":"3"},{"1":"2.836","2":"91.625584","3":"36","4":"no","5":"white","6":"no","7":"1"},{"1":"2.863","2":"54.43104","3":"28","4":"no","5":"other","6":"no","7":"0"},{"1":"2.877","2":"54.43104","3":"25","4":"no","5":"other","6":"no","7":"2"},{"1":"2.877","2":"75.749864","3":"28","4":"no","5":"white","6":"no","7":"0"},{"1":"2.906","2":"55.338224","3":"17","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.92","2":"68.0388","3":"29","4":"no","5":"white","6":"no","7":"2"},{"1":"2.92","2":"76.203456","3":"26","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.92","2":"51.255896","3":"17","4":"no","5":"black","6":"no","7":"1"},{"1":"2.92","2":"51.255896","3":"17","4":"no","5":"black","6":"no","7":"1"},{"1":"2.948","2":"40.82328","3":"24","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.948","2":"54.884632","3":"35","4":"yes","5":"black","6":"no","7":"1"},{"1":"2.977","2":"70.30676","3":"25","4":"no","5":"white","6":"no","7":"1"},{"1":"2.977","2":"56.699","3":"25","4":"no","5":"black","6":"no","7":"0"},{"1":"2.977","2":"63.50288","3":"29","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.977","2":"62.595696","3":"19","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.922","2":"56.245408","3":"27","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.005","2":"97.52228","3":"31","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.033","2":"49.441528","3":"33","4":"yes","5":"white","6":"no","7":"1"},{"1":"3.042","2":"83.91452","3":"21","4":"yes","5":"black","6":"no","7":"2"},{"1":"3.062","2":"85.728888","3":"19","4":"no","5":"white","6":"no","7":"2"},{"1":"3.062","2":"58.96696","3":"23","4":"no","5":"black","6":"no","7":"1"},{"1":"3.062","2":"72.57472","3":"21","4":"no","5":"white","6":"no","7":"0"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.08","2":"59.874144","3":"32","4":"no","5":"white","6":"no","7":"4"},{"1":"3.09","2":"59.874144","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.09","2":"52.16308","3":"24","4":"no","5":"white","6":"no","7":"2"},{"1":"3.09","2":"38.55532","3":"22","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.1","2":"54.43104","3":"22","4":"no","5":"white","6":"yes","7":"1"},{"1":"3.104","2":"58.059776","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"3.132","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.147","2":"43.09124","3":"30","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.175","2":"52.16308","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.175","2":"49.89512","3":"16","4":"no","5":"other","6":"no","7":"0"},{"1":"3.203","2":"49.89512","3":"21","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.203","2":"69.399576","3":"30","4":"no","5":"other","6":"no","7":"0"},{"1":"3.203","2":"46.719976","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.225","2":"53.977448","3":"17","4":"no","5":"other","6":"no","7":"0"},{"1":"3.225","2":"53.977448","3":"17","4":"no","5":"other","6":"no","7":"0"},{"1":"3.232","2":"53.977448","3":"23","4":"no","5":"other","6":"no","7":"2"},{"1":"3.232","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0"},{"1":"3.234","2":"63.50288","3":"28","4":"no","5":"white","6":"no","7":"0"},{"1":"3.26","2":"60.327736","3":"26","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.274","2":"76.657048","3":"20","4":"no","5":"other","6":"no","7":"1"},{"1":"3.274","2":"52.16308","3":"24","4":"no","5":"other","6":"no","7":"2"},{"1":"3.303","2":"113.398","3":"28","4":"yes","5":"other","6":"no","7":"6"},{"1":"3.317","2":"63.956472","3":"20","4":"no","5":"white","6":"no","7":"1"},{"1":"3.317","2":"71.667536","3":"22","4":"no","5":"black","6":"no","7":"2"},{"1":"3.317","2":"50.802304","3":"22","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.321","2":"68.0388","3":"31","4":"yes","5":"other","6":"no","7":"2"},{"1":"3.331","2":"52.16308","3":"23","4":"yes","5":"other","6":"no","7":"1"},{"1":"3.374","2":"50.802304","3":"16","4":"no","5":"black","6":"no","7":"0"},{"1":"3.374","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.402","2":"103.872568","3":"18","4":"no","5":"black","6":"no","7":"0"},{"1":"3.416","2":"63.50288","3":"25","4":"no","5":"white","6":"no","7":"1"},{"1":"3.43","2":"60.781328","3":"32","4":"yes","5":"white","6":"no","7":"4"},{"1":"3.444","2":"54.884632","3":"20","4":"yes","5":"black","6":"no","7":"0"},{"1":"3.459","2":"86.18248","3":"23","4":"no","5":"white","6":"no","7":"0"},{"1":"3.46","2":"59.420552","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"3.473","2":"77.11064","3":"32","4":"no","5":"white","6":"no","7":"0"},{"1":"3.544","2":"49.89512","3":"30","4":"no","5":"other","6":"no","7":"0"},{"1":"3.487","2":"57.606184","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.544","2":"55.791816","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"3.572","2":"54.43104","3":"17","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.572","2":"47.62716","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.586","2":"58.96696","3":"23","4":"no","5":"white","6":"no","7":"0"},{"1":"3.6","2":"79.3786","3":"36","4":"no","5":"white","6":"no","7":"0"},{"1":"3.614","2":"56.699","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"3.614","2":"60.327736","3":"24","4":"no","5":"white","6":"no","7":"0"},{"1":"3.629","2":"60.781328","3":"21","4":"no","5":"other","6":"no","7":"2"},{"1":"3.629","2":"106.59412","3":"19","4":"yes","5":"white","6":"yes","7":"0"},{"1":"3.637","2":"43.09124","3":"25","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.643","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.651","2":"61.23492","3":"29","4":"no","5":"white","6":"no","7":"1"},{"1":"3.651","2":"69.853168","3":"29","4":"no","5":"white","6":"no","7":"1"},{"1":"3.651","2":"66.678024","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.651","2":"66.678024","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.699","2":"62.142104","3":"30","4":"no","5":"white","6":"no","7":"1"},{"1":"3.728","2":"49.89512","3":"24","4":"no","5":"white","6":"no","7":"1"},{"1":"3.756","2":"83.460928","3":"19","4":"yes","5":"white","6":"yes","7":"0"},{"1":"3.77","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0"},{"1":"3.77","2":"49.89512","3":"23","4":"no","5":"white","6":"no","7":"1"},{"1":"3.77","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.79","2":"109.315672","3":"25","4":"no","5":"black","6":"yes","7":"0"},{"1":"3.799","2":"50.802304","3":"30","4":"no","5":"white","6":"no","7":"1"},{"1":"3.827","2":"76.657048","3":"22","4":"no","5":"white","6":"no","7":"0"},{"1":"3.856","2":"54.43104","3":"18","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.86","2":"77.11064","3":"16","4":"no","5":"black","6":"no","7":"4"},{"1":"3.86","2":"84.368112","3":"32","4":"no","5":"white","6":"no","7":"2"},{"1":"3.884","2":"54.43104","3":"18","4":"no","5":"other","6":"no","7":"1"},{"1":"3.884","2":"58.96696","3":"29","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.912","2":"53.070264","3":"33","4":"no","5":"white","6":"no","7":"1"},{"1":"3.94","2":"77.11064","3":"20","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.941","2":"60.781328","3":"28","4":"no","5":"other","6":"no","7":"1"},{"1":"3.941","2":"61.23492","3":"14","4":"no","5":"white","6":"no","7":"0"},{"1":"3.969","2":"58.96696","3":"28","4":"no","5":"other","6":"no","7":"0"},{"1":"3.983","2":"54.43104","3":"25","4":"no","5":"white","6":"no","7":"2"},{"1":"3.997","2":"43.09124","3":"16","4":"no","5":"other","6":"no","7":"1"},{"1":"3.997","2":"71.667536","3":"20","4":"no","5":"white","6":"no","7":"1"},{"1":"4.054","2":"72.57472","3":"26","4":"no","5":"other","6":"no","7":"0"},{"1":"4.054","2":"52.16308","3":"21","4":"no","5":"white","6":"no","7":"1"},{"1":"4.111","2":"58.513368","3":"22","4":"no","5":"white","6":"no","7":"0"},{"1":"4.153","2":"58.96696","3":"25","4":"no","5":"white","6":"no","7":"2"},{"1":"4.167","2":"54.43104","3":"31","4":"no","5":"white","6":"no","7":"2"},{"1":"4.174","2":"77.11064","3":"35","4":"no","5":"white","6":"no","7":"1"},{"1":"4.238","2":"54.43104","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"4.593","2":"52.616672","3":"24","4":"no","5":"white","6":"no","7":"1"},{"1":"4.99","2":"55.791816","3":"45","4":"no","5":"white","6":"no","7":"1"},{"1":"0.709","2":"54.43104","3":"28","4":"yes","5":"other","6":"no","7":"0"},{"1":"1.021","2":"58.96696","3":"29","4":"no","5":"white","6":"no","7":"2"},{"1":"1.135","2":"84.821704","3":"34","4":"yes","5":"black","6":"yes","7":"0"},{"1":"1.33","2":"47.62716","3":"25","4":"no","5":"other","6":"yes","7":"0"},{"1":"1.474","2":"38.55532","3":"25","4":"no","5":"other","6":"no","7":"0"},{"1":"1.588","2":"68.0388","3":"27","4":"no","5":"other","6":"no","7":"0"},{"1":"1.588","2":"43.998424","3":"23","4":"no","5":"other","6":"no","7":"1"},{"1":"1.701","2":"58.059776","3":"24","4":"no","5":"black","6":"no","7":"1"},{"1":"1.729","2":"59.874144","3":"24","4":"no","5":"other","6":"yes","7":"0"},{"1":"1.79","2":"74.84268","3":"21","4":"yes","5":"white","6":"yes","7":"1"},{"1":"1.818","2":"47.62716","3":"32","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.885","2":"41.276872","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.893","2":"52.16308","3":"25","4":"no","5":"other","6":"no","7":"0"},{"1":"1.899","2":"58.96696","3":"16","4":"no","5":"other","6":"no","7":"1"},{"1":"1.928","2":"41.730464","3":"25","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.928","2":"68.0388","3":"20","4":"yes","5":"white","6":"no","7":"2"},{"1":"1.928","2":"90.7184","3":"21","4":"no","5":"black","6":"no","7":"2"},{"1":"1.936","2":"70.30676","3":"24","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.97","2":"46.719976","3":"21","4":"no","5":"other","6":"no","7":"0"},{"1":"2.055","2":"56.699","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.055","2":"40.369688","3":"25","4":"no","5":"other","6":"no","7":"1"},{"1":"2.082","2":"46.266384","3":"19","4":"no","5":"white","6":"no","7":"2"},{"1":"2.084","2":"50.802304","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.084","2":"53.070264","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.1","2":"62.595696","3":"24","4":"no","5":"white","6":"no","7":"0"},{"1":"2.125","2":"58.96696","3":"17","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.126","2":"54.43104","3":"20","4":"yes","5":"black","6":"no","7":"3"},{"1":"2.187","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.187","2":"58.96696","3":"27","4":"no","5":"black","6":"no","7":"0"},{"1":"2.211","2":"36.28736","3":"20","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.225","2":"49.89512","3":"17","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.24","2":"47.62716","3":"25","4":"no","5":"other","6":"no","7":"1"},{"1":"2.24","2":"49.441528","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.282","2":"67.131616","3":"18","4":"no","5":"other","6":"no","7":"0"},{"1":"2.296","2":"49.89512","3":"18","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.296","2":"54.884632","3":"20","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.301","2":"45.3592","3":"21","4":"no","5":"other","6":"no","7":"4"},{"1":"2.325","2":"43.544832","3":"26","4":"no","5":"other","6":"no","7":"0"},{"1":"2.353","2":"46.266384","3":"31","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.353","2":"49.89512","3":"15","4":"no","5":"white","6":"no","7":"0"},{"1":"2.367","2":"84.821704","3":"23","4":"yes","5":"black","6":"no","7":"1"},{"1":"2.381","2":"55.338224","3":"20","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.381","2":"47.62716","3":"24","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.381","2":"52.16308","3":"15","4":"no","5":"other","6":"no","7":"0"},{"1":"2.41","2":"54.43104","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"2.41","2":"64.410064","3":"30","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.41","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.414","2":"54.43104","3":"17","4":"yes","5":"white","6":"no","7":"3"},{"1":"2.424","2":"49.89512","3":"23","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.438","2":"54.43104","3":"17","4":"no","5":"black","6":"no","7":"2"},{"1":"2.442","2":"69.853168","3":"26","4":"no","5":"other","6":"yes","7":"1"},{"1":"2.45","2":"47.62716","3":"20","4":"no","5":"other","6":"no","7":"3"},{"1":"2.466","2":"86.18248","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.466","2":"45.812792","3":"14","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.466","2":"43.09124","3":"28","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.495","2":"45.3592","3":"14","4":"no","5":"other","6":"no","7":"2"},{"1":"2.495","2":"42.637648","3":"23","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.495","2":"64.410064","3":"17","4":"no","5":"black","6":"yes","7":"0"},{"1":"2.495","2":"58.96696","3":"21","4":"yes","5":"white","6":"yes","7":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Beware that the single equals sign <code>=</code> is used for assignment, and the double equals <code>==</code> for logical statements. If you accidentally use <code>=</code> when you meant to use <code>==</code>, you may overwrite the values instead of asking about them.</p>
-<pre class="r"><code>d$country = &quot;Germany&quot;
+<p>By default, <code>read.table()</code> does not treat the first line of the text file as a header line giving the names of the columns. Instead, it thinks that the first line is alread the first row of the data, and it has assigned default names for the columns: V1, V2, V3, etc.</p>
+<p>This is not what we want, unless we are dealing with a text file that has no header line, which is a fairly rare occurrence. To specify that the first line is the header, we must set the <code>header</code> argument of <code>read.table()</code> to <code>TRUE</code>.</p>
+<pre class="r"><code>bw = read.table(&quot;data/birth_weights.csv&quot;, sep=&quot;,&quot;, header=TRUE)
 
-d # (oops)</code></pre>
+bw</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Birth_weight"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Weight"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Age"],"name":[3],"type":["int"],"align":["right"]},{"label":["Smoker"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["Race"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Hypertension"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["Visits"],"name":[7],"type":["int"],"align":["right"]}],"data":[{"1":"2.523","2":"82.55374","3":"19","4":"no","5":"black","6":"no","7":"0"},{"1":"2.551","2":"70.30676","3":"33","4":"no","5":"other","6":"no","7":"3"},{"1":"2.557","2":"47.62716","3":"20","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.594","2":"48.98794","3":"21","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.600","2":"48.53434","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.622","2":"56.24541","3":"21","4":"no","5":"other","6":"no","7":"0"},{"1":"2.637","2":"53.52386","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"2.637","2":"46.71998","3":"17","4":"no","5":"other","6":"no","7":"1"},{"1":"2.663","2":"55.79182","3":"29","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.665","2":"51.25590","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.722","2":"43.09124","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"2.733","2":"68.03880","3":"19","4":"no","5":"other","6":"no","7":"1"},{"1":"2.751","2":"43.09124","3":"22","4":"no","5":"other","6":"yes","7":"0"},{"1":"2.750","2":"48.53434","3":"30","4":"no","5":"other","6":"no","7":"2"},{"1":"2.769","2":"45.35920","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.769","2":"45.35920","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.778","2":"44.45202","3":"15","4":"no","5":"black","6":"no","7":"0"},{"1":"2.782","2":"53.52386","3":"25","4":"yes","5":"white","6":"no","7":"3"},{"1":"2.807","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.821","2":"54.43104","3":"28","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.835","2":"54.88463","3":"32","4":"no","5":"other","6":"no","7":"2"},{"1":"2.835","2":"45.35920","3":"31","4":"no","5":"white","6":"no","7":"3"},{"1":"2.836","2":"91.62558","3":"36","4":"no","5":"white","6":"no","7":"1"},{"1":"2.863","2":"54.43104","3":"28","4":"no","5":"other","6":"no","7":"0"},{"1":"2.877","2":"54.43104","3":"25","4":"no","5":"other","6":"no","7":"2"},{"1":"2.877","2":"75.74986","3":"28","4":"no","5":"white","6":"no","7":"0"},{"1":"2.906","2":"55.33822","3":"17","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.920","2":"68.03880","3":"29","4":"no","5":"white","6":"no","7":"2"},{"1":"2.920","2":"76.20346","3":"26","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.920","2":"51.25590","3":"17","4":"no","5":"black","6":"no","7":"1"},{"1":"2.920","2":"51.25590","3":"17","4":"no","5":"black","6":"no","7":"1"},{"1":"2.948","2":"40.82328","3":"24","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.948","2":"54.88463","3":"35","4":"yes","5":"black","6":"no","7":"1"},{"1":"2.977","2":"70.30676","3":"25","4":"no","5":"white","6":"no","7":"1"},{"1":"2.977","2":"56.69900","3":"25","4":"no","5":"black","6":"no","7":"0"},{"1":"2.977","2":"63.50288","3":"29","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.977","2":"62.59570","3":"19","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.922","2":"56.24541","3":"27","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.005","2":"97.52228","3":"31","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.033","2":"49.44153","3":"33","4":"yes","5":"white","6":"no","7":"1"},{"1":"3.042","2":"83.91452","3":"21","4":"yes","5":"black","6":"no","7":"2"},{"1":"3.062","2":"85.72889","3":"19","4":"no","5":"white","6":"no","7":"2"},{"1":"3.062","2":"58.96696","3":"23","4":"no","5":"black","6":"no","7":"1"},{"1":"3.062","2":"72.57472","3":"21","4":"no","5":"white","6":"no","7":"0"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.062","2":"40.82328","3":"18","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.080","2":"59.87414","3":"32","4":"no","5":"white","6":"no","7":"4"},{"1":"3.090","2":"59.87414","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.090","2":"52.16308","3":"24","4":"no","5":"white","6":"no","7":"2"},{"1":"3.090","2":"38.55532","3":"22","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.100","2":"54.43104","3":"22","4":"no","5":"white","6":"yes","7":"1"},{"1":"3.104","2":"58.05978","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"3.132","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.147","2":"43.09124","3":"30","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.175","2":"52.16308","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.175","2":"49.89512","3":"16","4":"no","5":"other","6":"no","7":"0"},{"1":"3.203","2":"49.89512","3":"21","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.203","2":"69.39958","3":"30","4":"no","5":"other","6":"no","7":"0"},{"1":"3.203","2":"46.71998","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.225","2":"53.97745","3":"17","4":"no","5":"other","6":"no","7":"0"},{"1":"3.225","2":"53.97745","3":"17","4":"no","5":"other","6":"no","7":"0"},{"1":"3.232","2":"53.97745","3":"23","4":"no","5":"other","6":"no","7":"2"},{"1":"3.232","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0"},{"1":"3.234","2":"63.50288","3":"28","4":"no","5":"white","6":"no","7":"0"},{"1":"3.260","2":"60.32774","3":"26","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.274","2":"76.65705","3":"20","4":"no","5":"other","6":"no","7":"1"},{"1":"3.274","2":"52.16308","3":"24","4":"no","5":"other","6":"no","7":"2"},{"1":"3.303","2":"113.39800","3":"28","4":"yes","5":"other","6":"no","7":"6"},{"1":"3.317","2":"63.95647","3":"20","4":"no","5":"white","6":"no","7":"1"},{"1":"3.317","2":"71.66754","3":"22","4":"no","5":"black","6":"no","7":"2"},{"1":"3.317","2":"50.80230","3":"22","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.321","2":"68.03880","3":"31","4":"yes","5":"other","6":"no","7":"2"},{"1":"3.331","2":"52.16308","3":"23","4":"yes","5":"other","6":"no","7":"1"},{"1":"3.374","2":"50.80230","3":"16","4":"no","5":"black","6":"no","7":"0"},{"1":"3.374","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.402","2":"103.87257","3":"18","4":"no","5":"black","6":"no","7":"0"},{"1":"3.416","2":"63.50288","3":"25","4":"no","5":"white","6":"no","7":"1"},{"1":"3.430","2":"60.78133","3":"32","4":"yes","5":"white","6":"no","7":"4"},{"1":"3.444","2":"54.88463","3":"20","4":"yes","5":"black","6":"no","7":"0"},{"1":"3.459","2":"86.18248","3":"23","4":"no","5":"white","6":"no","7":"0"},{"1":"3.460","2":"59.42055","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"3.473","2":"77.11064","3":"32","4":"no","5":"white","6":"no","7":"0"},{"1":"3.544","2":"49.89512","3":"30","4":"no","5":"other","6":"no","7":"0"},{"1":"3.487","2":"57.60618","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.544","2":"55.79182","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"3.572","2":"54.43104","3":"17","4":"yes","5":"other","6":"no","7":"0"},{"1":"3.572","2":"47.62716","3":"19","4":"no","5":"other","6":"no","7":"0"},{"1":"3.586","2":"58.96696","3":"23","4":"no","5":"white","6":"no","7":"0"},{"1":"3.600","2":"79.37860","3":"36","4":"no","5":"white","6":"no","7":"0"},{"1":"3.614","2":"56.69900","3":"22","4":"no","5":"white","6":"no","7":"1"},{"1":"3.614","2":"60.32774","3":"24","4":"no","5":"white","6":"no","7":"0"},{"1":"3.629","2":"60.78133","3":"21","4":"no","5":"other","6":"no","7":"2"},{"1":"3.629","2":"106.59412","3":"19","4":"yes","5":"white","6":"yes","7":"0"},{"1":"3.637","2":"43.09124","3":"25","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.643","2":"61.23492","3":"16","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.651","2":"61.23492","3":"29","4":"no","5":"white","6":"no","7":"1"},{"1":"3.651","2":"69.85317","3":"29","4":"no","5":"white","6":"no","7":"1"},{"1":"3.651","2":"66.67802","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.651","2":"66.67802","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.699","2":"62.14210","3":"30","4":"no","5":"white","6":"no","7":"1"},{"1":"3.728","2":"49.89512","3":"24","4":"no","5":"white","6":"no","7":"1"},{"1":"3.756","2":"83.46093","3":"19","4":"yes","5":"white","6":"yes","7":"0"},{"1":"3.770","2":"49.89512","3":"24","4":"no","5":"other","6":"no","7":"0"},{"1":"3.770","2":"49.89512","3":"23","4":"no","5":"white","6":"no","7":"1"},{"1":"3.770","2":"54.43104","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"3.790","2":"109.31567","3":"25","4":"no","5":"black","6":"yes","7":"0"},{"1":"3.799","2":"50.80230","3":"30","4":"no","5":"white","6":"no","7":"1"},{"1":"3.827","2":"76.65705","3":"22","4":"no","5":"white","6":"no","7":"0"},{"1":"3.856","2":"54.43104","3":"18","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.860","2":"77.11064","3":"16","4":"no","5":"black","6":"no","7":"4"},{"1":"3.860","2":"84.36811","3":"32","4":"no","5":"white","6":"no","7":"2"},{"1":"3.884","2":"54.43104","3":"18","4":"no","5":"other","6":"no","7":"1"},{"1":"3.884","2":"58.96696","3":"29","4":"yes","5":"white","6":"no","7":"2"},{"1":"3.912","2":"53.07026","3":"33","4":"no","5":"white","6":"no","7":"1"},{"1":"3.940","2":"77.11064","3":"20","4":"yes","5":"white","6":"no","7":"0"},{"1":"3.941","2":"60.78133","3":"28","4":"no","5":"other","6":"no","7":"1"},{"1":"3.941","2":"61.23492","3":"14","4":"no","5":"white","6":"no","7":"0"},{"1":"3.969","2":"58.96696","3":"28","4":"no","5":"other","6":"no","7":"0"},{"1":"3.983","2":"54.43104","3":"25","4":"no","5":"white","6":"no","7":"2"},{"1":"3.997","2":"43.09124","3":"16","4":"no","5":"other","6":"no","7":"1"},{"1":"3.997","2":"71.66754","3":"20","4":"no","5":"white","6":"no","7":"1"},{"1":"4.054","2":"72.57472","3":"26","4":"no","5":"other","6":"no","7":"0"},{"1":"4.054","2":"52.16308","3":"21","4":"no","5":"white","6":"no","7":"1"},{"1":"4.111","2":"58.51337","3":"22","4":"no","5":"white","6":"no","7":"0"},{"1":"4.153","2":"58.96696","3":"25","4":"no","5":"white","6":"no","7":"2"},{"1":"4.167","2":"54.43104","3":"31","4":"no","5":"white","6":"no","7":"2"},{"1":"4.174","2":"77.11064","3":"35","4":"no","5":"white","6":"no","7":"1"},{"1":"4.238","2":"54.43104","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"4.593","2":"52.61667","3":"24","4":"no","5":"white","6":"no","7":"1"},{"1":"4.990","2":"55.79182","3":"45","4":"no","5":"white","6":"no","7":"1"},{"1":"0.709","2":"54.43104","3":"28","4":"yes","5":"other","6":"no","7":"0"},{"1":"1.021","2":"58.96696","3":"29","4":"no","5":"white","6":"no","7":"2"},{"1":"1.135","2":"84.82170","3":"34","4":"yes","5":"black","6":"yes","7":"0"},{"1":"1.330","2":"47.62716","3":"25","4":"no","5":"other","6":"yes","7":"0"},{"1":"1.474","2":"38.55532","3":"25","4":"no","5":"other","6":"no","7":"0"},{"1":"1.588","2":"68.03880","3":"27","4":"no","5":"other","6":"no","7":"0"},{"1":"1.588","2":"43.99842","3":"23","4":"no","5":"other","6":"no","7":"1"},{"1":"1.701","2":"58.05978","3":"24","4":"no","5":"black","6":"no","7":"1"},{"1":"1.729","2":"59.87414","3":"24","4":"no","5":"other","6":"yes","7":"0"},{"1":"1.790","2":"74.84268","3":"21","4":"yes","5":"white","6":"yes","7":"1"},{"1":"1.818","2":"47.62716","3":"32","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.885","2":"41.27687","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.893","2":"52.16308","3":"25","4":"no","5":"other","6":"no","7":"0"},{"1":"1.899","2":"58.96696","3":"16","4":"no","5":"other","6":"no","7":"1"},{"1":"1.928","2":"41.73046","3":"25","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.928","2":"68.03880","3":"20","4":"yes","5":"white","6":"no","7":"2"},{"1":"1.928","2":"90.71840","3":"21","4":"no","5":"black","6":"no","7":"2"},{"1":"1.936","2":"70.30676","3":"24","4":"yes","5":"white","6":"no","7":"0"},{"1":"1.970","2":"46.71998","3":"21","4":"no","5":"other","6":"no","7":"0"},{"1":"2.055","2":"56.69900","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.055","2":"40.36969","3":"25","4":"no","5":"other","6":"no","7":"1"},{"1":"2.082","2":"46.26638","3":"19","4":"no","5":"white","6":"no","7":"2"},{"1":"2.084","2":"50.80230","3":"19","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.084","2":"53.07026","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.100","2":"62.59570","3":"24","4":"no","5":"white","6":"no","7":"0"},{"1":"2.125","2":"58.96696","3":"17","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.126","2":"54.43104","3":"20","4":"yes","5":"black","6":"no","7":"3"},{"1":"2.187","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.187","2":"58.96696","3":"27","4":"no","5":"black","6":"no","7":"0"},{"1":"2.211","2":"36.28736","3":"20","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.225","2":"49.89512","3":"17","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.240","2":"47.62716","3":"25","4":"no","5":"other","6":"no","7":"1"},{"1":"2.240","2":"49.44153","3":"20","4":"no","5":"other","6":"no","7":"0"},{"1":"2.282","2":"67.13162","3":"18","4":"no","5":"other","6":"no","7":"0"},{"1":"2.296","2":"49.89512","3":"18","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.296","2":"54.88463","3":"20","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.301","2":"45.35920","3":"21","4":"no","5":"other","6":"no","7":"4"},{"1":"2.325","2":"43.54483","3":"26","4":"no","5":"other","6":"no","7":"0"},{"1":"2.353","2":"46.26638","3":"31","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.353","2":"49.89512","3":"15","4":"no","5":"white","6":"no","7":"0"},{"1":"2.367","2":"84.82170","3":"23","4":"yes","5":"black","6":"no","7":"1"},{"1":"2.381","2":"55.33822","3":"20","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.381","2":"47.62716","3":"24","4":"yes","5":"black","6":"no","7":"0"},{"1":"2.381","2":"52.16308","3":"15","4":"no","5":"other","6":"no","7":"0"},{"1":"2.410","2":"54.43104","3":"23","4":"no","5":"other","6":"no","7":"0"},{"1":"2.410","2":"64.41006","3":"30","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.410","2":"58.96696","3":"22","4":"yes","5":"white","6":"no","7":"1"},{"1":"2.414","2":"54.43104","3":"17","4":"yes","5":"white","6":"no","7":"3"},{"1":"2.424","2":"49.89512","3":"23","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.438","2":"54.43104","3":"17","4":"no","5":"black","6":"no","7":"2"},{"1":"2.442","2":"69.85317","3":"26","4":"no","5":"other","6":"yes","7":"1"},{"1":"2.450","2":"47.62716","3":"20","4":"no","5":"other","6":"no","7":"3"},{"1":"2.466","2":"86.18248","3":"26","4":"yes","5":"white","6":"no","7":"0"},{"1":"2.466","2":"45.81279","3":"14","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.466","2":"43.09124","3":"28","4":"yes","5":"white","6":"no","7":"2"},{"1":"2.495","2":"45.35920","3":"14","4":"no","5":"other","6":"no","7":"2"},{"1":"2.495","2":"42.63765","3":"23","4":"yes","5":"other","6":"no","7":"0"},{"1":"2.495","2":"64.41006","3":"17","4":"no","5":"black","6":"yes","7":"0"},{"1":"2.495","2":"58.96696","3":"21","4":"yes","5":"white","6":"yes","7":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
+<p>Since the csv file is a fairly common format, R provides a convenience function, <code>read.csv()</code>, for reading from comma-separated text files. It works just like <code>read.table()</code>, but with <code>sep=&quot;,&quot;</code> and <code>header=TRUE</code> already set by default, so that we do not need to specify them.</p>
+<pre class="r"><code>bw = read.csv(&quot;data/birth_weights.csv&quot;)</code></pre>
+<p>I will use csv files for most of the remaining tutorials that involve loading data.</p>
+<p>In some countries, for example in Germany, the comma is used as a decimal point indicator, so that the number <code>2.4</code> is written as <code>2,4</code>. If somebody has created a csv file using a spreadsheet program in a country that uses the comma as a decimal point, the separator character will usually be the semicolon <code>;</code>.</p>
+<p>We can load such files either by setting the <code>dec</code> (<strong>decimal</strong>) argument to the semicolon, i.e. <code>dec=&quot;;&quot;</code>, or by using the convenience function <code>read.csv2()</code>, which handles this file format.</p>
+<p>If you are in doubt about the format of a delimited text file, open it first in a text editor outside of R to see what it contains. You can also see the contents of a text file from Rstudio, either by opening it via <em>File</em> -&gt; <em>Open File</em>, or using the <code>file.show()</code> function, with the name of the file as input.</p>
 </div>
-<div id="special-values" class="section level1">
-<h1>Special values</h1>
-<p>R stores a few special values that can be useful. The constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>. Infinity is stored under <code>Inf</code> (with uppercase ‘I’).</p>
-<pre class="r"><code>pi</code></pre>
-<pre><code>## [1] 3.141593</code></pre>
-<pre class="r"><code>Inf</code></pre>
-<pre><code>## [1] Inf</code></pre>
-<p>Much more often useful is the ‘missing’ value <code>NA</code>. We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
-<pre class="r"><code>d = rbind(d, data.frame(age=NA, sex=&quot;male&quot;, country=&quot;France&quot;))
-
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"},{"1":"NA","2":"male","3":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>We can check which values are missing from a column using <code>is.na()</code>. If we want to know which rows are ‘complete’ (i.e. have no missing values in any column), we can use the <code>complete.cases()</code> function on the whole data frame.</p>
-<pre class="r"><code>is.na(d$age)</code></pre>
-<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE</code></pre>
-<pre class="r"><code>complete.cases(d)</code></pre>
-<pre><code>## [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE</code></pre>
-<p>If there are any <code>NA</code> values anywhere in a vector, mathematical functions applied to that vector will also output <code>NA</code>. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.</p>
-<pre class="r"><code>mean(d$age)</code></pre>
-<pre><code>## [1] NA</code></pre>
-<p>If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the <code>na.rm</code> argument (the <code>rm</code> in <code>na.rm</code> is short for ‘remove’). Since this is an argument that specifies a yes/no option, its input is a logical value, where <code>TRUE</code> means ‘yes, apply this option’ (i.e. calculate the result with the <code>NA</code> values removed).</p>
-<pre class="r"><code>mean(d$age, na.rm=TRUE)</code></pre>
-<pre><code>## [1] 41.16667</code></pre>
-<p>There is also a special value called <code>NULL</code> in R. This value indicates ‘emptiness’. It can be used to create an empty variable that does not yet store anything.</p>
-<pre class="r"><code>x = NULL
-
-class(x)</code></pre>
-<pre><code>## [1] &quot;NULL&quot;</code></pre>
-<p>Another use is to remove a column from a data frame, by ‘making it empty’.</p>
-<pre class="r"><code>d$country = NULL
-
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male"},{"1":"64","2":"female"},{"1":"40","2":"female"},{"1":"53","2":"male"},{"1":"29","2":"female"},{"1":"25","2":"other"},{"1":"NA","2":"male"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
+<div id="the-internet" class="section level2">
+<h2>The internet</h2>
+<p>R can also retrieve data files from the internet. For this, we need to full web address of the file, including the <code>http://</code> or <code>https://</code> part. The <code>url()</code> function opens a connection to a file on the internet. This connection can then be entered as the input to <code>load()</code>, <code>read.table()</code>, or <code>read.csv()</code>.</p>
+<p>Since web addresses are often quite long, for clarity we can first store the web address in a variable, and then put this variable into <code>url()</code>, which in turn we put into the appropriate function for reading the file.</p>
+<p>Here we load the same csv file as above, but by retrieving it from the <a href="https://github.com/luketudge/stats-tutorials">GitHub site where the tutorials are stored</a>.</p>
+<pre class="r"><code>web_address = &quot;https://github.com/luketudge/stats-tutorials/raw/master/tutorials/data/birth_weights.csv&quot;
+bw = read.csv(url(web_address))</code></pre>
+<p>This is a great way to make our work accessible to others. If we store our data on a website and then provide an R script that retreives the data and carries out our analysis, anybody else with an internet connection can examine and verify our work just by running the script, and without having to manually download the data file and make sure it is in their working directory.</p>
 </div>
 </div>
-<div id="lists" class="section level1">
-<h1>Lists</h1>
-<p>Finally, we may occasionally want to organize more complex collections of data, in which the values are not all of the same class or length, but are still grouped together in order. Lists allow us to do this. They can be created much like a data frame, using the <code>list()</code> function, and allocating values to named entries within the list. Each value can be anything at all: a single number, a character string, a vector, a data frame, etc.</p>
-<p>For example, we might want to store a data frame together with some other pieces of information:</p>
-<pre class="r"><code>survey = list(data=d, locations=c(&quot;Berlin&quot;,&quot;Manchester&quot;), survey_ID=3)
+<div id="saving-data" class="section level1">
+<h1>Saving data</h1>
+<p>The <code>load()</code> and <code>read.table()</code> functions for reading data from files each have analogous functions for saving data to files. These are useful if we have either generated new data within R, or have modified a data frame and would like to save the modified version for later use.</p>
+<p>For example, imagine we wanted a version of the birth weights data file in which the babies’ weights are given in grams instead of kilograms:</p>
+<pre class="r"><code>bw$Birth_weight = bw$Birth_weight * 1000
 
-class(survey)</code></pre>
-<pre><code>## [1] &quot;list&quot;</code></pre>
-<pre class="r"><code>survey</code></pre>
-<pre><code>## $data
-##   age    sex
-## 1  36   male
-## 2  64 female
-## 3  40 female
-## 4  53   male
-## 5  29 female
-## 6  25  other
-## 7  NA   male
+summary(bw$Birth_weight) # to check the change</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     709    2414    2977    2945    3487    4990</code></pre>
+<p><code>save()</code> saves one or more variables from our R workspace into an R data file. The inputs are the variables we want to save, and the <code>file</code> argument gives the name of the file we want to save them into.</p>
+<pre class="r"><code>save(bw, file=&quot;bw_grams.RData&quot;)</code></pre>
+<p><code>write.table()</code> or <code>write.csv()</code> write a data frame into a text file in the same way.</p>
+<pre class="r"><code>write.csv(bw, file=&quot;bw_grams.csv&quot;)</code></pre>
+<p>If we want to first check that R is saving the text file in the format that we want, we can take a look at the text that will be written into the file. We can do this by specifying an empty file name (<code>&quot;&quot;</code>). This will print out the text to the console instead of writing it to a file.</p>
+<pre class="r"><code>write.csv(bw, file=&quot;&quot;)</code></pre>
+<pre><code>## &quot;&quot;,&quot;Birth_weight&quot;,&quot;Weight&quot;,&quot;Age&quot;,&quot;Smoker&quot;,&quot;Race&quot;,&quot;Hypertension&quot;,&quot;Visits&quot;
+## &quot;1&quot;,2523,82.553744,19,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;2&quot;,2551,70.30676,33,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,3
+## &quot;3&quot;,2557,47.62716,20,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;4&quot;,2594,48.987936,21,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;5&quot;,2600,48.534344,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;6&quot;,2622,56.245408,21,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;7&quot;,2637,53.523856,22,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;8&quot;,2637,46.719976,17,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;9&quot;,2663,55.791816,29,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;10&quot;,2665,51.255896,26,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;11&quot;,2722,43.09124,19,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;12&quot;,2733,68.0388,19,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;13&quot;,2751,43.09124,22,&quot;no&quot;,&quot;other&quot;,&quot;yes&quot;,0
+## &quot;14&quot;,2750,48.534344,30,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;15&quot;,2769,45.3592,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;16&quot;,2769,45.3592,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;17&quot;,2778,44.452016,15,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;18&quot;,2782,53.523856,25,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,3
+## &quot;19&quot;,2807,54.43104,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;20&quot;,2821,54.43104,28,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;21&quot;,2835,54.884632,32,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;22&quot;,2835,45.3592,31,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,3
+## &quot;23&quot;,2836,91.625584,36,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;24&quot;,2863,54.43104,28,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;25&quot;,2877,54.43104,25,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;26&quot;,2877,75.749864,28,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;27&quot;,2906,55.338224,17,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;28&quot;,2920,68.0388,29,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;29&quot;,2920,76.203456,26,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;30&quot;,2920,51.255896,17,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;31&quot;,2920,51.255896,17,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;32&quot;,2948,40.82328,24,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;33&quot;,2948,54.884632,35,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;34&quot;,2977,70.30676,25,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;35&quot;,2977,56.699,25,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;36&quot;,2977,63.50288,29,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;37&quot;,2977,62.595696,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;38&quot;,2922,56.245408,27,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;39&quot;,3005,97.52228,31,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;40&quot;,3033,49.441528,33,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;41&quot;,3042,83.91452,21,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,2
+## &quot;42&quot;,3062,85.728888,19,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;43&quot;,3062,58.96696,23,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;44&quot;,3062,72.57472,21,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;45&quot;,3062,40.82328,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;46&quot;,3062,40.82328,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;47&quot;,3080,59.874144,32,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,4
+## &quot;48&quot;,3090,59.874144,19,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;49&quot;,3090,52.16308,24,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;50&quot;,3090,38.55532,22,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;51&quot;,3100,54.43104,22,&quot;no&quot;,&quot;white&quot;,&quot;yes&quot;,1
+## &quot;52&quot;,3104,58.059776,23,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;53&quot;,3132,58.96696,22,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;54&quot;,3147,43.09124,30,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;55&quot;,3175,52.16308,19,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;56&quot;,3175,49.89512,16,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;57&quot;,3203,49.89512,21,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;58&quot;,3203,69.399576,30,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;59&quot;,3203,46.719976,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;60&quot;,3225,53.977448,17,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;61&quot;,3225,53.977448,17,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;62&quot;,3232,53.977448,23,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;63&quot;,3232,49.89512,24,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;64&quot;,3234,63.50288,28,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;65&quot;,3260,60.327736,26,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;66&quot;,3274,76.657048,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;67&quot;,3274,52.16308,24,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;68&quot;,3303,113.398,28,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,6
+## &quot;69&quot;,3317,63.956472,20,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;70&quot;,3317,71.667536,22,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,2
+## &quot;71&quot;,3317,50.802304,22,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;72&quot;,3321,68.0388,31,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;73&quot;,3331,52.16308,23,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;74&quot;,3374,50.802304,16,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;75&quot;,3374,61.23492,16,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;76&quot;,3402,103.872568,18,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;77&quot;,3416,63.50288,25,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;78&quot;,3430,60.781328,32,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,4
+## &quot;79&quot;,3444,54.884632,20,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;80&quot;,3459,86.18248,23,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;81&quot;,3460,59.420552,22,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;82&quot;,3473,77.11064,32,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;83&quot;,3544,49.89512,30,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;84&quot;,3487,57.606184,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;85&quot;,3544,55.791816,23,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;86&quot;,3572,54.43104,17,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;87&quot;,3572,47.62716,19,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;88&quot;,3586,58.96696,23,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;89&quot;,3600,79.3786,36,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;90&quot;,3614,56.699,22,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;91&quot;,3614,60.327736,24,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;92&quot;,3629,60.781328,21,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;93&quot;,3629,106.59412,19,&quot;yes&quot;,&quot;white&quot;,&quot;yes&quot;,0
+## &quot;94&quot;,3637,43.09124,25,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;95&quot;,3643,61.23492,16,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;96&quot;,3651,61.23492,29,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;97&quot;,3651,69.853168,29,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;98&quot;,3651,66.678024,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;99&quot;,3651,66.678024,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;100&quot;,3699,62.142104,30,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;101&quot;,3728,49.89512,24,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;102&quot;,3756,83.460928,19,&quot;yes&quot;,&quot;white&quot;,&quot;yes&quot;,0
+## &quot;103&quot;,3770,49.89512,24,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;104&quot;,3770,49.89512,23,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;105&quot;,3770,54.43104,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;106&quot;,3790,109.315672,25,&quot;no&quot;,&quot;black&quot;,&quot;yes&quot;,0
+## &quot;107&quot;,3799,50.802304,30,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;108&quot;,3827,76.657048,22,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;109&quot;,3856,54.43104,18,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;110&quot;,3860,77.11064,16,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,4
+## &quot;111&quot;,3860,84.368112,32,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;112&quot;,3884,54.43104,18,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;113&quot;,3884,58.96696,29,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;114&quot;,3912,53.070264,33,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;115&quot;,3940,77.11064,20,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;116&quot;,3941,60.781328,28,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;117&quot;,3941,61.23492,14,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;118&quot;,3969,58.96696,28,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;119&quot;,3983,54.43104,25,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;120&quot;,3997,43.09124,16,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;121&quot;,3997,71.667536,20,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;122&quot;,4054,72.57472,26,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;123&quot;,4054,52.16308,21,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;124&quot;,4111,58.513368,22,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;125&quot;,4153,58.96696,25,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;126&quot;,4167,54.43104,31,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;127&quot;,4174,77.11064,35,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;128&quot;,4238,54.43104,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;129&quot;,4593,52.616672,24,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;130&quot;,4990,55.791816,45,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;131&quot;,709,54.43104,28,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;132&quot;,1021,58.96696,29,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;133&quot;,1135,84.821704,34,&quot;yes&quot;,&quot;black&quot;,&quot;yes&quot;,0
+## &quot;134&quot;,1330,47.62716,25,&quot;no&quot;,&quot;other&quot;,&quot;yes&quot;,0
+## &quot;135&quot;,1474,38.55532,25,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;136&quot;,1588,68.0388,27,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;137&quot;,1588,43.998424,23,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;138&quot;,1701,58.059776,24,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;139&quot;,1729,59.874144,24,&quot;no&quot;,&quot;other&quot;,&quot;yes&quot;,0
+## &quot;140&quot;,1790,74.84268,21,&quot;yes&quot;,&quot;white&quot;,&quot;yes&quot;,1
+## &quot;141&quot;,1818,47.62716,32,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;142&quot;,1885,41.276872,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;143&quot;,1893,52.16308,25,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;144&quot;,1899,58.96696,16,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;145&quot;,1928,41.730464,25,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;146&quot;,1928,68.0388,20,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;147&quot;,1928,90.7184,21,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,2
+## &quot;148&quot;,1936,70.30676,24,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;149&quot;,1970,46.719976,21,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;150&quot;,2055,56.699,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;151&quot;,2055,40.369688,25,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;152&quot;,2082,46.266384,19,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;153&quot;,2084,50.802304,19,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;154&quot;,2084,53.070264,26,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;155&quot;,2100,62.595696,24,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;156&quot;,2125,58.96696,17,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;157&quot;,2126,54.43104,20,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,3
+## &quot;158&quot;,2187,58.96696,22,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;159&quot;,2187,58.96696,27,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;160&quot;,2211,36.28736,20,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;161&quot;,2225,49.89512,17,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;162&quot;,2240,47.62716,25,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,1
+## &quot;163&quot;,2240,49.441528,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;164&quot;,2282,67.131616,18,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;165&quot;,2296,49.89512,18,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;166&quot;,2296,54.884632,20,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;167&quot;,2301,45.3592,21,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,4
+## &quot;168&quot;,2325,43.544832,26,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;169&quot;,2353,46.266384,31,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;170&quot;,2353,49.89512,15,&quot;no&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;171&quot;,2367,84.821704,23,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,1
+## &quot;172&quot;,2381,55.338224,20,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;173&quot;,2381,47.62716,24,&quot;yes&quot;,&quot;black&quot;,&quot;no&quot;,0
+## &quot;174&quot;,2381,52.16308,15,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;175&quot;,2410,54.43104,23,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;176&quot;,2410,64.410064,30,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;177&quot;,2410,58.96696,22,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,1
+## &quot;178&quot;,2414,54.43104,17,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,3
+## &quot;179&quot;,2424,49.89512,23,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;180&quot;,2438,54.43104,17,&quot;no&quot;,&quot;black&quot;,&quot;no&quot;,2
+## &quot;181&quot;,2442,69.853168,26,&quot;no&quot;,&quot;other&quot;,&quot;yes&quot;,1
+## &quot;182&quot;,2450,47.62716,20,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,3
+## &quot;183&quot;,2466,86.18248,26,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,0
+## &quot;184&quot;,2466,45.812792,14,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;185&quot;,2466,43.09124,28,&quot;yes&quot;,&quot;white&quot;,&quot;no&quot;,2
+## &quot;186&quot;,2495,45.3592,14,&quot;no&quot;,&quot;other&quot;,&quot;no&quot;,2
+## &quot;187&quot;,2495,42.637648,23,&quot;yes&quot;,&quot;other&quot;,&quot;no&quot;,0
+## &quot;188&quot;,2495,64.410064,17,&quot;no&quot;,&quot;black&quot;,&quot;yes&quot;,0
+## &quot;189&quot;,2495,58.96696,21,&quot;yes&quot;,&quot;white&quot;,&quot;yes&quot;,3</code></pre>
+<p>Here we can see that by default R adds a column of row numbers, and puts all non-numeric values in quotation marks. This doesn’t matter so much if we only plan to load the resulting file back into R, but in case we want to use the file in another program that does not expect these formatting features, we can turn them off with some extra arguments:</p>
+<pre class="r"><code>write.csv(bw, file=&quot;&quot;, row.names=FALSE, quote=FALSE)</code></pre>
+</div>
+<div id="saving-output" class="section level1">
+<h1>Saving output</h1>
+<p>Above we saw how to write data frames into text files. R can write other kinds of information into text files as well. Sometimes we might like to save the outputs that are shown in the console into a text file instead. We won’t often want to do this, since it is better to save both the outputs and the R commands that generated them together, and we can accomplish this with a markdown file, or we can write an R script and let people run it in order to see the outputs.</p>
+<p>Some cases in which we nonetheless want to save just the outputs are if we want to save one specific result and send it to people who do not use R and just want to see that result, or if we have conducted a very elaborate or time-consuming analysis that we don’t want people to have to trawl through to find the main result.</p>
+<p>Saving console output into a text file is slightly trickier than loading and saving data frames. It involves three steps instead of just one:</p>
+<ol style="list-style-type: decimal">
+<li>open the text file</li>
+<li>print things into it</li>
+<li>close the text file</li>
+</ol>
+<p>The <code>sink()</code> function opens a text file to be written into. The input is the name of the file. In order to make the file recognizable as a text file, it is a good idea to give it the file suffix ‘.txt’.</p>
+<pre class="r"><code>sink(&quot;results.txt&quot;)</code></pre>
+<p><code>sink()</code> has now ‘diverted’ the output from the console into the text file. Whenever we print something out, it goes into the text file and is not shown in the console.</p>
+<p>For example, if we want to print a table of the numbers of smokers and non-smokers in the birth weights data frame:</p>
+<pre class="r"><code>print(table(bw$Smoker))</code></pre>
+<p>When we have finished writing to the text file, we should close it. This is done with the <code>sink()</code> function again, this time without any input.</p>
+<pre class="r"><code>sink()</code></pre>
+<p>It is important to close a text file when we have finished with it because for as long as it remains open, all our output in the console will go into the text file.</p>
+<p>If you are working in the console and you find that you don’t see any output when you are expecting some, it may be because you have a file still open. Try running <code>sink()</code> to close an open file. It is possible to open multiple files in R, and you may have done this by accident if you have run the command to open the file multiple times. If you need to check how many files are currently open, use <code>sink.number()</code>. This tells you the number of open files. You will need to run <code>sink()</code> this many times.</p>
+<p>A good way to avoid getting into trouble with inadvertently opened files is to always place <code>sink()</code> right after the printing commands:</p>
+<pre class="r"><code>sink(&quot;results.txt&quot;)
+print(table(bw$Smoker))
+sink()</code></pre>
+<p>By default, <code>sink()</code> creates a new text file, overwriting any existing file with the same name. If instead we want to add to an existing file, we can set the <code>append</code> argument to <code>TRUE</code>. Now any printed output will be added to the bottom of the file.</p>
+<p>For example to add a summary of the birth weights variable to the file we created above:</p>
+<pre class="r"><code>sink(&quot;results.txt&quot;, append=TRUE)
+print(summary(bw$Birth_weight))
+sink()</code></pre>
+<p>Just printing in lots of outputs to a text file can result in a fairly confusing mess. We should add some orienting headings and blank lines in between the outputs to make the structure of the information clearer.</p>
+<p>The <code>cat()</code> function prints additional pieces of text into a file. A new line is given with the character combination <code>\n</code>.</p>
+<p>If we have a few things to print into our text file, the whole operation, including some headings, might look something like this:</p>
+<pre class="r"><code>sink(&quot;results.txt&quot;)
+cat(&quot;Numbers of smokers and non-smokers:\n&quot;)
+print(table(bw$Smoker))
+cat(&quot;\n\nSummary of birth weights (in grams):\n\n&quot;)
+print(summary(bw$Birth_weight))
+sink()</code></pre>
+<p>The resulting text file looks like this:</p>
+<pre><code>## Numbers of smokers and non-smokers:
 ## 
-## $locations
-## [1] &quot;Berlin&quot;     &quot;Manchester&quot;
+##  no yes 
+## 115  74 
 ## 
-## $survey_ID
-## [1] 3</code></pre>
-<pre class="r"><code>length(survey)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<p>To index a list, we can use the dollar symbol followed by the name of the entry in the list, as we do to get a column from a data frame.</p>
-<pre class="r"><code>survey$locations</code></pre>
-<pre><code>## [1] &quot;Berlin&quot;     &quot;Manchester&quot;</code></pre>
-<p>Alternatively, we can index a list by the order of the entries, as we do for a vector. However, if we do this, we do not get the contents of that entry in the list. Instead, we get a new list that just has one entry.</p>
-<pre class="r"><code>survey[2]</code></pre>
-<pre><code>## $locations
-## [1] &quot;Berlin&quot;     &quot;Manchester&quot;</code></pre>
-<pre class="r"><code>class(survey[2]) # (it's still a list)</code></pre>
-<pre><code>## [1] &quot;list&quot;</code></pre>
-<p>To get the actual contents of a list entry, we must use the double square parentheses <code>[[]]</code>.</p>
-<pre class="r"><code>survey[[2]]</code></pre>
-<pre><code>## [1] &quot;Berlin&quot;     &quot;Manchester&quot;</code></pre>
-<pre class="r"><code>class(survey[[2]]) # (now it's the character vector stored in the list)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<p>We will work mostly with data frames, and less commonly with lists, but they have their occasional uses.</p>
+## 
+## Summary of birth weights (in grams):
+## 
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     709    2414    2977    2945    3487    4990</code></pre>
 </div>
 
 

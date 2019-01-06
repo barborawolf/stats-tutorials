@@ -1,0 +1,224 @@
+---
+title: "Files"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+# Loading data
+
+We have seen how to create data frames to organize data. For a large set of data, typing the individual values into an R script would be extremely tedious. Much more often we will load data from a file.
+
+(Later on, we will still occasionally create our own data frames, if we want to generate simulated data, or data for a short demonstration or graphic.)
+
+R can load data from many different file types. We will look at three common ones here:
+
+* R data files
+* delimited text files
+* the internet
+
+## RData
+
+R has its own data format. If we or somebody else has processed some data using R, then the result may already be in R format. We can recognize such files by the file suffix *.RData*, and they can be loaded using the `load()` function. The input to `load()` is the name of the R data file we want to load. The names of files and folders are enclosed in quotation marks, which distinguishes them from the names of variables and functions.
+
+Remember that R will look for data files in our current working directory, which we can find out using `getwd()`. If the file is located in a subfolder within that folder, then we can supply the name of the subfolder, along with the file path separator `/`. The data files for these tutorials are stored in a subfolder called 'data'.
+
+```{r}
+load("data/birth_weights.RData")
+```
+
+`load()` is one of the very few functions that changes the contents of our workspace without us having to assign anything into a variable using `=`. The variables in an R data file have already been named and their contents assigned by whoever produced the file. When we load a file, the variables it contains appear in our workspace.
+
+Our example R data file contains just one variable, and it is a data frame called 'bw'.
+
+```{r}
+ls()
+class(bw)
+```
+
+**bw** stands here for **b**irth **w**eights. The data frame records the weights of newborn babies, along with several pieces of information about their mothers. To see the data in R, we can just type the name of the variable in the console, as we have seen before.
+
+```{r}
+bw
+```
+
+We will explore these data later, but first we will learn how to load the same data from other formats.
+
+## Delimited text
+
+Although the RData format is convenient if we are doing all our work in R, it has some disadvantages. If we want to make our data available to people who do not work in R, then we need a more general format. And when we collect new data ourselves, it can be more convenient to enter the data into a spreadsheet or text file than into an R data frame.
+
+R can also load data from text files. These files just contain plain text, so they can be viewed and edited with a text editor such as Gedit or WordPad. Loading them into R is easiest when they have a certain format that structures them like a data frame:
+
+* The first row of the file defines the names of the columns in our data frame (for example, things like age, sex, and so on).
+* Subsequent rows each give one observation. For example one participant, or one trial of an experiment.
+* On each row, the columns are separated (or **delimited**) by a certain character.
+
+We can choose whichever character we like to separate the columns, but two common choices are the tab character or the comma. Here we will load a comma-separated text file. These files are typically given the file suffix **csv**, which stands for **c**omma **s**eparated **v**alues.
+
+The `read.table()` function reads a table of delimited values from a text file. The first input is the name of the file, just as for `load()`, and the `sep` argument (short for **separator**) specifies what character the file uses to separate the columns. Unlike R data files, the data from plain text files is not already organized into variables, so we need to assign the result of `read.table()` into a variable.
+
+```{r}
+bw = read.table("data/birth_weights.csv", sep=",")
+
+class(bw)
+```
+
+We can see that the resulting variable is a data frame containing the data almost as expected. However, if we compare with the same data loaded from the R data file above, we see a small problem.
+
+```{r}
+bw
+```
+
+By default, `read.table()` does not treat the first line of the text file as a header line giving the names of the columns. Instead, it thinks that the first line is alread the first row of the data, and it has assigned default names for the columns: V1, V2, V3, etc.
+
+This is not what we want, unless we are dealing with a text file that has no header line, which is a fairly rare occurrence. To specify that the first line is the header, we must set the `header` argument of `read.table()` to `TRUE`.
+
+```{r}
+bw = read.table("data/birth_weights.csv", sep=",", header=TRUE)
+
+bw
+```
+
+Since the csv file is a fairly common format, R provides a convenience function, `read.csv()`, for reading from comma-separated text files. It works just like `read.table()`, but with `sep=","` and `header=TRUE` already set by default, so that we do not need to specify them.
+
+```{r}
+bw = read.csv("data/birth_weights.csv")
+```
+
+I will use csv files for most of the remaining tutorials that involve loading data.
+
+In some countries, for example in Germany, the comma is used as a decimal point indicator, so that the number `2.4` is written as `2,4`. If somebody has created a csv file using a spreadsheet program in a country that uses the comma as a decimal point, the separator character will usually be the semicolon `;`.
+
+We can load such files either by setting the `dec` (**decimal**) argument to the semicolon, i.e. `dec=";"`, or by using the convenience function `read.csv2()`, which handles this file format.
+
+If you are in doubt about the format of a delimited text file, open it first in a text editor outside of R to see what it contains. You can also see the contents of a text file from Rstudio, either by opening it via *File* -> *Open File*, or using the `file.show()` function, with the name of the file as input.
+
+## The internet
+
+R can also retrieve data files from the internet. For this, we need to full web address of the file, including the `http://` or `https://` part. The `url()` function opens a connection to a file on the internet. This connection can then be entered as the input to `load()`, `read.table()`, or `read.csv()`.
+
+Since web addresses are often quite long, for clarity we can first store the web address in a variable, and then put this variable into `url()`, which in turn we put into the appropriate function for reading the file.
+
+Here we load the same csv file as above, but by retrieving it from the [GitHub site where the tutorials are stored](https://github.com/luketudge/stats-tutorials).
+
+```{r}
+web_address = "https://github.com/luketudge/stats-tutorials/raw/master/tutorials/data/birth_weights.csv"
+bw = read.csv(url(web_address))
+```
+
+This is a great way to make our work accessible to others. If we store our data on a website and then provide an R script that retreives the data and carries out our analysis, anybody else with an internet connection can examine and verify our work just by running the script, and without having to manually download the data file and make sure it is in their working directory.
+
+# Saving data
+
+The `load()` and `read.table()` functions for reading data from files each have analogous functions for saving data to files. These are useful if we have either generated new data within R, or have modified a data frame and would like to save the modified version for later use.
+
+For example, imagine we wanted a version of the birth weights data file in which the babies' weights are given in grams instead of kilograms:
+
+```{r}
+bw$Birth_weight = bw$Birth_weight * 1000
+
+summary(bw$Birth_weight) # to check the change
+```
+
+`save()` saves one or more variables from our R workspace into an R data file. The inputs are the variables we want to save, and the `file` argument gives the name of the file we want to save them into.
+
+```{r}
+save(bw, file="bw_grams.RData")
+```
+
+`write.table()` or `write.csv()` write a data frame into a text file in the same way.
+
+```{r}
+write.csv(bw, file="bw_grams.csv")
+```
+
+If we want to first check that R is saving the text file in the format that we want, we can take a look at the text that will be written into the file. We can do this by specifying an empty file name (`""`). This will print out the text to the console instead of writing it to a file.
+
+```{r, message=1:10}
+write.csv(bw, file="")
+```
+
+Here we can see that by default R adds a column of row numbers, and puts all non-numeric values in quotation marks. This doesn't matter so much if we only plan to load the resulting file back into R, but in case we want to use the file in another program that does not expect these formatting features, we can turn them off with some extra arguments:
+
+```{r, results=FALSE}
+write.csv(bw, file="", row.names=FALSE, quote=FALSE)
+```
+
+# Saving output
+
+Above we saw how to write data frames into text files. R can write other kinds of information into text files as well. Sometimes we might like to save the outputs that are shown in the console into a text file instead. We won't often want to do this, since it is better to save both the outputs and the R commands that generated them together, and we can accomplish this with a markdown file, or we can write an R script and let people run it in order to see the outputs.
+
+Some cases in which we nonetheless want to save just the outputs are if we want to save one specific result and send it to people who do not use R and just want to see that result, or if we have conducted a very elaborate or time-consuming analysis that we don't want people to have to trawl through to find the main result.
+
+Saving console output into a text file is slightly trickier than loading and saving data frames. It involves three steps instead of just one:
+
+1. open the text file
+2. print things into it
+3. close the text file
+
+The `sink()` function opens a text file to be written into. The input is the name of the file. In order to make the file recognizable as a text file, it is a good idea to give it the file suffix '.txt'.
+
+```{r, eval=FALSE}
+sink("results.txt")
+```
+
+`sink()` has now 'diverted' the output from the console into the text file. Whenever we print something out, it goes into the text file and is not shown in the console.
+
+For example, if we want to print a table of the numbers of smokers and non-smokers in the birth weights data frame:
+
+```{r, eval=FALSE}
+print(table(bw$Smoker))
+```
+
+When we have finished writing to the text file, we should close it. This is done with the `sink()` function again, this time without any input.
+
+```{r, eval=FALSE}
+sink()
+```
+
+It is important to close a text file when we have finished with it because for as long as it remains open, all our output in the console will go into the text file.
+
+If you are working in the console and you find that you don't see any output when you are expecting some, it may be because you have a file still open. Try running `sink()` to close an open file. It is possible to open multiple files in R, and you may have done this by accident if you have run the command to open the file multiple times. If you need to check how many files are currently open, use `sink.number()`. This tells you the number of open files. You will need to run `sink()` this many times.
+
+A good way to avoid getting into trouble with inadvertently opened files is to always place `sink()` right after the printing commands:
+
+```{r, eval=FALSE}
+sink("results.txt")
+print(table(bw$Smoker))
+sink()
+```
+
+By default, `sink()` creates a new text file, overwriting any existing file with the same name. If instead we want to add to an existing file, we can set the `append` argument to `TRUE`. Now any printed output will be added to the bottom of the file.
+
+For example to add a summary of the birth weights variable to the file we created above:
+
+```{r, eval=FALSE}
+sink("results.txt", append=TRUE)
+print(summary(bw$Birth_weight))
+sink()
+```
+
+Just printing in lots of outputs to a text file can result in a fairly confusing mess. We should add some orienting headings and blank lines in between the outputs to make the structure of the information clearer.
+
+The `cat()` function prints additional pieces of text into a file. A new line is given with the character combination `\n`.
+
+If we have a few things to print into our text file, the whole operation, including some headings, might look something like this:
+
+```{r, eval=FALSE}
+sink("results.txt")
+cat("Numbers of smokers and non-smokers:\n")
+print(table(bw$Smoker))
+cat("\n\nSummary of birth weights (in grams):\n\n")
+print(summary(bw$Birth_weight))
+sink()
+```
+
+The resulting text file looks like this:
+
+```{r, echo=FALSE}
+cat(paste(readLines("results.txt"), collapse="\n"))
+```
