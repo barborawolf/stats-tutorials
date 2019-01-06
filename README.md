@@ -3,8 +3,6 @@ Tutorials for my classes, using R.
 
 A work in flux, maybe even progress.
 
-`/html` contains the tutorials as html.
+`/tutorials` contains the tutorials as html, along with the Rmarkdown files used to generate them.
 
-`/Rmd` contains the Rmarkdown files that generated the html files.
-
-`/data` contains the data files used in the tutorials, mostly in `.csv` format.
+`tutorials/data` contains the data files used in the tutorials, mostly in `.csv` format.
