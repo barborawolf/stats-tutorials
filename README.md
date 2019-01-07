@@ -10,6 +10,15 @@ A work in flux, maybe even progress.
 
 `tutorials/data` contains the data files used in the tutorials, mostly in `.csv` format.
 
+## Structure
+
+The introductory tutorials are best read in order:
+
+1. Introduction
+2. Data types
+3. Files
+4. Packages
+
 ## Packages
 
 R packages loaded in the tutorials:
