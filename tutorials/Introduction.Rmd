@@ -13,7 +13,7 @@ R is a programming language. To get R to do things, we must type in commands. We
 
 ## Console
 
-If we type a command into the **console**, it is executed immediately and we will see the results. So we use the console when we want to test something out, see whether it works, check something quickly, and so on.
+If we type a command into the **Console**, it is executed immediately and we will see the results. So we use the console when we want to test something out, see whether it works, check something quickly, and so on.
 
 There is a console tab in RStudio. You will see a `>` there. Type an R command after the `>` and you will see the result printed out underneath. For example, try typing in `2 + 2`. You should see the result `[1] 4`. Don't worry about the `[1]` for now. This is there because sometimes we will type in commands that have multiple results, in which case R will number the results for us. `2 + 2` has only one result, so we see it numbered as `[1]`.
 
