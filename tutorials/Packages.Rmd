@@ -86,6 +86,20 @@ fig = ggplot(bw, aes(x=Weight, y=Birth_weight)) +
 print(fig)
 ```
 
+# Masking
+
+As we have just seen, loading a package makes new functions available for use in our R session. Occasionally, two different packages will bring with them two different functions that have the same name. If we start working with multiple packages at once, we may occasionally have to load two such packages. In this case there is a conflict of names; R cannot tell apart the two same-named functions. Whichever package we load second will take precedence. Its function will overwrite, or 'mask', the earlier one with the same name.
+
+R warns us when this has occurred. For example, the `psych` package contains a function `alpha()` that has the same name as a (completely different) function from ggplot.
+
+```{r}
+library(psych)
+```
+
+If we only want to use one of the two functions, then this doesn't matter. We just need to take care with the order in which we load packages, and load the package whose function we want to use *after* the package whose same-named function we don't want to use.
+
+Alternatively, if we need to use both of the same-named functions in the same R script, we can still do so, by letting R know explicitly where to get the function from. The `::` symbol retrieves a function from a specific package. So if we want to use ggplot's `alpha()` we write `ggplot2::alpha()`, and if we want to use psych's `alpha()` we write `psych::alpha()`.
+
 # Updating
 
 If you want to know what packages are loaded in your current R session, you can look at the packages tab in RStudio and see which packages have a tick next to their names. Or you can use the `sessionInfo()` function in the console. Under **other attached packages** you see the names of packages that you have loaded, along with their version number.
