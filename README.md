@@ -26,3 +26,4 @@ R packages loaded in the tutorials:
 * `readxl`
 * `haven`
 * `ggplot2`
+* `psych`
