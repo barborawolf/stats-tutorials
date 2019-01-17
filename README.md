@@ -6,23 +6,9 @@ A work in flux, maybe even progress.
 
 ## Contents
 
-`tutorials/` contains the tutorials as html, along with the Rmarkdown files used to generate them.
+`tutorials/` contains the tutorials as html, along with the Rmarkdown files used to generate them. The README for this folder gives a suggested order in which to complete the tutorials.
 
 `tutorials/data/` contains the data files used in the tutorials, mostly in csv format.
-
-## Structure
-
-The introductory tutorials are best read in order:
-
-1. Introduction
-2. Data types
-3. Files
-4. Packages
-
-Later tutorials assume familiarity with the introductory materials, but otherwise cover stand-alone topics and can be consulted in any order:
-
-* Dimension reduction
-* Resampling
 
 ## Packages
 
