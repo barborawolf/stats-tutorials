@@ -1,0 +1,587 @@
+---
+title: "Dimension reduction"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+The `psych` package, maintained by the [Personality Project](http://personality-project.org), supplies a few functions that are useful for the dimension reduction techniques we will learn about in this tutorial. It is called 'psych' because many psychologists are particularly interested in dimension reduction, usually as a method for reducing various personality or intelligence measures to a smaller number of summary measures. You can read more about the psych package [here](http://personality-project.org/r/psych).
+
+Because the psych package contains some functions that we do not need, but that happen to have the same name as functions in ggplot, we take care to load psych first, so that ggplot's same-named functions mask those from psych, and not vice versa. In particular we will need the `%+%` operator from ggplot (for adding new data to an existing plot), which also exists in psych (with a completely different purpose).
+
+```{r}
+library(psych)
+library(ggplot2)
+```
+
+There are a few other packages that we will need as well.
+
+```{r, message=FALSE}
+library(GGally) # for a scatterplot matrix
+library(reshape2) # for a heat map
+```
+
+# Dimensions
+
+We have seen that variables can be related to one another, such that higher values of one variable tend to go together with higher values of another. A typical example is height and weight. If a person is taller, they will tend also to be heavier, because there is more of them. Let's load a very simple data set, containing the heights and weights of a few people. The data are taken from a larger [data set](https://www.rdocumentation.org/packages/faraway/versions/1.0.7/topics/seatpos) used in the textbook [*Linear Models with R*](https://www.crcpress.com/Linear-Models-with-R/Faraway/p/book/9781439887332) by Julian Faraway.
+
+```{r}
+hw = read.csv("data/height_weight.csv")
+
+hw
+```
+
+A linear relationship between two variables can be visualized as the observations clustering along an imaginary straight line in a 2-dimensional space. The dimensions in this space are our two variables, in this case height and weight.
+
+```{r}
+plot_ratio = sd(hw$Weight)/sd(hw$Height)
+
+fig_hw = ggplot(hw, aes(x=Weight, y=Height)) +
+  geom_point() +
+  coord_fixed(ratio=plot_ratio) +
+  labs(x="Weight (kg)", y="Height (cm)", caption="Data: Faraway, 2004")
+
+print(fig_hw)
+```
+
+We could describe a person from this data set by stating their height and their weight. We could say that someone is tall and heavy. But we can convey the same information in different ways, by stating two other things about them that are directly related to both height and weight. For example, we could say that someone is 'big' (i.e. both tall and heavy), but of average 'build' (i.e. not heavier or lighter than we would expect for their size).
+
+In terms of the height and weight space, an alternative method of description such as 'size and build' can be thought of as an alternative pair of axes in the same space. For example like this:
+
+```{r}
+b1 = sd(hw$Height) / sd(hw$Weight)
+a1 = mean(hw$Height) - b1*mean(hw$Weight)
+b2 = -b1
+a2 = mean(hw$Height) - b2*mean(hw$Weight)
+
+fig_PC = fig_hw +
+  geom_abline(intercept=c(a1,a2), slope=c(b1,b2))
+
+print(fig_PC)
+```
+
+The axis that runs from bottom left to top right, tracking the linear association between height and weight, is the size axis. People further up and right along this axis are larger, in the sense of being both taller and heavier. The other axis that runs from top left to bottom right is the build axis. People further down and right along this axis are (to put it somewhat bluntly) fatter, since they are heavier in proportion to their height.
+
+Whereas height and weight have clear units of measurement (in this case *cm* and *kg*), it is not so clear what the units of size and build should be. Since each of these variables is a composite, expressing something about both height and weight, one way of thinking about their units is as a combination of *cm* and *kg*. But this is unwieldy and makes interpretation difficult. We can resolve this difficulty by first expressing height and weight in standardized units, relative to mean height and weight. We know this already as the *z* transform.
+
+Once standardized, the space of the data has a standard geometry, in which (0,0) is mean height and mean weight, and the unit of distance (in any direction) is an 'average deviation' from that combination of height and weight.
+
+```{r, message=FALSE}
+z = function(x){
+  return((x - mean(x)) / sd(x))
+}
+
+hw$zHeight = z(hw$Height)
+hw$zWeight = z(hw$Weight)
+
+fig_hw = fig_hw %+% hw +
+  aes(x=zWeight, y=zHeight) +
+  coord_fixed() +
+  labs(x="z Weight", y="z Height")
+
+fig_PC = fig_hw +
+  geom_abline(intercept=c(0,0), slope=c(1,-1))
+
+print(fig_PC)
+```
+
+If we now take one person from the data and 'project' them onto the new axes, we can get values for their size and build (relative to the average combination), and use these to describe the person instead of their height and weight.
+
+```{r, warning=FALSE}
+person = hw[13,c("zHeight","zWeight")]
+
+size = c(1,1) * ((person$zWeight + person$zHeight) / 2)
+build = c(1,-1) * ((person$zWeight - person$zHeight) / 2)
+
+fig_PC = fig_PC +
+  geom_segment(data=person, xend=size[1], yend=size[2], lty="dashed") +
+  geom_segment(data=person, xend=build[1], yend=build[2], lty="dashed")
+
+print(fig_PC)
+```
+
+# Principal Components Analysis
+
+Take a look at the new dimensions we created above to describe some people. The first dimension we called 'size'. Size tells us something about both a person's height and their weight; it is a combination of the two. It also has an important property that neither height nor weight has. Looking at the plot, we can see that the points representing the people are maximally 'spread out' along the size dimension. If we project each person onto the size axis, as shown for one person in the last plot, then the people will be maximally separated from each other. They are more spread out along the size axis than they are along either the height or weight axis, and more than if we had placed a new axis at any other different orientation through the height-weight space.
+
+This new axis that maximally separates the data, or in other words maximizes its variance, is called the first **P**rincipal **C**omponent, often abbreviated to **PC**. The second Principal Component is the next axis that also maximizes the variance in the data, subject to the constraint that the axis be 'orthogonal' (i.e. perpendicular to) the first Principal Component. And so on, until we have drawn as many new axes as we have variables in our data set. In the very simple example above, our data were 2-dimensional, so we could draw only two Principal Components, and the second one, which we called 'build', was determined entirely by the placement of the first (since there was no scope left for placing it at a different orientation after having already placed the first).
+
+Given this property of the Principal Components, it is easy to see how they might be used not only to redescribe but also to *reduce* the dimensions of a data set. Since the last Principal Component is placed after all the others have already expressed as much of the differences in the data as possible, we could just discard the last Principal Component, and we would still have a reasonably fine-grained description of our data. And since the penultimate Principal Component is the one that is now least informative among those remaning, we could also discard it, and so on, until we reach a set of Principal Components that re-express our data in terms of a small number of dimensions that nonetheless retain as much fine-grained information about the data while doing so.
+
+Principal Components Analysis (**PCA**) is a method for re-expressing data in terms of Principal Components. We will take a look at how to implement it in R below, using first the very simple height-weight data, then a higher-dimensional data set. But first, let's clear up a small common confusion.
+
+## Difference from linear regression
+
+When we drew the first Principal Component in the example above, we drew a line through the space of our data, such that the line seemed to follow the trend of the linear association between height and weight. This sounds and looks an awful lot like what we do in a linear regression. It is certainly similar, but there is an important difference.
+
+The difference is most easily expressed in terms of the properties of the lines. Both a regression line and the first Principal Component minimize a certain 'error', but a different one. A linear regression is not 'symmetrical'; one of the variables has the role of outcome and the other is the predictor, with the outcome shown by convention on the vertical axis and the predictor on the horizontal axis. We take the values of the predictor as given, and aim only to minimize the errors in predicting the values of the outcome. Since the regression line aims to best predict the values of the outcome, and the outcome is on the vertical axis, geometrically the line must minimize the *vertical* distances to the observed data points.
+
+What then does the first Principal Component minimize? It minimizes the *perpendicular* distances to the observed data points. The error that is minimized by minimizing these distances is not the error in predicting just one of the original variables (as it is in linear regression), but rather the error in predicting all of them. The first Principal Component is therefore 'symmetrical' in the sense that it is an approximate representation of all the original variables combined.
+
+```{r}
+m = lm(zHeight ~ zWeight, data=hw)
+
+fig_lm = fig_PC +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_segment(aes(xend=zWeight), yend=predict(m, newdata=person), data=person, color="blue", lty="dashed")
+
+print(fig_lm)
+```
+
+To get a further impression of the properties of Principal Components, see [this excellent visualization and explanation](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues) on StackExchange.
+
+## psych
+
+Now we will look at calculating Principal Components using R. The `principal()` function from the psych package implements PCA. Its input is the data frame containing the variables that we wish to re-express as Principal Components. If we only want to apply PCA to some of the variables in a data frame, then we need to select the relevant columns.
+
+The `nfactors` argument specifies how many of the Principal Components we want to calculate. By default, this is set to just 1, and so calculates only the first Principal Component. We will calculate both of the Principal Components for the height and weight data.
+
+For the moment, ignore the `rotate` argument. We will look at this shortly.
+
+Note also that we do not have to first standardize the variables in the data frame with the *z* transform, as we did for the visualization above. The `principal()` function does this automatically, and the results are reported in terms of the 
+
+```{r}
+PCA_hw = principal(hw[,c("Height","Weight")], nfactors=2, rotate="none")
+```
+
+The object that `principal()` outputs contains many pieces of information about the results of the PCA.
+
+```{r}
+names(PCA_hw)
+```
+
+If we need to, we can access these things separately using `$`, but `print()` gives us a neater general summary.
+
+```{r}
+print(PCA_hw)
+```
+
+First, we see a table of **loadings**, in which the rows are the original variables and the columns are the Principal Components. For example, we can see that the loading for both height and weight on the first Principal Component is 0.96. A loading is like a correlation coefficient. It represents the strength and direction of the linear relationship between a variable and the component. So in this case, both height and weight are both closely correlated with the first Principal Component (which we interpreted as 'size'). This makes sense given what we see in our plots above, and also intuitively: If someone's height or weight is greater, then their size will tend to be greater. The loadings for the second Principal Component (which we called 'build') also make intuitive sense. They are smaller in magnitude, since build is somewhat independent of height or weight. The loading for weight is positive, since a greater weight tends to go with being fatter. And the loading for height is negative, since someone who is of the same weight as other people but is taller, must therefore be *less* fat.
+
+We will come to the columns 'h2', 'u2', and 'com' later.
+
+The second table gives various ways of quantifying the amount of variance in the data that each of the components accounts for. We can think of this as telling us how good an approximation to the full original data set the components are. The 'Proportion Var' row tells us what proportion of the variance in the data each component accounts for. We can see that the first Principal Component already accounts for 91% of the variance in height and weight. This makes sense given what we see in our plot. The close correlation between height and weight means that a lot of the variation in them can be explained with just one characteristic: size. The 'Cumulative Var' row tells us the same thing, but in terms of how much variance is accounted for by all the components up to and including the one in that column. This will necessarily be 100% by the time we reach the last possible component.
+
+For Principal Components Analysis, the two rows 'Proportion Explained' and 'Cumulative Proportion' tell us the same thing as the two preceding rows. However, for other methods of dimension reduction they can be different, as we will see later.
+
+In order to get a clear understanding of what Principal Components are, we have so far considered a very simple example, with just two variables. It is only very rarely that we would want to apply Principal Components to just two variables. There is little need to simplify or re-express something so simple that can easily be presented graphically. So to continue learning about PCA we will look at a slightly larger example.
+
+The data that we will use come from [athletes competing in the decathlon](https://www.rdocumentation.org/packages/FactoMineR/topics/decathlon), an athletics competition composed of 10 separate events. Since athletes' performance in each of the 10 separate events is probably related to some more general aspects of performance, it may be feasible to represent performance in the decathlon as ability along a smaller number of dimensions. In addition, since the events are of different kinds (some involve running fast, some involve throwing things, etc.) we may be able to interpret these new dimensions as reflecting particular aspects of sporting ability.
+
+```{r}
+load("data/decathlon.RData")
+
+d
+```
+
+The first 10 columns give each athlete's performance in the 10 events. The remaining columns tell us the athlete's rank and number of points won in the competition, and which overall event they competed in (at the [Decastar](https://decastar.fr/en/) athletics competition in France or at the Olympic Games).
+
+## Visualization
+
+Now that we have 10 dimensions instead of just 2, it is no longer feasible to show all the data together in one space. Even 3 dimensions is already difficult.
+
+### Scatterplot matrix
+
+One option is to show each pair of variables in a 2-dimensional space, and arrange these separate plots together. This arrangement is often called a 'scatterplot matrix'. The `GGally` package provides a function `ggpairs()` that can create a scatterplot matrix. The input is the data we wish to plot, and the `columns` argument specifies which columns we want to include in the plot.
+
+```{r, fig.width=12, fig.height=9}
+scat_mat = ggpairs(d, columns=1:10)
+
+print(scat_mat)
+```
+
+Each plot in the plot matrix shows a pair of variables, with the exception of the diagonal, which shows the distribution of each variable alone. Below the diagonal we see scatterplots for each pair of variables. The corresponding plots above the diagonal just display the correlation coefficient for the linear association between those two variables.
+
+### Heat map
+
+To see just the correlation coefficients, we can also use R's `cor()` function.
+
+```{r}
+cor_mat = cor(d[,1:10])
+
+cor_mat
+```
+
+But a large correlation matrix is not so easy to read. We can turn it into something more visual. A 'heat map' is an alternative representation of a correlation matrix using colored tiles instead of numbers. Each tile represents the correlation coefficient for one pair of variables as a color. The intensity and/or hue of the color varies with the correlation coefficient.
+
+For a heat map we will need to map the names of the variables in our data set to both the *x* axis and the *y* axis, and map the correlation coefficient to the fill color dimension. For this, we will need a data frame with three columns: variable 1, variable 2, then the correlation coefficient for that pair of variables. Fortunately, the `melt()` function from the `reshape2` package performs exactly this transformation on a matrix: turn the row and column names of the matrix into two columns, and the contents of the matrix into a third.
+
+The only thing we need to tweak is to give a name to the correlation coefficient column, since `melt()` has no way of knowing what the numbers in the matrix represent.
+
+```{r}
+heatmap_data = melt(cor_mat)
+names(heatmap_data)[3] = "r"
+
+heatmap_data
+```
+
+Now we can turn this data frame into a heat map, using `geom_raster()` for colored tiles.
+
+```{r}
+heatmap = ggplot(heatmap_data, aes(x=Var1, y=Var2, fill=r)) +
+  geom_raster() +
+  labs(x=NULL, y=NULL)
+
+print(heatmap)
+```
+
+On the default color scale it isn't immediately obvious which shade of blue indicates a zero correlation or a correlation close to -1 or 1. We can try to improve this by creating a custom color scale that distinguishes both negative and positive correlations from zero correlations. A scale with a neutral midpoint, for example black, and separate colors for the high and low ends of the scale, for example red and blue, is a bit better.
+
+```{r}
+heatmap = heatmap +
+  scale_fill_gradient2(low="blue", mid="black", high="red", limits=c(-1,1))
+
+print(heatmap)
+```
+
+The heat map is a good quick visualization that allows us to recognize patterns. But because it only quantifies the linear relationship between each pair of variables it discards some information that may be important. The scatterplot matrix is more cluttered but because it shows each individual observation it can show us whether any of the relationships between the variables are not clearly linear, or are influenced by a small number of extreme observations.
+
+Taking both together we can get an impression of the structure of the decathlon data:
+
+* Performance in the 100m, 400m, hurdle, and long jump are all related. The long jump is *negatively* correlated with the other three, but this is simply because of the way performance is measured in these events; a higher number in the long jump indicates a longer (and therefore better) jump, whereas a lower number in the other three events indicates a faster run time. These events all involve running fast over short distances.
+
+* Performance in the discus, high jump, and shot put are also somewhat related. These events all involve throwing something heavy (if you count throwing yourself).
+
+## Eigenvalues
+
+We can now calculate Principal Components for the decathlon data.
+
+```{r}
+PCA_decathlon = principal(d[,1:10], nfactors=10, rotate="none")
+
+print(PCA_decathlon)
+```
+
+We see that the first Principal Component is fairly closely related to all of the events in the decathlon, with the exception of the pole vault and the 1500m. This is a reasonably common occurrence for data sets in which most variables concern the same general phenomenon. Since the first Principal Component aims to account for the data as well as possible, it will often end up being related to many of the variables. So a reasonable interpretation is that the first Principal Component here quantifies 'general athletic ability', with the caveat that this general ability doesn't seem to matter much for the pole vault or long distance running.
+
+We see from the output above that the first Principal Component accounts for a third of the variance among the athletes. The next few components also account for a reasonable proportion of variance. Let's visualize this, too.
+
+'Eigenvalues' are values calculated when rotating the axes of a space, as occurs in PCA. In PCA, they represent the amount of variance in the data that each Principal Component accounts for. If the variables have been standardized, as they are by `principal()`, then the variance of each variable is 1, and the sum of their variances is equal to the number of variables (so 10 for our decathlon data).
+
+The Eigenvalues are contained in the `values` entry of the object produced by `principal()`.
+
+```{r}
+eigenvalues = PCA_decathlon$values
+
+eigenvalues
+```
+
+Because the variances of the standardized variables are 1, an Eigenvalue of 1 indicates that a component accounts for as much variance as one of the original variables does. A value greater than 1 indicates that a component accounts for more variance than just one of the original variables, and therefore in a certain sense provides a compact representation of the data, using just one axis to show the information from more than one variable.
+
+## Scree plot
+
+A 'scree plot' shows the Eigenvalues of each component as a line. The trend in this line shows us when additional components cease accounting for much of the variance in the data. A horizontal guiding line can show the point at which Eigenvalues fall below 1.
+
+```{r}
+scree_data = data.frame(PC=1:10, Eigenvalue=eigenvalues)
+
+scree = ggplot(scree_data, aes(x=PC, y=Eigenvalue)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept=1, lty="dashed") +
+  scale_x_continuous(breaks=1:10)
+
+print(scree)
+```
+
+The scree plot can sometimes help us to decide how many components we want to use for a simplified representation of our data.
+
+We could look at the cutoff line and see how many components have an Eigenvalue greater than 1. This is known as **Kaiser's criterion**. This would lead us to retain 4 components for the decathlon data.
+
+We could look for **points of inflection**. These are 'kinks' in the line,  where the amount of variance each subsequent component accounts for drops considerably. This would lead us to retain either just 1 or 4 components for the decathlon data, depending on whether we take the first clear point of inflection (at component 2) or the second (at component 5).
+
+But it is best to avoid abstract 'rules of thumb' such as these and to think instead about the aims of the specific project for which we are applying PCA. How compact a representation of the data do we need? How much of the variance in the data can we afford to discard? Do the components we retain have a useful substantive interpretation (as the 'size' component does for height and weight)?
+
+## Parallel analysis
+
+A slightly more sophisticated approach to deciding how many components to retain would be to ask how much variance we expect components to account for just by coincidence, even if the original variables are unrelated in the population in general. We can estimate this by simulation:
+
+1. Generate many data sets with the same number of variables as in our data set, but do so without programming any correlations into the data generation process.
+2. Calculate the Eigenvalues from a PCA for each of these data sets.
+3. Compare these simulated Eigenvalues to the observed Eigenvalues from our PCA.
+
+This method is known as 'parallel analysis'. We won't illustrate it in full here. We will instead introduce the principle by simulating only 5 additional data sets (where we would normally want to simulate 100 or more).
+
+We first create a data frame to hold the results. It has a column for the number of the Principal Component, and a column for the Eigenvalue, just like the data frame we used for the scree plot above. Additionally, it has a column for the number of the simulated data set (so 1 to 5).
+
+We then run our simulations. Each one involves generating a random sample of 10 normally-distributed variables, having the same number of observations as in the real decathlon data. The `replicate()` function is a handy shortcut here. It creates a matrix made of repeated uses of the same R code. `as.data.frame()` then converts this into a data frame for `principal()`. We run PCA on the simulated data and extract the Eigenvalues, putting them into the data frame of simulation results.
+
+```{r}
+set.seed(0)
+
+n = nrow(d)
+n_sims = 5
+
+sim_results = expand.grid(PC=1:10, Eigenvalue=0, Simulation=1:n_sims)
+
+for(sim in 1:n_sims){
+  sim_data = as.data.frame(replicate(10, rnorm(n)))
+  sim_PCA = principal(sim_data, nfactors=10, rotate="none")
+  sim_results$Eigenvalue[sim_results$Simulation==sim] = sim_PCA$values
+}
+
+sim_results
+```
+
+We then summarize the Eigenvalues obtained from the random uncorrelated data sets on our scree plot.
+
+```{r, message=FALSE}
+parallel_plot = scree +
+  stat_summary(data=sim_results, color="red") +
+  stat_summary(data=sim_results, geom="line", color="red")
+
+print(parallel_plot)
+```
+
+The scree line for the random uncorrelated data sets is not simply flat. Even if we did not program any systematic correlation among the variables into our simulation, some weak correlations will arise just by coincidence, and the first Principal Component will always 'try its best' to use these correlations into an axis that is related to more than one variable, and so will always have an Eigenvalue at least a little above 1.
+
+For the decathlon data, it looks as though the variance explained by the first 3 Principal Components is more than we expect to occur by chance among unrelated variables.
+
+There are various possible refinements of parallel analysis. For example, if there are other features of our data that we wish to take into account, such as non-normally distributed variables or groupings of observations into categories, then we could program these into the parallel analysis as well.
+
+## Communality and uniqueness
+
+Whether by parallel analysis or by some other criterion, once we have decided how many components we wish to retain, we can simplify the output of our results by re-running the analysis with only the desired number of components, using the `nfactors` argument.
+
+```{r}
+PCA_decathlon = principal(d[,1:10], nfactors=3, rotate="none")
+
+print(PCA_decathlon)
+```
+
+Now that we have reduced the dimensionality of our data, we can also consider the 'h2' and 'u2' columns from the psych output. 'h2' quantifies the **communality** of each variable, which is the proportion of its variance that is shared with the other variables via the components. The complement of this is 'u2', the **uniqueness**, or proportion of variance in that variable that is not accounted for by the components.
+
+A variable with a low communality and high uniqueness is one that is not well described by the component structure, and whose information will therefore mostly be lost as a result of using the components to reduce the dimensionality of the data. For example, this is the case for performance in the javelin event in the 3-component PCA above.
+
+If we apply PCA and retain the maximum number of components (which is equal to the number of variables in the data), then the communalities will necessarily be 1 and the uniquenesses 0, since with 10 new axes we can fully describe the original data. We can see that this is the case for the full 10-component PCA that we calculated earlier. (You may ignore the fact that most of the uniquenesses are displayed as extremely small values rather than exactly 0. This is just due to limitations in the precision of the calculations involved.)
+
+## Complexity
+
+The final column in the same table is labeled 'com'. This stands for Hoffman's index of **com**plexity. This is a measure that quantifies the extent to which a variable is related only to one component, or to many. The formula for complexity is such that it will result in higher values if the variable correlates with multiple components.
+
+To get an idea of what the complexity values mean, we can implement the complexity formula as an R function. The input to the function is a vector of component loadings for one variable, for example `c(-0.77, 0.19, -0.18)`.
+
+```{r}
+complexity = function(x){
+  return((sum(x^2)^2) / sum(x^4))
+}
+
+complexity(c(-0.77, 0.19, -0.18))
+```
+
+We can see that a variable that correlates with only one component and not with any other has a complexity of 1, regardless of how strongly it correlates with that one component.
+
+```{r}
+complexity(c(-1, 0, 0))
+complexity(c(0.1, 0, 0))
+complexity(c(1, 0, 0))
+```
+
+And a variable that correlates equally strongly with all components has a complexity equal to the number of components, again regardless of how strongly the variable correlates with each component.
+
+```{r}
+complexity(c(0.1, 0.1, 0.1))
+complexity(c(1, 1, 1))
+complexity(c(0.5, -0.5, -0.5, -0.5))
+```
+
+## Loadings
+
+In our introductory example with height and weight, we looked briefly at the table of 'loadings', and saw that these quantify the linear relationship between each variable and each component. It is these that we turn to when trying to formulate an interpretation of each component.
+
+Purely for visual convenience, we can specify additional arguments to `print()` that can help organize the table of loadings more clearly. The `cut` argument erases all loadings that are weaker than a given value, and the `sort` argument arranges the variables in order such that those that correlate most closely with the same component are clustered together.
+
+```{r}
+print(PCA_decathlon, cut=0.3, sort=TRUE)
+```
+
+We can now see a bit more clearly that the first Principal Component combines information from most of the events, and that there are several events for which performance is quantified along both of the 2 first Principal Components.
+
+This also helps us to make more sense of the complexity measure we just considered. The variables that correlate somewhat with both of the first 2 Principal Components tend to have greater complexities. Below the loadings table we also see a single number giving the mean complexity across all variables. If this number is close to 1, and we see that the variables cluster neatly into groups that are each related to only one component, then we have a set of components each of which summarizes a different subset of variables in our data. This is not so much the case for the analysis of the decathlon data shown above.
+
+It is also a good idea to visualize the components in a plot. With a higher-dimensional data set it is not feasible to do this with a scatterplot of the original observations as we did for the 2-dimensional height-weight data. A common alternative is to switch to displaying not each individual observation, but each variable instead. In a plot whose axes are the first 2 Principal Components, we can show one point for each variable, where the position of the point along each component axis gives the correlation of that variable with the component.
+
+For this, we will need a data frame whose rows are the variables, whose columns are the components, and whose values are the loadings of each component. This is essentially what we already see in the loadings table. We just need to extract the loadings table from the PCA results and convert it to a data frame. Somewhat annoyingly, the loadings are a new class of object of their own, which cannot be directly converted to a data frame, so we need an intermediate step to 'strip' all the extra junk from this object before turning it into a data frame. Finally, we add the variable names so that we can identify them.
+
+```{r}
+loadings_data = loadings(PCA_decathlon)
+class(loadings_data)
+
+loadings_data = as.data.frame(unclass(loadings_data))
+loadings_data$Variable = rownames(loadings_data)
+```
+
+Now we can make the plot described above, along with some orienting lines to show the location of zero correlation, and text naming the variables. (Aligning the text nicely requires quite a lot of plot tweaking.)
+
+```{r}
+fig_loadings = ggplot(loadings_data, aes(x=PC1, y=PC2, label=Variable)) +
+  geom_hline(yintercept=0, lty="dashed") +
+  geom_vline(xintercept=0, lty="dashed") +
+  geom_point() +
+  geom_text(hjust="right", nudge_x=-0.02) +
+  scale_x_continuous(breaks=seq(-1,1,0.5), limits=c(-1.1,1)) +
+  scale_y_continuous(breaks=seq(-1,1,0.5), limits=c(-1,1)) +
+  coord_fixed(ratio=2/2.1)
+
+print(fig_loadings)
+```
+
+We now get an overall impression of how the variables are related to the first two Principal Components. For example, as we noticed already in the table of loadings, there is almost no linear association of pole vault and 1500m with the first Principal Component (they are located close to the zero correlation line for PC1). 
+If we want to see the first and third Principal Components together, or another pair of components, we can just change the mapping of components to axes in the plot.
+
+```{r}
+print(fig_loadings + aes(y=PC3))
+```
+
+# Rotation
+
+We saw for the decathlon data that the first Principal Component seems to summarize most of the events in the competition as a measure of general sporting ability. What if we would prefer to have a set of components that summarize our data in separate clusters of related variables? If our aim is to separate and classify our variables, this might be a better property to aim for than just one overall summary measure. We can opt for an alternative set of components that comes closer to achieving this.
+
+As we saw right at the outset, the Principal Components can be thought of as a new set of axes. We could draw these axes anywhere in the variable space if we want. In Principal Components Analysis we draw them such that each maximizes the variance of the data along that component. If we draw them according to a criterion that instead maximally separates the *variables* onto different components, then we have an alternative set of axes with different properties. Using alternative criteria for placing new axes in the variable space is known as **rotation**, because the axes are rotated around until a certain criterion is maximized.
+
+## Varimax
+
+Earlier, when we specified `rotate="none"` for the `principal()` function, we got the standard criterion for Principal Components that we discussed at the outset. By default, `principal()` rotates the components according to a different criterion, maximizing the extent to which each variable is related to only one or a small number of components. This is known as a **varimax** rotation.
+
+```{r}
+PCA_decathlon_vmax = principal(d[,1:10], nfactors=3)
+```
+
+It is a somewhat unfortunate choice on the part of the developer of the psych package that a function called `principal()` by default does not in fact calculate Principal Components, but components rotated according to a different criterion.
+
+The reason for this is that psychologists most often use dimension reduction teechniques in the development of personality measures. The standard Principal Components criterion is often not such a good choice for this purpose. With Principal Components, the first component often ends up being related to many variables. If the variables are ratings in a personality questionnaire, the first component might easily end up quantifying something as trivial as 'tendency to give extreme answers on questionnaires' or 'general intensity of personality characteristics'. Instead, a personality researcher more often wants components that bring together groups of conceptually related questions, for example a component for extraversion questions and a component for neuroticism questions. The varimax rotation is better for finding such components.
+
+We can see some important differences between the Principal Components and the varimax components if we compare the loadings tables from the two methods:
+
+```{r}
+print(PCA_decathlon, cut=0.3, sort=TRUE)
+print(PCA_decathlon_vmax, cut=0.3, sort=TRUE)
+```
+
+For the varimax rotation, the columns of the loadings table are abbreviated to 'RC', to emphasize that these are no longer **P**rincipal **C**omponents but **R**otated **C**omponents. Also, the first component no longer explains as much variance in the data as possible. We have sacrificed this property of the Principal Components by rotating them. We can also see that the complexity of the variables is lower for the varimax rotation; this is exactly what the rotation is trying to minimize. Finally, we also see from the loadings themselves that each component is related to some of the variables but not to the others.
+
+Varimax components are sometimes more easily interpretable for high-dimensionality data sets. In this case we can see that the first varimax component mainly quantifies performance in events where speed over short distances is important (if we count the run-up in the long jump), and the second varimax component mainly quantifies throwing ability (if we count throwing oneself in the high jump). This is the pattern that we already noticed when looking just at the correlations among the variables, and now we have a system of components that approximately quantifies these features in just two scales.
+
+We should also visualize the variables in the rotated component space. We can extract the loadings as we did before, then add them to our existing plot. Another small annoyance here is that the columns in the varimax loadings table do not have the same names. So we need to map these to the axes of the plot.
+
+```{r}
+loadings_vmax = as.data.frame(unclass(loadings(PCA_decathlon_vmax)))
+loadings_vmax$Variable = rownames(loadings_vmax)
+
+fig_loadings_vmax = fig_loadings %+% loadings_vmax +
+  aes(x=RC1, y=RC2)
+
+print(fig_loadings_vmax)
+```
+
+The plot reflects the structure that we saw in the loadings table. Performance in the speed-based events correlates with the first component, but only weakly with the second component. Performance in the other events correlates only weakly with the first component.
+
+## Oblique
+
+Although the Principal Components and the varimax rotated components differ in several ways as demonstrated above, they both keep the components independent of one another. This propperty of Principal Components was noted at the beginning of the tutorial. In geometric terms it can be thought of as keeping the new axes perpendicular to one another.
+
+Independence of the components is often a desirable property for interpretability. We would like to have a new set of dimensions that are not themselves related to each other, so that we can 'decompose' our data into separate features.
+
+However, if we think that this restriction is unrealistic, or we just don't care about it, we can abandon it. 'Oblique' rotation methods rotate the axes of a variable space without insisting that the axes be perpendicular to each other as we are normally used to in coordinate systems.
+
+For example, for the height and weight data, obliquely rotated axes could look like this:
+
+```{r}
+fig_oblique = fig_hw +
+  geom_abline(intercept=c(0,0), slope=c(2,0.6))
+
+print(fig_oblique)
+```
+
+For the height-weight data, this makes little sense. But for a higher-dimensional data set, we might have some theoretical reason to expect that the variables can be grouped as reflections of some more general properties that are *themselves* correlated with each other (though in this case we might legitimately wonder what it is that accounts for the correlations among the components).
+
+The **oblimin** rotation is a common oblique rotation, with the same goal as the varimax rotation: To align variables as best as possible with just one component.
+
+For the decathlon data, the results don't change a great deal between the varimax and the oblimin rotation. In the output we now additionaly get a table of the correlations among the components. We can see that these are fairly low, indicating that the oblique components have not been very obliquely rotated, and remain almost perpendicular to each other.
+
+```{r, message=FALSE}
+PCA_decathlon_obmin = principal(d[,1:10], nfactors=3, rotate="oblimin")
+
+print(PCA_decathlon_obmin, cut=0.3, sort=TRUE)
+```
+
+If we overlay the loadings from the oblimin rotation on those from the varimax rotation, this lack of a difference shows as the variables not having moved very far in the component space.
+
+```{r}
+loadings_obmin = as.data.frame(unclass(loadings(PCA_decathlon_obmin)))
+loadings_obmin$Variable = rownames(loadings_obmin)
+
+fig_loadings_obmin = fig_loadings_vmax +
+  geom_point(aes(x=TC1, y=TC2), data=loadings_obmin, color="red") +
+  labs(x="Component 1", y="Component 2")
+
+print(fig_loadings_obmin)
+```
+
+# Factor analysis
+
+We have just spent quite a lot of time looking into the details of PCA. However, a lot of what we just learned is general to several different dimension reduction methods. We will finish by looking at another method for dimension reduction that is quite similar to PCA: **factor analysis**. We will look only at the differences between the two, without examining again those features that factor analysis shares with PCA.
+
+Like PCA, factor analysis aims to re-express a set of variables using new axes, where the number of these axes may be smaller than the number of variables, resulting in a dimension reduction. Also like PCA, factor analysis can draw those axes according to different criteria, either the standard Principal Components criterion of maximizing the variance explained by each successive axis, or a rotation-based criterion such as with the varimax rotation described above. The axes calculated in factor analysis are called 'factors' in order to distinguish them from the components in PCA, but geometrically these terms refer to the same thing: new axes in the variable space.
+
+There are really only two important differences between the two methods, concerning what they assume, and concerning how they are calculated.
+
+PCA just goes ahead and places the new axes, attempting to account for all the variance in the data. Implicitly, this assumes that all the variance in the data is variance that *can be* accounted for by an underlying structure of relationships among the variables. Another way of thinking about this is to say that PCA assumes that the variables have all been measured perfectly and without any random arbitrary error that may be unique to just one variable. If we are just aiming to describe the data we have observed, this assumption is tenable. But if we want to ask about an unobserved set of 'latent' factors that each variable might reflect imperfectly with random added error, then the assumptions of PCA are unrealistic. Factor analysis does not assume that all of the variance in the observed variables can be accounted for by common factors. Instead, it allows for the possibility that each variable reflects the underlying factors somewhat imperfectly, with at least some added random error.
+
+The second difference follows from the first. If we simply aim to account for all the variance in our data, then there is a straightforward mathematical criterion for doing so. PCA therefore has a formulaic solution that can just be worked out. A factor analysis, on the other hand, is a model of an unobserved phenomenon, of which our data are an imperfect reflection. It must therefore estimate the underlying factors based on incomplete information, and it must estimate how much of each variable is just arbitrary error and how much is a relfection of the underlying factor structure. For this reason, a factor analysis has to be estimated with some model estimation procedure, for example Maximum Likelihood.
+
+The `fa()` function, also from the psych package, estimates a factor analysis. The inputs are the same as for PCA, but in addition, we can specify the estimation method with the `fm` argument (which stands for **f**actoring **m**ethod).
+
+Here it is for the decathlon data, using the varimax rotation, and Maximum Likelihood estimation:
+
+```{r}
+fa_decathlon = fa(d[,1:10], nfactors=10, rotate="varimax", fm="ml")
+
+print(fa_decathlon, sort=TRUE)
+```
+
+The output for factor analysis contains some additional information, not all of which is particularly useful. Focusing on the table of loadings, we can see the effects of the defining differences from PCA.
+
+With PCA, if we calculated the maximum number of components, all the variance in the variables ended up being accounted for. This was reflected in the zero uniquenesses for the variables, and in the fact that the 'Cumulative Var' values eventually reached 1. Both of these things have changed for the factor analysis. Even after estimating all 10 possible factors, some of the variance is best accounted for just as random variation unrelated to the factors and unique to each variable. A corollary of this is that the later factors account for none of the variance in the data.
+
+We can now also see the difference between the 'Cumulative Var' row and the 'Cumulative Proportion' row. The latter gives the same information but as a proportion not of the total variance in the data, but of the estimated common variance.
+
+Despite the differences, the qualitative conclusions from PCA and factor analysis are often very similar. This is especially the case if we have a reasonably large amount of data. If we have more data, those data will tend to be a more reliable overall reflection of the underlying real-world process generating them, and in this case merely *describing* the structure of the data (PCA) is more likely to amount to the same thing as *estimating* the underlying process (factor analysis).
+
+We can see this quite clearly if we estimate the first 3 factors for the decathlon data, just as we did with PCA. The pattern of loadings offers the same interpretation of the factors as it did for the components.
+
+There is just one small difference in interpretation, for the third factor. PCA attempts always to account for as much variance as possible using the components, so it concluded that the third component of the 3-component analysis was related to both of the remaining events that were not closely related to the first 2 components (1500m and pole vault). The factor analysis allows for the possibility that the variables are to some extent just unrelated to the underlying factors, so it uses the third factor to account for just one of the remaining events (1500m), and instead assigns a high uniqueness to the other (pole vault).
+
+```{r}
+fa_decathlon = fa(d[,1:10], nfactors=3, rotate="varimax", fm="ml")
+
+print(fa_decathlon, cut=0.3, sort=TRUE)
+```
+
+# Factor scores
+
+One of the goals we may have in conducting dimension reduction is to assign scores to the people we have observed, such that each score quantifies their behavior or performance along one of the reduced dimensions that we have created. This is a common aim in personality or intelligence research. We might have administered a test that results in many answers, then assign the test-takers a summary score that is based on a PCA or factor analysis of the structure of relationships among the whole group's answers.
+
+We can get these scores from the `scores` entry in the results of a PCA or a factor analysis carried out with the psych package. For example, we could get the sizes and builds of the individual people in the height-weight data. One way of storing factor scores for later analysis is by adding them as new columns to the original data frame, optionally with names that indicate their supposed interpretation.
+
+```{r}
+sb = as.data.frame(PCA_hw$scores)
+names(sb) = c("Size", "Build")
+
+hw = cbind(hw, sb)
+
+hw
+```
+
+We can then use these new summary scores in further visualization or analysis of our data. For example to see the spread of build scores by another variable, such as age. Do people tend to get fatter with age?
+
+```{r}
+fig_build = ggplot(hw, aes(x=Age, y=Build)) +
+  geom_point() +
+  geom_smooth(method=lm)
+
+print(fig_build)
+```
