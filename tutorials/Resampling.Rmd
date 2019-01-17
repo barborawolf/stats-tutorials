@@ -1,0 +1,552 @@
+---
+title: "Resampling"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+```{r}
+library(ggplot2)
+```
+
+# Parametric statistics
+
+Parametric statistics comprise statistical procedures that make a simplifying assumption about the form of the sampling distribution for the statistic of interest. For example, the statistic of interest might be a difference in means between two groups, and we might assume that the sampling distribution for such differences in means is a normal distribution.
+
+```{r}
+d = seq(from=-3.5, to=3.5, by=0.01)
+norm_data = data.frame(Difference=d, density=dnorm(d))
+
+norm_plot = ggplot(norm_data, aes(x=Difference, y=density)) +
+  geom_line()
+
+print(norm_plot)
+```
+
+This sampling distribution is important to us because when we have observed a particular difference in means in our study, we can get some idea of how well this observed difference matches the predictions of a particular hypothesis by seeing how 'far out' our observed difference is within the sampling distribution given that hypothesis. And if we can safely assume that the sampling distribution has a specific form that can be described in a neat formula, we can use that formula to quantify how far out our observed difference is. It is this general line of reasoning that underlies the calculation of a *p*-value.
+
+```{r}
+obs_difference = 2
+norm_data$p = abs(norm_data$Difference) <= obs_difference
+
+print(norm_plot +
+        geom_area(data=norm_data, mapping=aes(fill=p)) +
+        geom_vline(xintercept=obs_difference, lty="dashed") +
+        guides(fill=FALSE))
+```
+
+When is it warranted to assume that the sampling distribution for our statistic of interest has such a neat, known form? There are a few variations on the necessary assumptions depending on what sort of statistic we want to know the sampling distribution for, but to stick with the example of comparing means, the main requirements are:
+
+* The phenomenon of interest already has a neat known distribution in the population we are sampling from. (This is generally the case for many measures in biology, such as IQ, height, weight, etc., which are approximately normally distributed.)
+
+**OR**
+
+* We have taken a very large sample.
+
+Note that the 'large sample' assumption makes the assumption about the form of the population distribution less important; even if the underlying phenomenon is not at all normally distributed, the sampling distribution for a mean or a difference in means is approximately normal, so long as the sample we have taken is large.
+
+We will see an example of this principle in action below.
+
+# Permutation tests
+
+So what can we do if the assumptions above might not hold? If we have taken a small sample from a population that does not seem to be normally distributed for the phenomenon we are measuring?
+
+Let's load some example data. These data were posted to StackExchange by Henrik Singmann. He asked about applying a particular kind of statistical test to compare the means of two groups of non-normally-distributed ratings.
+
+```{r}
+ratings = read.csv("data/ratings.csv")
+
+ratings
+```
+
+Let's look at the distribution of the ratings in the two groups, and add their means as larger red points.
+
+```{r}
+ratings_plot = ggplot(ratings, aes(y=Rating, x=Group)) +
+  geom_point(position=position_jitter(height=0, width=0.1)) +
+  stat_summary(fun.y=mean, geom="point", color="red", size=3)
+
+print(ratings_plot)
+```
+
+As some wise posters on the StackEchange forum noted, given the very curious distribution of ratings, it might be worthwhile to investigate why the ratings are so differently distributed in the two groups as well as simply comparing the mean ratings. You can read the full discussion [here](https://stats.stackexchange.com/questions/6127/which-permutation-test-implementation-in-r-to-use-instead-of-t-tests-paired-and).
+
+But we will set that discussion aside and just take these data as an illustration of the workings of sampling distributions for a phenomenon that is clearly not normally distributed.
+
+Let's begin by calculating the observed value of the difference in means for these data.
+
+```{r}
+obs_means = aggregate(Rating ~ Group, ratings, mean)
+
+obs_means
+```
+
+So how can we get an idea of the sampling distribution for this difference in means? Let's go back to basics. The sampling distribution is the distribution of possible values we could have gotten, given a certain hypothesis, had we taken a different random sample of the same size from the same population.
+
+So perhaps we can 'simulate' what might have happened had we gotten a slightly different sample from this population. We don't have access to the whole population of course, but our sample is (we hope) a more or less representative microcosm of that population, so we can '*re*sample' from our sample as a proxy for sampling again from the same population.
+
+In this case, we want to know what differences in mean ratings we might have observed just by chance, even if in the population there is no difference in ratings between the two groups. So our 'null hypothesis' asserts that the two group labels 'A' and 'B' are in fact completely arbitrary and unnecessary; the fact that a few people with very low ratings have ended up in our condition B is just a coincidence. We can therefore simulate the case in which this null hypothesis is true by randomly reshuffling the group memberships of our data points, and then we can see how often such a random process produces just by chance a difference in mean ratings as big as the one we really observed.
+
+So let's do this. The `sample()` function in R takes a random sample of data. This function is at the heart of the procedures we will look at in this class. Applied to a variable from a data set, `sample()` shuffles the values of that variable. We can apply it again and again and get a different random reshuffling each time.
+
+```{r}
+sample(ratings$Group)
+sample(ratings$Group)
+sample(ratings$Group)
+```
+
+We can create a new simulated set of data by copying our existing set of data and then replacing the group membership variable with a shuffled version of itself.
+
+Since we are working with randomness here, we can set the seed of our random number generator first, to ensure that the results will be the same every time we run them. This ensures the complete reproducibility of what we do.
+
+```{r}
+set.seed(0)
+
+ratings_sim = ratings
+ratings_sim$Group = sample(ratings$Group)
+ratings_sim
+```
+
+Let's see what the new simulated sample looks like. We can re-use the plot we created for the real data earlier.
+
+```{r}
+print(ratings_plot %+% ratings_sim)
+```
+
+We see that in this random reshuffling some of the extremely low ratings ended up in group A instead of in group B. The difference in means between the two groups has as a consequence diminished. This is already a small hint that the occurrence of multiple extremely low ratings in group B is something that would not easily have occurred by chance.
+
+But of course to firm up this suspicion we need to repeat this process many many times, and look at the results in the aggregate.
+
+Given that we want to calculate a difference in means for many simulated samples, we need a place to store all these values. For this, we can create a vector of numbers. We define first how many simulations we want to run (here 10000), then we create a vector of zeros that is this long. With each repetition of our simulation, we will replace one of these zeros with the difference in means that we find in that sample.
+
+```{r}
+nreps = 10000
+
+diffs = rep(0,nreps)
+```
+
+Now we fill the vector with the differences in means from repeated simulated samples.
+
+```{r}
+for(x in 1:nreps){
+  
+  ratings_sim$Group = sample(ratings$Group)
+  
+  result = aggregate(Rating ~ Group, ratings_sim, mean)
+  diffs[x] = result$Rating[result$Group=="B"] - result$Rating[result$Group=="A"]
+  
+}
+```
+
+Let's take a look at the distribution of differences in means that we got from our 10000 simulated samples. Recall that we shuffled the group memberships, so this distribution is telling us what differences in means we could expect to get were the group memberships completely arbitrary and group differences purely the result of chance.
+
+To visualize the distribution nicely, we put the differences into a new dataframe and feed them into ggplot.
+
+```{r}
+permutations = data.frame(Difference=diffs)
+
+perm_plot = ggplot(permutations, aes(x=Difference)) +
+  geom_histogram(bins=30)
+
+print(perm_plot)
+```
+
+The distribution of possible differences in means is approximately normal. Why does it have this shape? This is the strange power of large samples. A quantity that is aggregated from many independent observations, as a mean (or difference in means) is, tends to be normally distributed. Here we have an example of this principle in action; the ratings themselves are clearly not normally distributed, as the plot of the original data shows, but nonetheless an aggregate statistic (in this case a difference in means) is approximately normally distributed over many repeated random samples.
+
+Now we are in a position to ask: Is the difference in means that we observed in the actual sample about as great as we might expect to occur by chance anway, or is it surprisingly greater?
+
+For this, we first return to our observed means and calculate their difference.
+
+```{r}
+obs_diff = obs_means$Rating[obs_means$Group=="B"] - obs_means$Rating[obs_means$Group=="A"]
+
+obs_diff
+```
+
+And for visualization, let's add this to the distribution of simulated differences in means given the null hypothesis. We can add it as a vertical line.
+
+```{r}
+print(perm_plot + geom_vline(xintercept=obs_diff, lty="dashed"))
+```
+
+So it seems that the difference in mean ratings that we observed in our sample is of a magnitude that would only rarely occur by chance if in fact the two conditions A and B made no difference to ratings.
+
+We can also quantify this as a *p*-value. This is the proportion of random samples under the null hypothesis that would produce a difference in means as great as ours or greater. So we need to look at our simulated differences and ask how many of those are greater in magnitude than our observed one.
+
+For differences in magnitude regardless of sign, we need the `abs()` function to get the absolute values of the differences. And we can compare our long vector of simulated differences to the observed difference using the 'greater than or equal to' comparator `>=`. Given that answers to logical statements of this kind are coded in computing as `TRUE: 1` and `FALSE: 0`, the mean of all these values gives us the proportion of them for which the statement is true.
+
+```{r}
+pval = mean(abs(diffs) >= abs(obs_diff))
+
+pval
+```
+
+So a difference in mean ratings this great or greater would only occur very rarely if group made no difference to ratings.
+
+We saw above that the sampling distribution for the difference in means was approximately normal. This is the assumption that the usual parametric tests rest on. So it should be the case that the parametric test in this case gives us approximately the same *p*-value. Let's check this.
+
+If we run the parametric 2-sample *t*-test we see that the *p*-value is almost the same.
+
+```{r}
+t.test(Rating ~ Group, ratings, var.equal=TRUE)
+```
+
+The procedure we just carried out is known as a **permutation test**: We run through many 'permutations' (i.e. random reshufflings) of our data, assuming that a certain hypothesis holds, then we see how often this hypothesis results in a statistic more extreme than the one we observed. This gives us a first impression of how consistent our observed result is with that hypothesis.
+
+This same general principle can be applied to many situations. We just need to keep in mind three questions:
+
+* What is our statistic of interest?
+  + mean
+  + difference in means
+  + proportion
+  + ...
+* What aspects of our study are fixed design choices?
+  + number of participants per group
+  + between- or within-subjects design
+  + ...
+* What aspects of the results are arbitrary according to the hypothesis we want to test (the 'null hypothesis')?
+  + usually membership of groups or conditions
+
+The statistic of interest we calculate many times over in repeated simulated samples. The fixed aspects of our design we keep constant in each simulated sample. The aspects of the phenomenon that the null hypothesis asserts are just random chance we vary randomly.
+
+## Exact permutation test
+
+In the example above we went through 10000 random reshufflings of our data. We chose 10000 as a fairly arbitrary number of reshufflings that would be large enough to give us a good impression of the sampling distribution for our difference in means. Could we have done this more precisely? Could we instead have gone through every single possible reshuffling deterministically?
+
+In this case, we could not. We had 40 observations with 20 in each group, so the total number of possible permutations is colossal. The R function `choose()` tells us the number of possible permutations for choosing `k` items out of `n`.
+
+```{r}
+choose(40,20)
+```
+
+In cases where we have a smaller sample, however, it may be possible to go through every single possible permutation of our data. Let's see how this works. In order to illustrate this, let's load a data set that is a smaller subset of Henrik's data. We now have just 7 observations in each group.
+
+```{r}
+ratings_small = read.csv("data/ratings_small.csv")
+
+ratings_small
+```
+
+How many possible permutations are there now?
+
+```{r}
+choose(14,7)
+```
+
+This is a manageable number. For a sample this small, we could systematically go through every possible reshuffling of the group memberships. This would give us a deterministic version of the permutation test in which the result does not depend on resampling a random subset of the possible outcomes.
+
+So we will do this. But first let's plot this smaller data set. (We can still re-use our original plot from above).
+
+```{r}
+print(ratings_plot %+% ratings_small)
+```
+
+In this smaller data set, the most of the observations are very high ratings, with just two much lower ratings. These two lower ratings happen to be in group B. Intuitively, we can see that for this smaller data set, it might easily be the case that the difference in mean ratings could just be a coincidence; the two people who happen to give extremely low ratings also just happen by chance to have been allocated to condition B.
+
+To check on this intuition, we can go through all the different possible ways in which these 14 people might have been allocated to two groups of 7, and see in how many of those such a large difference in mean ratings occurs just by chance. This is the same principle as above, the only difference being that we check all possible random reshufflings instead of having to sample them at random.
+
+Our first step is to create an object that gives us all of the possible permutations of allocating 14 people to 2 groups. The R function `combn()` does this. It creates a matrix of numbers in which each column is a permutation, and the numbers contained in the column tell us which observations have been selected to be in a group together (the remaining observations are then allocated to the other group).
+
+To see a small example, we can look at the possible permutations of 4 people in 2 groups. Each column of this matrix tells us who is in the first group. So in the first possible combination participants 1 and 2 are in the first group (and 3 and 4 are in the second group), and so on ...
+
+```{r}
+combn(4,2)
+```
+
+Now we want to generate such a matrix for our 14 people split into 2 groups of 7 each. We store the resulting matrix so we can use it later.
+
+```{r}
+perms = combn(14,7)
+```
+
+Let's take a look at the first column of the matrix.
+
+```{r}
+perms[,1]
+```
+
+This represents the permutation in which participants 1 to 7 end up in group A. The next permutation is very slightly different.
+
+```{r}
+perms[,2]
+```
+
+And so on. Much later on the permutations are completely different:
+
+```{r}
+perms[,2000]
+```
+
+Now we can conduct a permutation test as we did above. The only difference here is that we do not use `sample()` to pick reshuffles at random. Instead, we systematically go through the columns of the matrix of possible permutations that we just created. We use the `x` variable that counts through the repetitions of the simulation to count through the columns of the permutation matrix. We then use this to determine who goes in group B. Everyone else we put by default in group A.
+
+This also means that our number of permutations is not something we choose arbitrarily, but is instead determined by the number of possible permutations (which we get from the number of columns in our permutation matrix).
+
+```{r}
+ratings_sim = ratings_small
+
+nreps = ncol(perms)
+diffs = rep(0,nreps)
+
+for(x in 1:nreps){
+  
+  ratings_sim$Group = "A"
+  
+  ratings_sim$Group[perms[,x]] = "B"
+  
+  result = aggregate(Rating ~ Group, ratings_sim, mean)
+  diffs[x] = result$Rating[result$Group=="B"] - result$Rating[result$Group=="A"]
+  
+}
+```
+
+So let's look at the resulting distribution of possible differences in means, as we did above.
+
+```{r}
+perm_plot_small = perm_plot %+% data.frame(Difference=diffs)
+
+print(perm_plot_small)
+```
+
+The resulting distribution of possible differences in means is clearly not a normal distribution. What accounts for its curious shape?
+
+Recall the two much lower ratings that appeared in group B in this smaller data set. In such a small sample as this, these two observations have a lot of influence on the group means. When we randomly reshuffle the data, there are broadly four different possible types of outcome:
+
+* Both extreme low ratings end up in group A
+* Both extreme low ratings end up in group B
+* The really extreme low rating ends up in group A and the other in group B
+* The really extreme low rating ends up in group B and the other in group A
+
+These four types of outcome account for the four separate peaks we see in the distribution of differences in means.
+
+So what this result is telling us is that if the group variable had no effect on ratings we should nonetheless expect the difference in mean ratings in such a small sample to fluctuate quite a lot, simply because ratings are generally very variable, and we might by chance get some extreme ratings in one of our groups.
+
+Let's also visualize our observed difference in means within its sampling distribution.
+
+```{r}
+obs_means = aggregate(Rating ~ Group, ratings_small, mean)
+obs_diff = obs_means$Rating[obs_means$Group=="B"] - obs_means$Rating[obs_means$Group=="A"]
+
+print(perm_plot_small + geom_vline(xintercept=obs_diff, lty="dashed"))
+```
+
+And we can also calculate the *p*-value as before.
+
+```{r}
+pval = mean(abs(diffs) >= abs(obs_diff))
+
+pval
+```
+
+For this smaller sample, we have a difference in means of a magnitude that would in any case frequently occur even if group membership had no effect on ratings.
+
+What about the parametric alternative, the *t*-test? What would it tell us in this case? We can try it and see. We see that the discrepancy between *p*-values is now much greater. This is to be expected. The assumptions for the parametric test (that the phenomenon is normally distributed **or** the sample is large) are not met, so the approximation is not so good.
+
+```{r}
+t.test(Rating ~ Group, ratings_small, var.equal=TRUE)
+```
+
+# Bootstrap
+
+Above with the permutation test we saw a very versatile principle in action. If we have a particular quantity that we have observed, and we want to know how that quantity might otherwise have turned out, then we can try to simulate the situation in which we imagine it turning out otherwise.
+
+We now turn to a very similar yet subtly different application of this principle. With the permutation test we had a given hypothesis and we asked ourselves how our data might have turned out given that hypothesis. We were able to hold our data fixed and just rearrange it randomly in a way that was dictated by the hypothesis we wished to test. Now instead we will switch from hypothesis testing to parameter estimation, and ask a different question: What is the sampling variability of the parameter we have estimated?
+
+## For a difference in means
+
+Above, we estimated a difference in means between two groups. Let's stick with this same example, as it is an extremely simple case. We will again simulate re-running our study many times over. Our aim now is to find out what other differences we might have found. We have no particular hypothesis guiding our simulation. Our starting point is our observed difference in means. We take this as our 'best guess' as to the true difference in the population, and then 'jiggle' our data around so as to produce new estimates of the difference in means. The variability in such estimates gives us some idea of the sensitivity of our observed estimate to random sampling, and can therefore give us a 'margin of error' for the estimate.
+
+For this we need to extract two components of our data. We need the observed difference in means, and we need the random, unexplained part of our data. One handy way of getting hold of these two components is by decomposing our data into the components of a model. Recall that (most) models of data explain the data as the sum of a systematic 'predicted value' and some random 'residual' noise. Using the formula that we already used above for the *t*-test, we can fit such a model to our data with the `lm()` function.
+
+```{r}
+model = lm(Rating ~ Group, ratings)
+
+print(model)
+```
+
+The model object that we have created contains the predicted and residual components of our data. There are R functions for extracting these. For convenience, we save them back into our data set.
+
+```{r}
+ratings$Predicted = predict(model)
+ratings$Residual = residuals(model)
+```
+
+What does each of these components look like? We can make a quick plot of the predicted values.
+
+```{r}
+predicted_plot = ggplot(ratings, aes(y=Predicted, x=Group)) +
+  geom_point(position=position_jitter(width=0.1, height=0))
+
+print(predicted_plot)
+```
+
+The predicted values for the observations in each group are all the same. This makes sense given the nature of our model. It accounts for observations in terms of their group membership, and so it just predicts for each observation the mean of its group.
+
+Now let's look at the residuals. Again, we can re-use the plot that we already created, but with the residuals on the *y* axis instead of the predicted values.
+
+```{r}
+residual_plot = predicted_plot +
+  aes(y=Residual)
+
+print(residual_plot)
+```
+
+The residuals look very much like the original data, but with the groups aligned side by side. Again, this makes sense given the nature of the model. The model accounts for the separate mean values in each group, and since the residuals are the leftover variation after accounting for these means, these residuals look like the original data but with the difference in the means of the two groups 'subtracted out'.
+
+We will now create a new resampled data set. The part that we want to hold constant is the part that we have estimated, our difference in means. This is contained in the predicted values. The part that we want to randomly resample is the residuals, since these represent a random variation component that could have turned out slightly differently in a different sample.
+
+So we sample from the residuals, then stick these sampled values back on to the predicted values.
+
+We sample with replacement, so allowing that the same residual might be resampled back into our new simulated study. This is different from the permutation test. In the permutation test we asked about a property of our data in relation to the null hypothesis, so it made (some) sense to hold the data constant as far as possible, and vary only that aspect of them that the null hypothesis asserts is arbitrary. With the bootstrap, we are asking about a property of our estimation procedure (estimating the difference in means). Specifically, we want to get some idea of how variable are the results that this estimation procedure yields for different random samples of data.
+
+```{r}
+ratings_sim = ratings
+
+ratings_sim$Rating = ratings$Predicted + sample(ratings$Residual, replace=TRUE)
+
+print(ratings_plot %+% ratings_sim)
+```
+
+We see that we have got a slightly different set of data from our random resample, and that this has changed our estimate of the difference in means.
+
+Now we want to do this many times over, as we did above.
+
+```{r}
+nreps = 10000
+
+diffs = rep(0,nreps)
+
+for(x in 1:nreps){
+  
+  ratings_sim$Rating = ratings$Predicted + sample(ratings$Residual, replace=TRUE)
+  
+  result = aggregate(Rating ~ Group, ratings_sim, mean)
+  diffs[x] = result$Rating[result$Group=="B"] - result$Rating[result$Group=="A"]
+  
+}
+
+boots = data.frame(Difference=diffs)
+
+boot_plot = ggplot(boots, aes(x=Difference)) +
+  geom_histogram(bins=30)
+
+print(boot_plot)
+```
+
+What we are looking at here is not a distribution of differences in means given the null hypothesis, like the one we got from the permutations. We can see this from the fact that this distribution is not centred on zero. Instead, it is centred on our observed difference. It is a distribution for the variability in estimating this difference.
+
+We can use this distribution to calculate a standard error for the difference in means. The standard error is simply the standard deviation of this distribution.
+
+```{r}
+se = sd(diffs)
+
+se
+```
+
+Another way of quantifying the variability in an estimate is with a confidence interval. For example, a 95% confidence interval covers 95% of the sampling distribution. So to get this from our resampled estimates of the difference in means, we need to find the values that cut off the lowest 2.5% and the highest 2.5% of estimates. 
+
+The `quantile()` function in R can accomplish this. The `probs` argument tells `quantile()` which quantiles (i.e. 'cut points') to find in the distribution.
+
+```{r}
+ci95 = quantile(diffs, probs=c(0.025, 0.975))
+
+ci95
+```
+
+## For a linear regression
+
+Let's see one more example of bootstrapping. Now we will apply it to assess the variability in our estimates of the coefficients in a linear regression. But otherwise the principle is the same as we just saw. We decompose our data into the part predicted by the linear model and the residual variation. We then resample from the residual variation to create simulated new data sets, then re-estimate our linear regression with these data sets.
+
+Let's load again the birth weights data set and plot a linear regression of the baby's weight on the mother's weight.
+
+```{r}
+bw = read.csv("data/birth_weights.csv")
+
+bw_plot = ggplot(bw, aes(y=Birth_weight, x=Weight)) +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_point() +
+  labs(x="Weight (kg)", y="Birth weight (kg)", caption="Data: Baystate Medical Center, 1986")
+
+print(bw_plot)
+```
+
+And then let's create the linear regression model and decompose the data into the model's predictions and the residual variance, as we did above. We also take a look at the coefficients of the model: the intercept and the slope relating birth weight to mother's weight.
+
+```{r}
+model = lm(Birth_weight ~ Weight, bw)
+
+bw$Predicted = predict(model)
+bw$Residual = residuals(model)
+
+model
+```
+
+The intercept of the model is perhaps not really of so much interest. We will focus on the slope. We can extract the coefficients of a model with an R function.
+
+```{r}
+coefficients(model)
+```
+
+We see that for a simple linear regression like this, the slope is the second coefficient, so we can get just the slope by indexing the result of `coefficients()` with `[2]`.
+
+```{r}
+coefficients(model)[2]
+```
+
+That is the slope of our regression model. So based on this estimate we expect a baby's weight to be about 10 grams greater for every extra kilo its mother weighs.
+
+Let's now use bootstrapping to get an idea of the variability in estimating this slope. The procedure will be almost the same as above where we estimated a difference in means. The only difference is that now instead of calculating a difference we apply `lm()` to each resampled data set and then extract the estimated slope.
+
+For an additional bit of visualization here, we will also add the regression lines that we estimate from our many resampled data sets onto the original plot. In order to make drawing this visualization manageable, we will limit ourselves to just 100 resamplings. For a real application of the bootstrap, we would carry out many more (typically 10000 or so).
+
+(With a little bit of slightly hackish ggplot magic, we also reverse the layers of the plot so that these added lines appear behind the original plotted data and not on top of them.)
+
+```{r}
+nreps = 100
+
+slopes = rep(0,nreps)
+
+bw_sim = bw
+
+for(x in 1:nreps){
+  
+  bw_sim$Birth_weight = bw$Predicted + sample(bw$Residual, replace=TRUE)
+  
+  result = lm(Birth_weight ~ Weight, bw_sim)
+  slopes[x] = coefficients(result)[2]
+  
+  bw_plot = bw_plot + geom_smooth(data=bw_sim, method=lm, color="grey", lwd=1)
+  
+}
+
+bw_plot$layers = rev(bw_plot$layers)
+
+print(bw_plot)
+```
+
+We can now calculate a confidence interval for the slope from the distribution of our bootstrapped slopes.
+
+```{r}
+ci95 = quantile(slopes, probs=c(0.025, 0.975))
+
+ci95
+```
+
+What about the parametric alternative here? The parametric confidence interval for a regression slope assumes that the residuals from the regression model are normally distributed. We can check this assumption by plotting a histogram of the residuals.
+
+```{r}
+fig_residuals = ggplot(bw, aes(x=Residual)) +
+  geom_histogram(bins=20)
+
+print(fig_residuals)
+```
+
+This assumption seems to be more or less met, and we also have a fairly large sample. So it should be the case that the parametric confidence interval is almost the same as the bootstrapped one. The `confint()` function gives us the parametric confidence intervals from a model.
+
+```{r}
+confint(model)
+```
+
+Indeed it is. So bootstrapping was not really necessary here. But wherever we are concerned that the parametric assumptions might not be met, it is a useful alternative to the parametric methods.
