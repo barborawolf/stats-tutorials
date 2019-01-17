@@ -201,7 +201,6 @@ R calls numbers **numeric** and text **character**.
 
 We can convert variables from one type of data to another, using functions that begin `as.`, followed by the name of the class we want to convert the contents into.
 
-
 ```{r}
 x = as.character(x)
 x
@@ -252,7 +251,7 @@ name2 = "Fisher"
 paste(name1, name2)
 ```
 
-We can see that `paste()` has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the `sep` argument. One common use of this is to join text with no intervening characters, in which case we specify `sep` as an empty piece of text `""`.
+We can see that `paste()` has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the `sep` argument. To join text with no intervening characters, we specify `sep` as an empty piece of text `""`.
 
 ```{r}
 paste(name2, name1, sep=",")
@@ -293,7 +292,9 @@ sex = factor(c("male","female","female","male"))
 class(sex)
 ```
 
-We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from. Applied to a factor, the `summary()` function tells us how many values are in each category. This is the same information as we get from `table()`.
+We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from.
+
+Applied to a factor, the `summary()` function tells us how many values are in each category. This is the same information as we get from `table()`.
 
 ```{r}
 sex
@@ -316,6 +317,17 @@ The `levels()` function tells us what levels a factor has, and `nlevels()` tells
 ```{r}
 levels(sex)
 nlevels(sex)
+```
+
+If we try to add a new value to a factor that is not among the defined categories, it will not be added to the set of possible categories. Instead, the new value will be marked as 'missing' (`NA`). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.
+
+Note also that the levels of a factor are case-sensitive.
+
+```{r}
+sex[1] = "martian"
+sex[2] = "Male"
+
+sex
 ```
 
 As with numeric and character vectors, we can convert other types of data into a factor using `as.factor()`.
@@ -419,7 +431,7 @@ We can pick out multiple columns by using a vector of column names as the column
 d[,c("age","location")]
 ```
 
-We can also pick out ranges of rows, in the same way as we pick out ranges of values from a vector.
+We can also pick out ranges of rows or columns, in the same way as we pick out ranges of values from a vector.
 
 ```{r}
 d[2:4,]
@@ -461,12 +473,22 @@ The `table()` function can be used to create a 2-by-2 table of the combinations 
 table(d$sex, d$country)
 ```
 
-Adding to a data frame is not so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the `rbind()` function, which sticks together two (or more) data frames.
+Adding to a data frame is not always so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the `rbind()` function, which sticks together two (or more) data frames.
 
 ```{r}
 new_row = data.frame(age=25, sex="other", country="Germany")
 d = rbind(d, new_row)
 d
+```
+
+As well as creating a data frame by writing out all the values it contains, there are a few R functions that create data frames more compactly. The most important of these is `expand.grid()`. The input to this function is a set of named vectors giving the columns of the data frame, just like the input to `data.frame()`. However, `expand.grid()` takes the values in each column and generates all the possible combinations of values as the rows of the data frame.
+
+```{r}
+meal_combos = expand.grid(starter=factor(c("soup","salad")),
+                          main=factor(c("meat","fish","vegetarian")),
+                          dessert=factor(c("fruit","ice cream","cheese")))
+
+meal_combos
 ```
 
 # Logicals
@@ -566,16 +588,83 @@ d$country = "Germany"
 d # (oops)
 ```
 
+# Matrices
+
+Many mathematical procedures in statistics involve **matrices**, groups of numbers that are ordered into a rectangular structure. Matrices are a lot like data frames, since they have rows and columns. But whereas the columns of a data frame represent named variables that may be of different types, a matrix contains only numbers, and the columns do not have to be named.
+
+It is only fairly rarely that we will need to use matrices explicitly. For the statistical procedures that involve working with matrices, R will do the operations for us 'behind the scenes'. But occasionally we will come across a matrix in the output of a statistical procedure.
+
+We can create a matrix with the `matrix()` function. We input a vector containing the numbers that should appear in the matrix, along with the number of rows and the number of columns that they should be organized into.
+
+```{r}
+mat = matrix(1:6, nrow=3, ncol=2)
+class(mat)
+mat
+```
+
+By default, the numbers are filled into the matrix column by column. If we want them to go in row by row, we can use the `byrow` argument.
+
+```{r}
+mat = matrix(1:6, nrow=3, ncol=2, byrow=TRUE)
+mat
+```
+
+Indexing the rows and columns of a matrix works the same way as for data frames. Row number first, then a comma, then column number.
+
+```{r}
+mat[2,1]
+```
+
+There are a few convenient functions for calculating things from a matrix. These functions have self-explanatory names. In particular, `rowSums()` and `rowMeans()` can occasionally be useful for calculating composite scores if the rows represent people and the columns represent scores on related tests.
+
+```{r}
+rowSums(mat)
+colSums(mat)
+rowMeans(mat)
+colMeans(mat)
+```
+
+A matrix can be turned into a data frame with the conversion function `as.data.frame()`. In this case, the columns are given the default names `V1`, `V2`, etc.
+
+```{r}
+d_mat = as.data.frame(mat)
+d_mat
+```
+
+We can change these afterwards using `names()`.
+
+```{r}
+names(d_mat) = c("scoreA", "scoreB")
+d_mat
+```
+
+One important use of a matrix is to generate the possible combinations of values when sampling from them. The `combn()` function creates a matrix whose columns give the possible combinations of `n` values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.
+
+For example if we want to know what possible combinations we can get when picking 2 numbers from the numbers 1 to 5:
+
+```{r}
+combos = combn(1:5, 2)
+combos
+```
+
+We see that one possible combination of 2 numbers is 1 and 2 (first column), another is 1 and 3 (second column), and so on.
+
 # Special values
 
-R stores a few special values that can be useful. The constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`. Infinity is stored under `Inf` (with uppercase 'I').
+R stores a few special values that can be useful. For example, the constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`.
 
 ```{r}
 pi
-Inf
 ```
 
-Much more often useful is the 'missing' value `NA`. We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
+Infinity is stored under `Inf` (with uppercase 'I'). We can also make this into negative infinity by appending the minus sign `-`.
+
+```{r}
+Inf
+-Inf
+```
+
+Among the most useful special values is the 'missing' value `NA` (*N*ot *A*vailable, or maybe *N*o *A*nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
 
 ```{r}
 d = rbind(d, data.frame(age=NA, sex="male", country="France"))

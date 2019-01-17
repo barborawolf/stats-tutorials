@@ -2972,7 +2972,7 @@ name2 = &quot;Fisher&quot;
 
 paste(name1, name2)</code></pre>
 <pre><code>## [1] &quot;Ronald Fisher&quot;</code></pre>
-<p>We can see that <code>paste()</code> has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the <code>sep</code> argument. One common use of this is to join text with no intervening characters, in which case we specify <code>sep</code> as an empty piece of text <code>&quot;&quot;</code>.</p>
+<p>We can see that <code>paste()</code> has inserted a space in between the pieces of text. If we want a different character separating the pieces of text, we can specify it as the <code>sep</code> argument. To join text with no intervening characters, we specify <code>sep</code> as an empty piece of text <code>&quot;&quot;</code>.</p>
 <pre class="r"><code>paste(name2, name1, sep=&quot;,&quot;)</code></pre>
 <pre><code>## [1] &quot;Fisher,Ronald&quot;</code></pre>
 <pre class="r"><code>paste(name1, &quot;A&quot;, sep=&quot;&quot;)</code></pre>
@@ -2999,7 +2999,8 @@ group</code></pre>
 <pre class="r"><code>sex = factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;))
 class(sex)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<p>We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from. Applied to a factor, the <code>summary()</code> function tells us how many values are in each category. This is the same information as we get from <code>table()</code>.</p>
+<p>We see that when R prints out a factor, it also displays the possible levels. By default, these are just the different values that appear in the vector we created the factor from.</p>
+<p>Applied to a factor, the <code>summary()</code> function tells us how many values are in each category. This is the same information as we get from <code>table()</code>.</p>
 <pre class="r"><code>sex</code></pre>
 <pre><code>## [1] male   female female male  
 ## Levels: female male</code></pre>
@@ -3025,6 +3026,17 @@ sex</code></pre>
 <pre><code>## [1] &quot;male&quot;   &quot;female&quot; &quot;other&quot;</code></pre>
 <pre class="r"><code>nlevels(sex)</code></pre>
 <pre><code>## [1] 3</code></pre>
+<p>If we try to add a new value to a factor that is not among the defined categories, it will not be added to the set of possible categories. Instead, the new value will be marked as ‘missing’ (<code>NA</code>). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.</p>
+<p>Note also that the levels of a factor are case-sensitive.</p>
+<pre class="r"><code>sex[1] = &quot;martian&quot;</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, 1, value = &quot;martian&quot;): invalid factor
+## level, NA generated</code></pre>
+<pre class="r"><code>sex[2] = &quot;Male&quot;</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, 2, value = &quot;Male&quot;): invalid factor level,
+## NA generated</code></pre>
+<pre class="r"><code>sex</code></pre>
+<pre><code>## [1] &lt;NA&gt;   &lt;NA&gt;   female male  
+## Levels: male female other</code></pre>
 <p>As with numeric and character vectors, we can convert other types of data into a factor using <code>as.factor()</code>.</p>
 <p>One of the main uses of this is to convert a vector of numbers that represent ID numbers, which are really just categories.</p>
 <pre class="r"><code>id = rep(1:3, each=10)
@@ -3111,7 +3123,7 @@ d</code></pre>
 {"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["location"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"Germany"},{"1":"64","2":"UK"},{"1":"40","2":"France"},{"1":"53","2":"UK"},{"1":"29","2":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>We can also pick out ranges of rows, in the same way as we pick out ranges of values from a vector.</p>
+<p>We can also pick out ranges of rows or columns, in the same way as we pick out ranges of values from a vector.</p>
 <pre class="r"><code>d[2:4,]</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -3157,13 +3169,24 @@ d</code></pre>
 ##   female      1       0       1  1
 ##   male        0       1       0  1
 ##   other       0       0       0  0</code></pre>
-<p>Adding to a data frame is not so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the <code>rbind()</code> function, which sticks together two (or more) data frames.</p>
+<p>Adding to a data frame is not always so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the <code>rbind()</code> function, which sticks together two (or more) data frames.</p>
 <pre class="r"><code>new_row = data.frame(age=25, sex=&quot;other&quot;, country=&quot;Germany&quot;)
 d = rbind(d, new_row)
 d</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"},{"1":"25","2":"other","3":"Germany"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As well as creating a data frame by writing out all the values it contains, there are a few R functions that create data frames more compactly. The most important of these is <code>expand.grid()</code>. The input to this function is a set of named vectors giving the columns of the data frame, just like the input to <code>data.frame()</code>. However, <code>expand.grid()</code> takes the values in each column and generates all the possible combinations of values as the rows of the data frame.</p>
+<pre class="r"><code>meal_combos = expand.grid(starter=factor(c(&quot;soup&quot;,&quot;salad&quot;)),
+                          main=factor(c(&quot;meat&quot;,&quot;fish&quot;,&quot;vegetarian&quot;)),
+                          dessert=factor(c(&quot;fruit&quot;,&quot;ice cream&quot;,&quot;cheese&quot;)))
+
+meal_combos</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["starter"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["main"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["dessert"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"soup","2":"meat","3":"fruit"},{"1":"salad","2":"meat","3":"fruit"},{"1":"soup","2":"fish","3":"fruit"},{"1":"salad","2":"fish","3":"fruit"},{"1":"soup","2":"vegetarian","3":"fruit"},{"1":"salad","2":"vegetarian","3":"fruit"},{"1":"soup","2":"meat","3":"ice cream"},{"1":"salad","2":"meat","3":"ice cream"},{"1":"soup","2":"fish","3":"ice cream"},{"1":"salad","2":"fish","3":"ice cream"},{"1":"soup","2":"vegetarian","3":"ice cream"},{"1":"salad","2":"vegetarian","3":"ice cream"},{"1":"soup","2":"meat","3":"cheese"},{"1":"salad","2":"meat","3":"cheese"},{"1":"soup","2":"fish","3":"cheese"},{"1":"salad","2":"fish","3":"cheese"},{"1":"soup","2":"vegetarian","3":"cheese"},{"1":"salad","2":"vegetarian","3":"cheese"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -3246,14 +3269,74 @@ d # (oops)</code></pre>
   </script>
 </div>
 </div>
+<div id="matrices" class="section level1">
+<h1>Matrices</h1>
+<p>Many mathematical procedures in statistics involve <strong>matrices</strong>, groups of numbers that are ordered into a rectangular structure. Matrices are a lot like data frames, since they have rows and columns. But whereas the columns of a data frame represent named variables that may be of different types, a matrix contains only numbers, and the columns do not have to be named.</p>
+<p>It is only fairly rarely that we will need to use matrices explicitly. For the statistical procedures that involve working with matrices, R will do the operations for us ‘behind the scenes’. But occasionally we will come across a matrix in the output of a statistical procedure.</p>
+<p>We can create a matrix with the <code>matrix()</code> function. We input a vector containing the numbers that should appear in the matrix, along with the number of rows and the number of columns that they should be organized into.</p>
+<pre class="r"><code>mat = matrix(1:6, nrow=3, ncol=2)
+class(mat)</code></pre>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre class="r"><code>mat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<p>By default, the numbers are filled into the matrix column by column. If we want them to go in row by row, we can use the <code>byrow</code> argument.</p>
+<pre class="r"><code>mat = matrix(1:6, nrow=3, ncol=2, byrow=TRUE)
+mat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6</code></pre>
+<p>Indexing the rows and columns of a matrix works the same way as for data frames. Row number first, then a comma, then column number.</p>
+<pre class="r"><code>mat[2,1]</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>There are a few convenient functions for calculating things from a matrix. These functions have self-explanatory names. In particular, <code>rowSums()</code> and <code>rowMeans()</code> can occasionally be useful for calculating composite scores if the rows represent people and the columns represent scores on related tests.</p>
+<pre class="r"><code>rowSums(mat)</code></pre>
+<pre><code>## [1]  3  7 11</code></pre>
+<pre class="r"><code>colSums(mat)</code></pre>
+<pre><code>## [1]  9 12</code></pre>
+<pre class="r"><code>rowMeans(mat)</code></pre>
+<pre><code>## [1] 1.5 3.5 5.5</code></pre>
+<pre class="r"><code>colMeans(mat)</code></pre>
+<pre><code>## [1] 3 4</code></pre>
+<p>A matrix can be turned into a data frame with the conversion function <code>as.data.frame()</code>. In this case, the columns are given the default names <code>V1</code>, <code>V2</code>, etc.</p>
+<pre class="r"><code>d_mat = as.data.frame(mat)
+d_mat</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["V1"],"name":[1],"type":["int"],"align":["right"]},{"label":["V2"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"2"},{"1":"3","2":"4"},{"1":"5","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can change these afterwards using <code>names()</code>.</p>
+<pre class="r"><code>names(d_mat) = c(&quot;scoreA&quot;, &quot;scoreB&quot;)
+d_mat</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["scoreA"],"name":[1],"type":["int"],"align":["right"]},{"label":["scoreB"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"2"},{"1":"3","2":"4"},{"1":"5","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>One important use of a matrix is to generate the possible combinations of values when sampling from them. The <code>combn()</code> function creates a matrix whose columns give the possible combinations of <code>n</code> values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.</p>
+<p>For example if we want to know what possible combinations we can get when picking 2 numbers from the numbers 1 to 5:</p>
+<pre class="r"><code>combos = combn(1:5, 2)
+combos</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+## [1,]    1    1    1    1    2    2    2    3    3     4
+## [2,]    2    3    4    5    3    4    5    4    5     5</code></pre>
+<p>We see that one possible combination of 2 numbers is 1 and 2 (first column), another is 1 and 3 (second column), and so on.</p>
+</div>
 <div id="special-values" class="section level1">
 <h1>Special values</h1>
-<p>R stores a few special values that can be useful. The constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>. Infinity is stored under <code>Inf</code> (with uppercase ‘I’).</p>
+<p>R stores a few special values that can be useful. For example, the constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>.</p>
 <pre class="r"><code>pi</code></pre>
 <pre><code>## [1] 3.141593</code></pre>
+<p>Infinity is stored under <code>Inf</code> (with uppercase ‘I’). We can also make this into negative infinity by appending the minus sign <code>-</code>.</p>
 <pre class="r"><code>Inf</code></pre>
 <pre><code>## [1] Inf</code></pre>
-<p>Much more often useful is the ‘missing’ value <code>NA</code>. We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
+<pre class="r"><code>-Inf</code></pre>
+<pre><code>## [1] -Inf</code></pre>
+<p>Among the most useful special values is the ‘missing’ value <code>NA</code> (<em>N</em>ot <em>A</em>vailable, or maybe <em>N</em>o <em>A</em>nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
 <pre class="r"><code>d = rbind(d, data.frame(age=NA, sex=&quot;male&quot;, country=&quot;France&quot;))
 
 d</code></pre>
