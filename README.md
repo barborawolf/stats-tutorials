@@ -26,8 +26,11 @@ Later tutorials assume familiarity with the introductory materials, but otherwis
 ## Packages
 
 R packages loaded in the tutorials:
-* `MASS`
-* `readxl`
-* `haven`
+
+* `GGally`
 * `ggplot2`
+* `haven`
+* `MASS`
 * `psych`
+* `readxl`
+* `reshape2`
