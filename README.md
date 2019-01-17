@@ -19,6 +19,10 @@ The introductory tutorials are best read in order:
 3. Files
 4. Packages
 
+Later tutorials assume familiarity with the introductory materials, but otherwise stand alone and can be consulted in any order:
+
+* Dimension reduction
+
 ## Packages
 
 R packages loaded in the tutorials:
