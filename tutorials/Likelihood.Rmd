@@ -1,0 +1,389 @@
+---
+title: "Likelihood"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+```{r}
+library(ggplot2)
+```
+
+# Likelihood
+
+There are a great many different methods of inference that are based on or involve likelihoods, including Bayesian inference. Here we will look just at the basic notion of likelihood.
+
+What is likelihood? A likelihood is the probability that a given model or hypothesis assigns to the observed data. So if a particular hypothesis states that the observed data should occur half of the time, then the likelihood for this hypothesis when we observe those data is 0.5.
+
+Doesn't this sound just like a *p*-value? After all, the *p*-value is also the probability of some data given a hypothesis. There are two particularly important differences between *p*-values and likelihoods.
+
+First, the *p*-value is the probability of obtaining the observed result *or a more extreme result*, given a particular hypothesis. But the likelihood is just the probability of obtaining the specific result that we observed.
+
+Second, when calculating *p*-values, we only ever consider one hypothesis, typically a 'null' hypothesis asserting that there is no difference, no interaction, etc. But when calculating likelihoods, we consider at least two competing hypotheses, and possibly a whole continuum of hypotheses, and we then compare their likelihoods. Another way of thinking about this is that *p*-values hold the hypothesis constant and consider a space of possible results, whereas likelihoods hold the observed result constant and consider a space of possible hypotheses.
+
+# Likelihood function
+
+One of the first things we typically do when working with likelihoods is find a *likelihood function*, a way of describing the change in the probability of the observed result over the range of hypotheses that we are considering.
+
+Let's do this for a very simple example. Imagine we are testing the powers of a supposed clairvoyant, and we give the clairvoyant a clairvoyance task in which there are two answers (for example telling which of two cups conceals a coin). We give them this task 6 times, with the coin concealed at random under one of the two cups. We observe the supposed clairvoyant get 5 trials right and then 1 wrong. This is our observed result.
+
+```{r}
+n_trials = 6
+n_correct = 5
+```
+
+As we just noted, we can think of likelihoods as describing the probability assigned to our one observed result by a set of different hypotheses. So our first question is: What is the set of hypotheses that we are considering? A reasonable choice for our example here would be different hypotheses about how good the clairvoyant's abilities are, in terms of the probability of them getting a trial of the task correct. Our hypotheses could be organized on a continuum from 0 (the clairvoyant always gets the task wrong) to 1 (they always get it right).
+
+We then calculate the probability of 5 right followed by 1 wrong, given each of the hypotheses along this continuum. The function that calculates this probability given the hypothesis as input is our likelihood function.
+
+```{r}
+likelihood_function = function(H, successes, n){
+  return(H^successes * (1-H)^(n-successes))
+}
+
+H = seq(0,1,0.001)
+likelihood_data = data.frame(H, Likelihood=likelihood_function(H, n_correct, n_trials))
+
+likelihood_plot = ggplot(likelihood_data, aes(x=H, y=Likelihood)) +
+  geom_line()
+
+print(likelihood_plot)
+```
+
+This function shows us how probable each hypothesis along the continuum makes the observed data.
+
+For example, the fact that the function reaches zero at the extremes tells us that the observed data would be impossible if the clairvoyant never got an answer right or if they never got one wrong.
+
+It is also important to note that although the likelihood function looks very much like a probability distribution, it is not. One important property of probability distributions is missing: The area under the likelihood function does not necessarily sum to 1. This is because the likelihood function is not showing us the probabilities of the hypotheses. It is showing us instead the probability of the observed data given those hypotheses. It can easily be the case that all hypotheses assign the observed data very high probability, or more commonly all hypotheses might assign the observed data fairly low probability, as is the case above.
+
+We can also see which hypothesis makes the data most probable. Not surprisingly, this is the hypothesis that says the clairvoyant tends to get 5 out of 6 trials right, since this is exactly the proportion that we have observed.
+
+```{r}
+ML_H = n_correct/n_trials
+ML = likelihood_function(ML_H, n_correct, n_trials)
+print(ML)
+```
+
+Here we can see that even this 'maximum likelihood' hypothesis doesn't make the observed data particularly probable. This does not mean that the data do not support that hypothesis. Unlike *p*-values, likelihoods do not on their own help us to evaluate a hypothesis. If we have a large amount of data, then it will often be the case that the exact result we have observed is highly improbable given any hypothesis. So we cannot assess the likelihood for any one hypothesis in isolation.
+
+# Likelihood ratio
+
+Instead of being a stand-alone test of a hypothesis, likelihoods are comparative. With likelihoods, we compare competing hypotheses and ask how much more probable one of them makes the observed data than the other. We can calculate the ratio of the likelihoods of two competing hypotheses, and this likelihood ratio is a measure of how much more consistent the data are with one hypothesis than with the other.
+
+Intuitively, if one of two hypotheses makes the observed data much more probable, then that hypothesis more strongly predicted the data, and therefore should receive a greater degree of confirmation from them.
+
+For example, if we wanted to compare the 'null' hypothesis that the clairvoyant is just guessing to a specified alternative, for example that they get the task right 80% of the time, then we calculate the ratio of the likelihoods of these two specific hypotheses.
+
+```{r}
+likelihood_function(0.8, n_correct, n_trials) / likelihood_function(0.5, n_correct, n_trials)
+```
+
+So the data support the '80% reliable ability' hypothesis about 4 times as much as the 'just guessing' hypothesis.
+
+However, the data do not discriminate well between the 80% and 90% accuracy hypotheses. The support for these two hypotheses is close to equal, as indicated by the fact that the ratio of their likelihoods is close to 1.
+
+```{r}
+likelihood_function(0.8, n_correct, n_trials) / likelihood_function(0.9, n_correct, n_trials)
+```
+
+# Likelihood interval
+
+If we have a small number of specific hypotheses, we can just calculate likelihood ratios for comparing them. But often we would like some way of summarizing the support the data offer for a range of hypotheses.
+
+In order to help us with this, we can first 'standardize' the otherwise arbitrary likelihood values so that we may assess them all in some intuitive way. We can achieve this by turning them all into likelihood ratios, with one particular hypothesis as the 'reference' to which they are all compared. If there is one particular hypothesis that we would like to compare all the others to on theoretical grounds, then we could use this hypothesis as the reference. But if not, then we can use the maximum likelihood hypothesis as the reference. By converting the likelihoods into likelihood ratios with the maximum likelihood as reference, we obtain standardized values on a scale from 0 (data offer no support for the hypothesis) to 1 (data offer as much support for this hypothesis as they do for the maximum likelihood hypothesis).
+
+(For the calculation we use the likelihood of the best hypothesis, which we calculated above and stored as `ML`.)
+
+```{r}
+likelihood_data$LR = likelihood_data$Likelihood / ML
+
+LR_plot = likelihood_plot %+% likelihood_data +
+  aes(y=LR) +
+  labs(y=expression("LR"["H/Hmax"]))
+
+print(LR_plot)
+```
+
+Now these likelihood ratio values tell us how much less well supported each hypothesis is than the maximum likelihood hypothesis. We can use them to decide which of the hypotheses we still consider reasonably well supported by the data. For example, we might eliminate all those hypotheses for which the support is less than one tenth that for the maximum likelihood hypothesis, or less than one hundredth.
+
+One typical (but arbitrary) choice of cutoff is 1/8. If we exclude all the hypotheses for which the likelihood ratio is less than this value, we exclude all hypotheses for which the evidence offered by the data is low compared to at least one other hypothesis. The hypotheses remaining are those for which the data still offer some reasonable support in comparison to any other hypothesis.
+
+```{r}
+LR_plot = LR_plot +
+  geom_area(aes(fill=LR>1/8))
+
+print(LR_plot)
+```
+
+This range is known as a likelihood interval. It is analogous to the confidence interval calculated from a sampling distribution, but the two have different interpretations. The confidence interval has a frequentist interpretation, since it refers to a property of the procedure over repeated uses: In 95% of repetitions of the 95% confidence interval procedure, the interval will contain the true hypothesis (e.g. the true population mean). The likelihood interval is interpreted in terms of 'likelihoodist' evidence: For the hypotheses in the 1/8 likelihood interval, the evidence offered by the data is no worse than 1/8 of the evidence offered for any other hypothesis.
+
+1/8 is a fairly liberal threshold. A typical more conservative choice is 1/32. This leads to a wider interval and therefore does not eliminate as many hypotheses.
+
+# Distributions as likelihood functions
+
+As we saw above, since we only ever compare likelihoods to each other, we do not actually have to use the probability of the observed data as our likelihood function; it is sufficient to use any quantity that is proportional to this probability. When we calculate likelihood ratios or intervals, the ratio of two quantities that are proportional to the probabilities will turn out to be the same as the ratio of the probabilities themselves.
+
+For the example above, the density of a beta distribution would also have been suitable as the likelihood function. For hypotheses about the proportion correct in multiple trials of a binary choice task, the probability of the data given a hypothesis is proportional to the density of a beta distribution with *α* equal to the number of correct answers plus 1, and *β* equal to the number of incorrect answers plus 1.
+
+```{r}
+likelihood_data$Likelihood = dbeta(H, shape1=n_correct+1, shape2=n_trials-n_correct+1)
+
+print(likelihood_plot %+% likelihood_data)
+```
+
+This fact about likelihoods can sometimes make things easier where the probabilities themselves are undefined or difficult to calculate. There is one common situation where this is the case. On a continuous scale, the probability of any one precise value is undefined. In order to work with probabilities in cases like this, we can use probability densities instead. We can also make use of densities when calculating likelihoods.
+
+Often we will want to calculate likelihoods for hypotheses about population means, where the mean is a value on a continuous scale.
+
+Let's consider another example, this time for a space of hypotheses about a mean. In the very small set of data below, we have five values on a continuous rating scale. We would like to know the probability of obtaining these particular five ratings for different hypothesized values of the population mean rating.
+
+```{r}
+set.seed(0)
+small_data = data.frame(Rating=rnorm(5, mean=100, sd=15))
+
+small_data
+
+x_range = c(floor(min(small_data$Rating)),
+            ceiling(max(small_data$Rating)))
+
+ratings_plot = ggplot(small_data, aes(x=Rating)) +
+  geom_vline(aes(xintercept=Rating), color="red") +
+  lims(x=x_range)
+
+ratings_plot
+```
+
+What should be our likelihood function here? If we assume as an approximation that the population from which we have sampled is normally distributed, then the probabilities of individual observations are proportional to the density of a normal distribution that is centered on whichever hypothesis we are currently considering.
+
+So for each hypothesis under consideration we take a normal distribution, center it on the hypothesis, and then look at the density values for the observed data to calculate the likelihood for that hypothesis.
+
+What should be the Standard Deviation of this normal distribution? Our hypotheses concern the population mean, but don't say anything about the population Standard Deviation. The Standard Deviation of the population is therefore a 'nuisance parameter': A parameter that we are not interested in estimating but that we still have to estimate in order to draw inferences about another parameter of interest. As a first approximation we can use the Standard Deviation of our observed data as an estimate of the population Standard Deviation.
+
+Below is a visualization for just one hypothesis: The hypothesis that the population mean rating is 115.
+
+```{r}
+H = 115
+sd_sample = sd(small_data$Rating)
+
+H_plot = ratings_plot +
+  labs(y="density") +
+  lims(y=c(0,NA))
+
+H_plot_A = H_plot +
+  stat_function(fun=dnorm, args=list(mean=H, sd=sd_sample))
+
+print(H_plot_A)
+```
+
+We can calculate the density values for the observed data using `dnorm()`.
+
+```{r}
+H_densities = data.frame(Rating=small_data$Rating,
+                         density=dnorm(small_data$Rating, mean=H, sd=sd_sample))
+
+H_densities
+```
+
+Here is a visualization of how the densities are obtained. They are the heights of the probability distribution for this hypothesis at the values of the observed data.
+
+```{r}
+H_plot_A = H_plot_A +
+  geom_segment(aes(y=density, yend=density),
+               data=H_densities,
+               xend=x_range[1]-5,
+               lty="dashed")
+
+print(H_plot_A)
+```
+
+To calculate the likelihood for this example hypothesis, we require a single probability of the observed data. How should we combine the density values for each observation into one value? The density values are 'standing in' for probabilities, so we should combine them as if they were probabilities. This means that we should multiply them together, since we multiply probabilities of individual events to find the probability of them all occurring.
+
+```{r}
+prod(H_densities$density)
+```
+
+Remember that this value itself is not the actual probability of the observed data. It is a quantity that is proportional to that probability. As we noted above, this is sufficient for it to be used as a likelihood.
+
+In order to compare competing hypotheses about the population mean rating, we need now to apply the procedure above to a range of hypotheses, so that we may compare their likelihoods.
+
+```{r}
+likelihood_data = data.frame(H=seq(x_range[1], x_range[2], 0.1), Likelihood=0)
+
+for(row in 1:nrow(likelihood_data)){
+  l = prod(dnorm(small_data$Rating, mean=likelihood_data$H[row], sd=sd_sample))
+  likelihood_data$Likelihood[row] = l
+}
+
+likelihood_plot = ggplot(likelihood_data, aes(x=H, y=Likelihood)) +
+  geom_line()
+
+print(likelihood_plot)
+```
+
+It is not so surprising that the likelihood function in this case has the same shape as a normal distribution. Also not so surprising is the fact that the likelihood function is centered on the observed mean of the data, since this is the population mean value that would make the data most probable.
+
+We could now work with this likelihood function as we did in the example above, for example by converting the likelihoods into likelihood ratios compared to the maximum likelihood hypothesis and then creating a likelihood interval.
+
+# Profile likelihood
+
+There is one aspect of the procedure we just carried out that is not so satisfactory. Recall that we used the Standard Deviation of the observed data as our estimate of the Standard Deviation of the population distribution. We used this same estimate for every hypothesis whose likelihood we calculated. Although the observed Standard Deviation may be an approximately good estimate of the Standard Deviation of the population for some of the hypotheses we are considering, for others it may not be so realistic.
+
+Consider the hypothesis that the true population mean is 95.
+
+```{r}
+H = 95
+
+H_plot_B = H_plot +
+  stat_function(fun=dnorm, args=list(mean=H, sd=sd_sample))
+
+print(H_plot_B)
+```
+
+If this were really the true population mean, then the true population Standard Deviation would probably be rather greater than this. Otherwise, we would be fairly unlikely to observe so many values at the positive extreme of the distribution.
+
+As we change the hypothesized mean of the population distribution, our best estimate of the population Standard Deviation changes as well. As we consider hypothesized means that are further from the center of the data, the Standard Deviation of the population would have to be greater in order to account for the fact that the observed data are so far from the mean.
+
+This is a simple example of the more general problem posed by 'nuisance parameters': Their best-fitting values will change as we consider different values of the parameter of interest.
+
+To take this into account, we can instead use for each hypothesized mean the Standard Deviation that allows that hypothesized mean to best account for the data. In a sense, this gives all hypothesized means a 'fair chance' to account for the data. When we were using the Standard Deviation of the observed data for all hypothesized means, we were unduly penalizing extreme means by assigning them an unrealistically small Standard Deviation.
+
+So what should we use as the best-fitting Standard Deviation in each case? We should still use, in a certain sense, the Standard Deviation of the observed data, but with a slight modification. We should calculate that Standard Deviation using the hypothesized mean, and not the observed mean, so that we are measuring the average deviation of data from the hypothesized mean. This is the value that can then best account for the observed data, given that mean.
+
+There is no function in R for calculating a Standard Deviation using a mean other than the observed mean. But we can create such a function, by taking the formula for the Standard Deviation and substituting some new mean where the observed mean of the data is normally used. This function will take two inputs: The observed data, and the hypothesized mean.
+
+```{r}
+sd_fixed_mean = function(x, fixed_mean){
+  deviations = x - fixed_mean
+  sumsq = sum(deviations^2)
+  denom = length(x) - 1
+  return(sqrt(sumsq/denom))
+}
+```
+
+If we apply our function using the hypothesized mean of 95 that we illustrated above, we get a value considerably larger than the Standard Deviation of the observed data. The data are a lot further from this hypothesized mean than they are from the observed mean.
+
+```{r}
+sd_H = sd_fixed_mean(small_data$Rating, H)
+
+sd_H
+sd_sample
+```
+
+This is a more realistic estimate of the population Standard Deviation assuming this hypothesis is right about the mean.
+
+```{r}
+H_plot_B = H_plot_B +
+  stat_function(fun=dnorm, args=list(mean=H, sd=sd_H), lty="dashed")
+
+print(H_plot_B)
+```
+
+We can now calculate the likelihoods of the hypotheses using this new varying estimate of the Standard Deviation. A likelihood calculated in this way is called a 'profile likelihood'. Sometimes the process of allowing nusiance parameters to take on their best-fitting values for each hypothesized value of the parameter of interest is called 'profiling out' the nuisance parameters.
+
+```{r}
+likelihood_data$profile_likelihood = 0
+
+for(row in 1:nrow(likelihood_data)){
+  H = likelihood_data$H[row]
+  sd_H = sd_fixed_mean(small_data$Rating, H)
+  l = prod(dnorm(small_data$Rating, mean=H, sd=sd_H))
+  likelihood_data$profile_likelihood[row] = l
+}
+
+likelihood_plot = likelihood_plot %+% likelihood_data +
+  geom_line(aes(y=profile_likelihood), lty="dashed")
+
+print(likelihood_plot)
+```
+
+The profile likelihood function is very close to the likelihood function calculated with a fixed estimate of the population Standard Deviation. But it gives values that are a little higher at the extremes. This is because it has allowed the extreme hypothesized means a slightly better chance at accounting for the observed data, resulting in these hypotheses having a slightly higher likelihood.
+
+The shape of the profile likelihood function looks familiar. It is the shape of a *t*-distribution. The *t*-distribution arises here for the same reason it arises in other contexts, such as in the *t*-test: To account for additional uncertainty in estimating the Standard Deviation when we are making inferences about a mean.
+
+The profile likelihood function will result in a wider likelihood interval. A wider interval here means more uncertainty about the true mean. This uncertainty comes from the uncertainty about the true Standard Deviation, which our earlier likelihood function did not take into account.
+
+# Log-likelihood
+
+The example data set we created above was very small, just 5 observations. We will usually have more data than this. We might sometimes have very large data sets. Let's simulate again the ratings data, but with many more observations.
+
+```{r}
+set.seed(0)
+big_data = data.frame(Rating=rnorm(600, mean=100, sd=15))
+```
+
+Imagine we wanted to assess the likelihood for different hypothesized means using these data. We saw that the probability of the entire set of observed data is given by the product of the probabilities of the individual data points. Multiplying many probabilities together will result in a very, very small value. This makes intuitive sense, since the probability of getting 600 values that are *exactly* the observed values is vanishingly small given any reasonable hypothesis. However, this fact can result in a nasty computing problem.
+
+```{r}
+H = 115
+likelihood = prod(dnorm(big_data$Rating, mean=H, sd=sd(big_data$Rating)))
+
+likelihood
+```
+
+The likelihood calculated as the product of the densities for the observed data appears to be 0. We can check that it really is 0 and has not just been rounded off for display purposes.
+
+```{r}
+likelihood == 0
+```
+
+If we have calculations that may result in a very small number, we run the risk of our computer running out of precision and no longer being able to represent that number as different from 0.
+
+One way of avoiding this problem here is to work with the logarithm of likelihoods instead. Let's remind ourselves of some of the properties of logarithms.
+
+Logarithms turn numbers close to zero into large negative numbers.
+
+```{r}
+log(0.001)
+```
+
+The logarithm and exponential functions are each other's inverse. So we can turn a logarithm of a value back into the original value using `exp()`.
+
+```{r}
+exp(log(0.001))
+```
+
+And logarithms turn multiplication into addition. So where we multiply two numbers, we can also add their logarithms to obtain the logarithm of their product.
+
+```{r}
+log(0.01)
+
+log(0.1) + log(0.1)
+
+exp(log(0.1) + log(0.1))
+```
+
+Because logarithms turn small numbers into larger negative numbers, and because they turn multiplication into addition, working with logarithms of probabilities can avoid the risk of the product of those probabilities becoming too small for our computer to represent. This often applies also when we are using densities instead of the probabilities themselves.
+
+R's probability distribution functions include an option to return the logarithm of the density instead of the density itself.
+
+```{r}
+dnorm(150, mean=100, sd=115, log=TRUE)
+```
+
+If we want to combine multiple log probabilities (or densities) to get the joint log probability, we must sum them rather than multiplying them (because logarithms turn multiplication into addition).
+
+```{r}
+log_likelihood = sum(dnorm(big_data$Rating, mean=H, sd=sd(big_data$Rating), log=TRUE))
+
+log_likelihood
+```
+
+The result is usually a large negative number that our computer can still represent.
+
+In many applications involving likelihoods, we work with the logarithms of the likelihoods rather than the likelihoods themselves.
+
+Logarithms also turn division into subtraction, so if we want a likelihood ratio in terms of log-likelihoods, then we must subtract one log-likelihood from another instead of dividing one by the other.
+
+```{r}
+H_2 = 150
+log_likelihood_2 = sum(dnorm(big_data$Rating, mean=H_2, sd=sd(big_data$Rating), log=TRUE))
+
+log_likelihood_2 - log_likelihood
+```
+
+A negative value tells us that the the first likelihood in the ratio is lower. This is equivalent to a likelihood ratio lower than 1 (i.e. less support for the first hypothesis). A positive value tells us that the first likelihood is greater. This is equivalent to a likelihood ratio greater than 1 (i.e. more support for the first hypothesis).
+
+Avoiding problems with computer precision is not the only reason to work with log-likelihoods. In cases where we are working analytically with the formula for a probability density, converting it into the formula for log density often simplifies it. The density functions of some distributions include exponentials and the number 1, for example the [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution#Definition). Both of these are simplified by logarithms, since the logarithm of 1 is 0, and the logarithm of an exponential 'undoes' the exponential.
