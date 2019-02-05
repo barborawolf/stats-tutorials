@@ -3,6 +3,7 @@
 # Example files generated when running tutorial code
 bw_grams.*
 results.txt
+example_figure.*
 
 
 # General R ignores:
