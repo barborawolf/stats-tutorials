@@ -107,7 +107,7 @@ score3 = c(12,21,18,100,66)
 score + score3
 ```
 
-There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names.
+There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a later tutorial.)
 
 ```{r}
 mean(score)
@@ -312,19 +312,35 @@ sex
 table(sex)
 ```
 
-The `levels()` function tells us what levels a factor has, and `nlevels()` tells us how many levels.
+The `nlevels()` function tells us how many levels a factor has, and `levels()` tells us what those levels are (and shows them in their defined order).
 
 ```{r}
-levels(sex)
 nlevels(sex)
+levels(sex)
 ```
 
-If we try to add a new value to a factor that is not among the defined categories, it will not be added to the set of possible categories. Instead, the new value will be marked as 'missing' (`NA`). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.
+We can change the order of the levels of a factor by re-applying the `factor()` function, this time with a different ordering for the `levels` argument. Remember that to actually change the original factor variable, we need to assign the result of `factor()` back into the variable so that it is overwritten.
 
-Note also that the levels of a factor are case-sensitive.
+```{r}
+sex = factor(sex, levels=c("female","male","other"))
+```
+
+Another way of changing the order of the levels for an existing factor is with the `relevel()` function. This function just takes one of the levels and moves it to the front of the ordering. The new first level (sometimes termed the **ref**erence level) is given by the `ref` argument. Again, we need to assign the result back into the factor variable to store the change.
+
+```{r}
+sex = relevel(sex, ref="male")
+levels(sex)
+```
+
+If we try to add a new value to a factor that is not among the defined levels, it will not be added to the set of possible categories. Instead, the new value will be marked as 'missing' (`NA`). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.
 
 ```{r}
 sex[1] = "martian"
+```
+
+Note also that the levels of a factor are case-sensitive, so an existing factor level written in a different case will not be recognized.
+
+```{r}
 sex[2] = "Male"
 
 sex
@@ -332,7 +348,7 @@ sex
 
 As with numeric and character vectors, we can convert other types of data into a factor using `as.factor()`.
 
-One of the main uses of this is to convert a vector of numbers that represent ID numbers, which are really just categories.
+One of the main uses of this is to convert a vector of numbers that indicate category memberships into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor.
 
 ```{r}
 id = rep(1:3, each=10)
@@ -342,7 +358,7 @@ id = as.factor(id)
 id
 ```
 
-Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them more often.
+Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them often.
 
 # Data frames
 
@@ -393,7 +409,7 @@ The resulting variable is a data frame.
 class(d)
 ```
 
-Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under **Data**. R tells us there how many 'observations' (i.e. rows) there are in the data frame, and how many 'variables' (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet (or you can achieve this using the `View()` function, with the name of the data frame as input). If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.
+Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under **Data**. R tells us there how many **observations** (i.e. rows) there are in the data frame, and how many **variables** (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet (or you can achieve this using the `View()` function, with the name of the data frame as input). If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.
 
 We can index data frames using the square parentheses, just as we index vectors. However, we need to say both which row we want, and which column. We give the row index first, then the column index.
 
@@ -445,7 +461,7 @@ nrow(d)
 ncol(d)
 ```
 
-We can find out the names of the columns with the `names()` function. This function can also be used to change one or more of the column names.
+We can find out the names of the columns in a data frame with the `names()` function. This function can also be used to change one or more of the column names.
 
 ```{r}
 names(d)
@@ -454,7 +470,7 @@ names(d)[3] = "country"
 d
 ```
 
-The `summary()` function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.
+The `head()` function shows us the first few rows of a data frame, so we can quickly check its structure without having to print out the entire thing, and the `tail()` function does the same for the last few rows. The `summary()` function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.
 
 ```{r}
 summary(d)
@@ -502,7 +518,14 @@ x = c(FALSE,TRUE,FALSE,TRUE,FALSE,FALSE)
 class(x)
 ```
 
-Much more often, we will create a logical vector by asking whether a certain condition holds for each of the values in another vector.
+`TRUE` and `FALSE` can be abbreviated to `T` and `F` (still in uppercase).
+
+```{r}
+x = c(F,T,F,T,F,F)
+x
+```
+
+Much more often than creating a logical vector by typing out `TRUE` and `FALSE` ourselves, we will instead create a logical vector by asking whether a certain condition holds for each of the values in another vector.
 
 For example, we could ask whether each of the people in our data frame is over a certain age, using the 'greater than' operator `>`:
 
@@ -588,6 +611,64 @@ d$country = "Germany"
 d # (oops)
 ```
 
+# Special values
+
+R stores a few special values that can be useful. For example, the constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`.
+
+```{r}
+pi
+```
+
+Infinity is stored under `Inf` (with uppercase 'I'). We can also make this into negative infinity by appending the minus sign `-`.
+
+```{r}
+Inf
+-Inf
+```
+
+Among the most useful special values is the 'missing' value `NA` (**N**ot **A**vailable, or maybe **N**o **A**nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
+
+```{r}
+d = rbind(d, data.frame(age=NA, sex="male", country="France"))
+
+d
+```
+
+We can check which values are missing from a column using `is.na()`. If we want to know which rows are 'complete' (i.e. have no missing values in any column), we can use the `complete.cases()` function on the whole data frame.
+
+```{r}
+is.na(d$age)
+complete.cases(d)
+```
+
+If there are any `NA` values anywhere in a vector, mathematical functions applied to that vector will also output `NA`. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.
+
+```{r}
+mean(d$age)
+```
+
+If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the `na.rm` argument (the `rm` in `na.rm` is short for 'remove'). Since this is an argument that specifies a yes/no option, its input is a logical value, where `TRUE` means 'yes, apply this option' (i.e. calculate the result with the `NA` values removed).
+
+```{r}
+mean(d$age, na.rm=TRUE)
+```
+
+There is also a special value called `NULL` in R. This value indicates 'emptiness'. It can be used to create an empty variable that does not yet store anything.
+
+```{r}
+x = NULL
+
+class(x)
+```
+
+Another use is to remove a column from a data frame, by 'making it empty'.
+
+```{r}
+d$country = NULL
+
+d
+```
+
 # Matrices
 
 Many mathematical procedures in statistics involve **matrices**, groups of numbers that are ordered into a rectangular structure. Matrices are a lot like data frames, since they have rows and columns. But whereas the columns of a data frame represent named variables that may be of different types, a matrix contains only numbers, and the columns do not have to be named.
@@ -638,7 +719,7 @@ names(d_mat) = c("scoreA", "scoreB")
 d_mat
 ```
 
-One important use of a matrix is to generate the possible combinations of values when sampling from them. The `combn()` function creates a matrix whose columns give the possible combinations of `n` values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.
+One important use of a matrix is to generate the possible combinations of a set of values. The `combn()` function creates a matrix whose columns give the possible combinations of `n` values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.
 
 For example if we want to know what possible combinations we can get when picking 2 numbers from the numbers 1 to 5:
 
@@ -648,64 +729,6 @@ combos
 ```
 
 We see that one possible combination of 2 numbers is 1 and 2 (first column), another is 1 and 3 (second column), and so on.
-
-# Special values
-
-R stores a few special values that can be useful. For example, the constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`.
-
-```{r}
-pi
-```
-
-Infinity is stored under `Inf` (with uppercase 'I'). We can also make this into negative infinity by appending the minus sign `-`.
-
-```{r}
-Inf
--Inf
-```
-
-Among the most useful special values is the 'missing' value `NA` (*N*ot *A*vailable, or maybe *N*o *A*nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
-
-```{r}
-d = rbind(d, data.frame(age=NA, sex="male", country="France"))
-
-d
-```
-
-We can check which values are missing from a column using `is.na()`. If we want to know which rows are 'complete' (i.e. have no missing values in any column), we can use the `complete.cases()` function on the whole data frame.
-
-```{r}
-is.na(d$age)
-complete.cases(d)
-```
-
-If there are any `NA` values anywhere in a vector, mathematical functions applied to that vector will also output `NA`. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.
-
-```{r}
-mean(d$age)
-```
-
-If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the `na.rm` argument (the `rm` in `na.rm` is short for 'remove'). Since this is an argument that specifies a yes/no option, its input is a logical value, where `TRUE` means 'yes, apply this option' (i.e. calculate the result with the `NA` values removed).
-
-```{r}
-mean(d$age, na.rm=TRUE)
-```
-
-There is also a special value called `NULL` in R. This value indicates 'emptiness'. It can be used to create an empty variable that does not yet store anything.
-
-```{r}
-x = NULL
-
-class(x)
-```
-
-Another use is to remove a column from a data frame, by 'making it empty'.
-
-```{r}
-d$country = NULL
-
-d
-```
 
 # Lists
 

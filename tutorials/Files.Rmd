@@ -39,13 +39,22 @@ ls()
 class(bw)
 ```
 
-**bw** stands here for **b**irth **w**eights. The data frame records the weights of newborn babies, along with several pieces of information about their mothers. To see the data in R, we can just type the name of the variable in the console, as we have seen before.
+**bw** stands here for **b**irth **w**eights. The data frame records the weights of newborn babies, along with several pieces of information about the mother:
+
+* her weight before the pregnancy (in kg)
+* her age
+* whether or not she smoked during the pregnancy
+* her ethnic group (recorded only as 'black', 'white', or 'other')
+* whether or not she has a history of hypertension
+* the number of visits she received from a doctor during the pregnancy
+
+To see the data in R, we can just type the name of the variable in the console, as we have seen before.
 
 ```{r}
 bw
 ```
 
-We will explore these data later, but first we will learn how to load the same data from other formats.
+We will use these data in several tutorials later. Here we will just learn how to load them into our R session in a few different ways.
 
 ## Delimited text
 
@@ -59,7 +68,7 @@ R can also load data from text files. These files just contain plain text, so th
 
 We can choose whichever character we like to separate the columns, but two common choices are the tab character or the comma. Here we will load a comma-separated text file. These files are typically given the file suffix **csv**, which stands for **c**omma **s**eparated **v**alues.
 
-The `read.table()` function reads a table of delimited values from a text file. The first input is the name of the file, just as for `load()`, and the `sep` argument (short for **separator**) specifies what character the file uses to separate the columns. Unlike R data files, the data from plain text files is not already organized into variables, so we need to assign the result of `read.table()` into a variable.
+The `read.table()` function reads a table of delimited values from a text file. The first input is the name of the file, just as for `load()`, and the `sep` argument (short for **sep**arator) specifies what character the file uses to separate the columns. Unlike R data files, the data from plain text files is not already organized into variables, so we need to assign the result of `read.table()` into a variable.
 
 ```{r}
 bw = read.table("data/birth_weights.csv", sep=",")
@@ -89,13 +98,13 @@ Since the csv file is a fairly common format, R provides a convenience function,
 bw = read.csv("data/birth_weights.csv")
 ```
 
-I will use csv files for most of the remaining tutorials that involve loading data.
+We will mostly use csv files and RData files in the remaining tutorials that involve loading data.
 
 In some countries, for example in Germany, the comma is used as a decimal point indicator, so that the number `2.4` is written as `2,4`. If somebody has created a csv file using a spreadsheet program in a country that uses the comma as a decimal point, the separator character will usually be the semicolon `;`.
 
 We can load such files either by setting the `dec` (**decimal**) argument to the semicolon, i.e. `dec=";"`, or by using the convenience function `read.csv2()`, which handles this file format.
 
-If you are in doubt about the format of a delimited text file, open it first in a text editor outside of R to see what it contains. You can also see the contents of a text file from Rstudio, either by opening it via *File* -> *Open File*, or using the `file.show()` function, with the name of the file as input.
+If you are in doubt about the format of a delimited text file, open it first in a text editor outside of R to see what it contains. You can also see the contents of a text file in RStudio, either by opening it via *File* -> *Open File*, or using the `file.show()` function, with the name of the file as input.
 
 ## The internet
 
@@ -110,7 +119,7 @@ web_address = "https://github.com/luketudge/stats-tutorials/raw/master/tutorials
 bw = read.csv(url(web_address))
 ```
 
-This is a great way to make our work accessible to others. If we store our data on a website and then provide an R script that retreives the data and carries out our analysis, anybody else with an internet connection can examine and verify our work just by running the script, and without having to manually download the data file and make sure it is in their working directory.
+This is a great way to make our work accessible to others. If we store our data on a website and then provide an R script that retreives the data and carries out our analysis, anybody else with an internet connection can examine and verify our work just by running the script, without having to manually download the data file and make sure it is in their working directory.
 
 # Saving data
 
@@ -138,7 +147,7 @@ write.csv(bw, file="bw_grams.csv")
 
 If we want to first check that R is saving the text file in the format that we want, we can take a look at the text that will be written into the file. We can do this by specifying an empty file name (`""`). This will print out the text to the console instead of writing it to a file.
 
-```{r, message=1:10}
+```{r}
 write.csv(bw, file="")
 ```
 

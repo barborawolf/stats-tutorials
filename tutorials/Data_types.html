@@ -2871,7 +2871,7 @@ score + score3</code></pre>
 <pre><code>## Warning in score + score3: longer object length is not a multiple of
 ## shorter object length</code></pre>
 <pre><code>## [1]  54  86  83 169 161  32  63 108</code></pre>
-<p>There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names.</p>
+<p>There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a later tutorial.)</p>
 <pre class="r"><code>mean(score)</code></pre>
 <pre><code>## [1] 61</code></pre>
 <pre class="r"><code>median(score)</code></pre>
@@ -3021,16 +3021,22 @@ sex</code></pre>
 <pre><code>## sex
 ##   male female  other 
 ##      2      2      0</code></pre>
-<p>The <code>levels()</code> function tells us what levels a factor has, and <code>nlevels()</code> tells us how many levels.</p>
-<pre class="r"><code>levels(sex)</code></pre>
-<pre><code>## [1] &quot;male&quot;   &quot;female&quot; &quot;other&quot;</code></pre>
+<p>The <code>nlevels()</code> function tells us how many levels a factor has, and <code>levels()</code> tells us what those levels are (and shows them in their defined order).</p>
 <pre class="r"><code>nlevels(sex)</code></pre>
 <pre><code>## [1] 3</code></pre>
-<p>If we try to add a new value to a factor that is not among the defined categories, it will not be added to the set of possible categories. Instead, the new value will be marked as ‘missing’ (<code>NA</code>). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.</p>
-<p>Note also that the levels of a factor are case-sensitive.</p>
+<pre class="r"><code>levels(sex)</code></pre>
+<pre><code>## [1] &quot;male&quot;   &quot;female&quot; &quot;other&quot;</code></pre>
+<p>We can change the order of the levels of a factor by re-applying the <code>factor()</code> function, this time with a different ordering for the <code>levels</code> argument. Remember that to actually change the original factor variable, we need to assign the result of <code>factor()</code> back into the variable so that it is overwritten.</p>
+<pre class="r"><code>sex = factor(sex, levels=c(&quot;female&quot;,&quot;male&quot;,&quot;other&quot;))</code></pre>
+<p>Another way of changing the order of the levels for an existing factor is with the <code>relevel()</code> function. This function just takes one of the levels and moves it to the front of the ordering. The new first level (sometimes termed the <strong>ref</strong>erence level) is given by the <code>ref</code> argument. Again, we need to assign the result back into the factor variable to store the change.</p>
+<pre class="r"><code>sex = relevel(sex, ref=&quot;male&quot;)
+levels(sex)</code></pre>
+<pre><code>## [1] &quot;male&quot;   &quot;female&quot; &quot;other&quot;</code></pre>
+<p>If we try to add a new value to a factor that is not among the defined levels, it will not be added to the set of possible categories. Instead, the new value will be marked as ‘missing’ (<code>NA</code>). Although this can sometimes be frustrating, the advantage is that it ensures we stick to the categories we want to deal with, and do not accidentally add new ones by misspelling a word or making some other mistake. R warns us when this occurs.</p>
 <pre class="r"><code>sex[1] = &quot;martian&quot;</code></pre>
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, 1, value = &quot;martian&quot;): invalid factor
 ## level, NA generated</code></pre>
+<p>Note also that the levels of a factor are case-sensitive, so an existing factor level written in a different case will not be recognized.</p>
 <pre class="r"><code>sex[2] = &quot;Male&quot;</code></pre>
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, 2, value = &quot;Male&quot;): invalid factor level,
 ## NA generated</code></pre>
@@ -3038,7 +3044,7 @@ sex</code></pre>
 <pre><code>## [1] &lt;NA&gt;   &lt;NA&gt;   female male  
 ## Levels: male female other</code></pre>
 <p>As with numeric and character vectors, we can convert other types of data into a factor using <code>as.factor()</code>.</p>
-<p>One of the main uses of this is to convert a vector of numbers that represent ID numbers, which are really just categories.</p>
+<p>One of the main uses of this is to convert a vector of numbers that indicate category memberships into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor.</p>
 <pre class="r"><code>id = rep(1:3, each=10)
 id</code></pre>
 <pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3</code></pre>
@@ -3046,7 +3052,7 @@ id</code></pre>
 id</code></pre>
 <pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
 ## Levels: 1 2 3</code></pre>
-<p>Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them more often.</p>
+<p>Although factors may not seem to offer many advantages compared to character vectors, they are used a lot in R, and later on we will work with them often.</p>
 </div>
 <div id="data-frames" class="section level1">
 <h1>Data frames</h1>
@@ -3088,7 +3094,7 @@ d</code></pre>
 <p>The resulting variable is a data frame.</p>
 <pre class="r"><code>class(d)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under <strong>Data</strong>. R tells us there how many ‘observations’ (i.e. rows) there are in the data frame, and how many ‘variables’ (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet (or you can achieve this using the <code>View()</code> function, with the name of the data frame as input). If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.</p>
+<p>Data frames are organized into rows and columns. Take a look at the Environment tab in RStudio. If you have copied the commands above into your console and created the data frame, you should see it in the environment, under <strong>Data</strong>. R tells us there how many <strong>observations</strong> (i.e. rows) there are in the data frame, and how many <strong>variables</strong> (i.e. columns). If you click on the name of the data frame, you will see it displayed as a spreadsheet (or you can achieve this using the <code>View()</code> function, with the name of the data frame as input). If you click on the blue arrow next to the name, you will see some additional information about the variables in the data frame.</p>
 <p>We can index data frames using the square parentheses, just as we index vectors. However, we need to say both which row we want, and which column. We give the row index first, then the column index.</p>
 <p>For example, to get the value in the 3rd row and 2nd column:</p>
 <pre class="r"><code>d[3,2]</code></pre>
@@ -3137,7 +3143,7 @@ d</code></pre>
 <pre><code>## [1] 5</code></pre>
 <pre class="r"><code>ncol(d)</code></pre>
 <pre><code>## [1] 3</code></pre>
-<p>We can find out the names of the columns with the <code>names()</code> function. This function can also be used to change one or more of the column names.</p>
+<p>We can find out the names of the columns in a data frame with the <code>names()</code> function. This function can also be used to change one or more of the column names.</p>
 <pre class="r"><code>names(d)</code></pre>
 <pre><code>## [1] &quot;age&quot;      &quot;sex&quot;      &quot;location&quot;</code></pre>
 <pre class="r"><code>names(d)[3] = &quot;country&quot;
@@ -3147,7 +3153,7 @@ d</code></pre>
 {"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The <code>summary()</code> function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.</p>
+<p>The <code>head()</code> function shows us the first few rows of a data frame, so we can quickly check its structure without having to print out the entire thing, and the <code>tail()</code> function does the same for the last few rows. The <code>summary()</code> function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.</p>
 <pre class="r"><code>summary(d)</code></pre>
 <pre><code>##       age           sex       country 
 ##  Min.   :29.0   female:3   France :1  
@@ -3197,7 +3203,11 @@ meal_combos</code></pre>
 <pre class="r"><code>x = c(FALSE,TRUE,FALSE,TRUE,FALSE,FALSE)
 class(x)</code></pre>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
-<p>Much more often, we will create a logical vector by asking whether a certain condition holds for each of the values in another vector.</p>
+<p><code>TRUE</code> and <code>FALSE</code> can be abbreviated to <code>T</code> and <code>F</code> (still in uppercase).</p>
+<pre class="r"><code>x = c(F,T,F,T,F,F)
+x</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<p>Much more often than creating a logical vector by typing out <code>TRUE</code> and <code>FALSE</code> ourselves, we will instead create a logical vector by asking whether a certain condition holds for each of the values in another vector.</p>
 <p>For example, we could ask whether each of the people in our data frame is over a certain age, using the ‘greater than’ operator <code>&gt;</code>:</p>
 <pre class="r"><code>d$age &gt; 40</code></pre>
 <pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
@@ -3269,6 +3279,51 @@ d # (oops)</code></pre>
   </script>
 </div>
 </div>
+<div id="special-values" class="section level1">
+<h1>Special values</h1>
+<p>R stores a few special values that can be useful. For example, the constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>.</p>
+<pre class="r"><code>pi</code></pre>
+<pre><code>## [1] 3.141593</code></pre>
+<p>Infinity is stored under <code>Inf</code> (with uppercase ‘I’). We can also make this into negative infinity by appending the minus sign <code>-</code>.</p>
+<pre class="r"><code>Inf</code></pre>
+<pre><code>## [1] Inf</code></pre>
+<pre class="r"><code>-Inf</code></pre>
+<pre><code>## [1] -Inf</code></pre>
+<p>Among the most useful special values is the ‘missing’ value <code>NA</code> (<strong>N</strong>ot <strong>A</strong>vailable, or maybe <strong>N</strong>o <strong>A</strong>nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
+<pre class="r"><code>d = rbind(d, data.frame(age=NA, sex=&quot;male&quot;, country=&quot;France&quot;))
+
+d</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"},{"1":"NA","2":"male","3":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can check which values are missing from a column using <code>is.na()</code>. If we want to know which rows are ‘complete’ (i.e. have no missing values in any column), we can use the <code>complete.cases()</code> function on the whole data frame.</p>
+<pre class="r"><code>is.na(d$age)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE</code></pre>
+<pre class="r"><code>complete.cases(d)</code></pre>
+<pre><code>## [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE</code></pre>
+<p>If there are any <code>NA</code> values anywhere in a vector, mathematical functions applied to that vector will also output <code>NA</code>. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.</p>
+<pre class="r"><code>mean(d$age)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the <code>na.rm</code> argument (the <code>rm</code> in <code>na.rm</code> is short for ‘remove’). Since this is an argument that specifies a yes/no option, its input is a logical value, where <code>TRUE</code> means ‘yes, apply this option’ (i.e. calculate the result with the <code>NA</code> values removed).</p>
+<pre class="r"><code>mean(d$age, na.rm=TRUE)</code></pre>
+<pre><code>## [1] 41.16667</code></pre>
+<p>There is also a special value called <code>NULL</code> in R. This value indicates ‘emptiness’. It can be used to create an empty variable that does not yet store anything.</p>
+<pre class="r"><code>x = NULL
+
+class(x)</code></pre>
+<pre><code>## [1] &quot;NULL&quot;</code></pre>
+<p>Another use is to remove a column from a data frame, by ‘making it empty’.</p>
+<pre class="r"><code>d$country = NULL
+
+d</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male"},{"1":"64","2":"female"},{"1":"40","2":"female"},{"1":"53","2":"male"},{"1":"29","2":"female"},{"1":"25","2":"other"},{"1":"NA","2":"male"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 <div id="matrices" class="section level1">
 <h1>Matrices</h1>
 <p>Many mathematical procedures in statistics involve <strong>matrices</strong>, groups of numbers that are ordered into a rectangular structure. Matrices are a lot like data frames, since they have rows and columns. But whereas the columns of a data frame represent named variables that may be of different types, a matrix contains only numbers, and the columns do not have to be named.</p>
@@ -3317,7 +3372,7 @@ d_mat</code></pre>
 {"columns":[{"label":["scoreA"],"name":[1],"type":["int"],"align":["right"]},{"label":["scoreB"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"2"},{"1":"3","2":"4"},{"1":"5","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>One important use of a matrix is to generate the possible combinations of values when sampling from them. The <code>combn()</code> function creates a matrix whose columns give the possible combinations of <code>n</code> values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.</p>
+<p>One important use of a matrix is to generate the possible combinations of a set of values. The <code>combn()</code> function creates a matrix whose columns give the possible combinations of <code>n</code> values chosen from a vector of numbers. The first input is the set of values to choose from, and the second input is the number of them to choose.</p>
 <p>For example if we want to know what possible combinations we can get when picking 2 numbers from the numbers 1 to 5:</p>
 <pre class="r"><code>combos = combn(1:5, 2)
 combos</code></pre>
@@ -3325,51 +3380,6 @@ combos</code></pre>
 ## [1,]    1    1    1    1    2    2    2    3    3     4
 ## [2,]    2    3    4    5    3    4    5    4    5     5</code></pre>
 <p>We see that one possible combination of 2 numbers is 1 and 2 (first column), another is 1 and 3 (second column), and so on.</p>
-</div>
-<div id="special-values" class="section level1">
-<h1>Special values</h1>
-<p>R stores a few special values that can be useful. For example, the constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>.</p>
-<pre class="r"><code>pi</code></pre>
-<pre><code>## [1] 3.141593</code></pre>
-<p>Infinity is stored under <code>Inf</code> (with uppercase ‘I’). We can also make this into negative infinity by appending the minus sign <code>-</code>.</p>
-<pre class="r"><code>Inf</code></pre>
-<pre><code>## [1] Inf</code></pre>
-<pre class="r"><code>-Inf</code></pre>
-<pre><code>## [1] -Inf</code></pre>
-<p>Among the most useful special values is the ‘missing’ value <code>NA</code> (<em>N</em>ot <em>A</em>vailable, or maybe <em>N</em>o <em>A</em>nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
-<pre class="r"><code>d = rbind(d, data.frame(age=NA, sex=&quot;male&quot;, country=&quot;France&quot;))
-
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"},{"1":"NA","2":"male","3":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<p>We can check which values are missing from a column using <code>is.na()</code>. If we want to know which rows are ‘complete’ (i.e. have no missing values in any column), we can use the <code>complete.cases()</code> function on the whole data frame.</p>
-<pre class="r"><code>is.na(d$age)</code></pre>
-<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE</code></pre>
-<pre class="r"><code>complete.cases(d)</code></pre>
-<pre><code>## [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE</code></pre>
-<p>If there are any <code>NA</code> values anywhere in a vector, mathematical functions applied to that vector will also output <code>NA</code>. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.</p>
-<pre class="r"><code>mean(d$age)</code></pre>
-<pre><code>## [1] NA</code></pre>
-<p>If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the <code>na.rm</code> argument (the <code>rm</code> in <code>na.rm</code> is short for ‘remove’). Since this is an argument that specifies a yes/no option, its input is a logical value, where <code>TRUE</code> means ‘yes, apply this option’ (i.e. calculate the result with the <code>NA</code> values removed).</p>
-<pre class="r"><code>mean(d$age, na.rm=TRUE)</code></pre>
-<pre><code>## [1] 41.16667</code></pre>
-<p>There is also a special value called <code>NULL</code> in R. This value indicates ‘emptiness’. It can be used to create an empty variable that does not yet store anything.</p>
-<pre class="r"><code>x = NULL
-
-class(x)</code></pre>
-<pre><code>## [1] &quot;NULL&quot;</code></pre>
-<p>Another use is to remove a column from a data frame, by ‘making it empty’.</p>
-<pre class="r"><code>d$country = NULL
-
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male"},{"1":"64","2":"female"},{"1":"40","2":"female"},{"1":"53","2":"male"},{"1":"29","2":"female"},{"1":"25","2":"other"},{"1":"NA","2":"male"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
 </div>
 <div id="lists" class="section level1">
 <h1>Lists</h1>

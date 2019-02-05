@@ -304,7 +304,7 @@ My_Age + 1
 
 ## Unfinished commands
 
-Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the *Esc* key in the console to cancel an unfinished command. You should then see the `>` reappear.
+Another common problem is not finishing a command. If you leave a parenthesis unclosed, R will continue waiting for the rest of the command. You might not realize that you have done this, and R will just keep on waiting. You can tell that R is waiting if you see a `+` in the console instead of the usual `>`. The `+` indicates that R is waiting for more input. If you get into this situation, you can press the **Esc** key in the console to cancel an unfinished command. You should then see the `>` reappear.
 
 ## Help
 
@@ -318,4 +318,4 @@ If you don't know what function you want to use, you can search the documentatio
 
 Under the section **Help pages** you will see some links to specific documentation pages. Not all of them will be relevant. Those links that begin `base::` or `stats::` are usually the relevant ones, since they link to documentation on the most basic R functions.
 
-For many things, there is clearer and more detailed help available online. A clearly-worded Google search will almost always get you to an example or explanation on one of the main R and programming community sites, such as [StackOverflow](https://stackoverflow.com/), [RDocumentation](https://www.rdocumentation.org/), [R-bloggers](https://www.r-bloggers.com/), and many others.
+For many things, there is clearer and more detailed help available online. A clearly-worded Google search will almost always get you to an example or explanation on one of the main R and programming community sites, such as, [RDocumentation](https://www.rdocumentation.org/), [StackOverflow](https://stackoverflow.com/), [RPubs](https://rpubs.com/), [R-bloggers](https://www.r-bloggers.com/), and many others.

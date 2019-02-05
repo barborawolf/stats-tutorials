@@ -1,0 +1,1053 @@
+---
+title: "Plotting"
+author: "LT"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+An important first step in any data analysis is to display the important features of the data in a plot. We will now learn how to do this, using the ggplot package.
+
+```{r}
+library(ggplot2)
+```
+
+Let's also read in a few example data sets to work with. This will give us a few different things to plot.
+
+We have already seen the **birth weights** data:
+
+```{r}
+bw = read.csv("data/birth_weights.csv")
+head(bw)
+```
+
+The **fat** data record the physical measurements of some people. Each row is one person and the columns give three measurements:
+
+* **Waist**: circumference of the waist (in cm)
+* **Weight**: weight (in kg)
+* **Fat**: proportion of body fat
+
+```{r}
+fat = read.csv("data/fat.csv")
+head(fat)
+```
+
+The **marriage** data record the mean age at which men and women in the USA married. Each row represents one mean age and the other columns record:
+
+* **Year**: which year
+* **Sex**: which sex (only either men or women)
+
+```{r}
+marriage = read.csv("data/marriage.csv")
+head(marriage)
+```
+
+The **salience** data record measurements from multiple subjects in a psychophysical experiment that involved looking at an object. Each row represents one attempt at a speeded reaction task. The columns record:
+
+* **Subject**: which subject was doing the task
+* **Trial**: which attempt they were making at the task (first, second, third, etc.)
+* **Orientation**: whether the object was unusually oriented
+* **Luminance**: whether the object was unusually bright
+* **SOA**: how long a delay elasped between preparing for the task and the object appearing (in ms)
+* **RT**: the Reaction Time (in ms), i.e. how fast the person reacted
+* **Error**: the amount of error made in the task, where a value of 0 indicates no error (i.e. perfect accuracy)
+
+```{r}
+salience = read.csv("data/salience.csv")
+head(salience)
+```
+
+The **deaths** data record the proportion of deaths among children and young people in the USA, in 1950 and in 2005. Each row represents one death count. The columns record the following variables:
+
+* **Cause**: the cause of death
+* **Age**: the age group (one of four age ranges)
+* **Year**: the year (1950 or 2005)
+* **Deaths**: the number of deaths (per 100 000 people)
+
+(We will mostly use subsets of this data frame, to make the examples simpler.)
+
+```{r}
+load("data/deaths.RData")
+head(deaths)
+```
+
+The **titanic** data are adapted from data recorded by the British Board of Trade following the sinking of the Titanic in 1912. Each row represents one passenger. All the columns are factor variables, recording the following pieces of information:
+
+* **Class**: what class the passenger was travelling in (or as a crew member)
+* **Age**: age group (child or adult)
+* **Sex**: sex
+* **Status**: whether the passenger survived or died
+
+```{r}
+tt = read.csv("data/titanic.csv")
+head(tt)
+```
+
+Finally, the **wine** data record various characteristics of several wines (too many to be worth listing here), rated by expert wine tasters.
+
+```{r}
+wine = read.csv("data/wine.csv")
+head(wine)
+```
+
+# A grammar of graphics
+
+The **gg** in ggplot stands for **g**rammar of **g**raphics, a particular approach to describing plots of data. You can read about it in more detail [here](https://www.tandfonline.com/doi/abs/10.1198/jcgs.2009.07098), but the core idea is to describe all different kinds of plots in terms of a few basic components:
+
+* data
+* aesthetic mappings (or just **aesthetics** for short); a mapping of variables from the data onto dimensions of the plot, such as:
+  + *x* dimension
+  + *y* dimension
+  + color
+  + size
+* geometric objects (or **geoms** for short); the shapes used to represent the data, such as:
+  + points
+  + lines
+  + bars
+  + or more complex shapes like error bars, boxplots, etc.
+
+There are various other plot components implemented in ggplot, but we won't always need to use all of them. These three are the important ones.
+
+One of the advantages of this system is that we do not need a separate R command for every kind of plot that we want to create. Instead, we can build almost any plot we want out of a limited set of components. So there are no functions called, for example, `scatterplot()` or `barchart()` in ggplot. Instead, everything begins with just one function, `ggplot()`, which is used to specify the first two ingredients of the plot: the data and the aesthetic mappings.
+
+The first input to `ggplot()` is the data frame containing the data we want to plot. The second input is itself a function, the `aes()` function. **aes** is short for **aes**thetic, and this function organizes the aesthetic mappings. Inside the `aes()` function, we assign variables from the data set to dimensions of the plot. We do this using the same `=` that we use for assignment in general.
+
+So to display the babies' birth weights along the *y* dimension and the mothers' weights along the *x* dimension:
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight))
+```
+
+In this first extremely minimal example, we didn't yet add the third component mentioned above: a geometric object. So the plot does not yet show the data in any form. But notice that ggplot already does some useful automatic jobs. It has created the *x* and *y* scales with the necessary range, labeled them with the names of the variables that we mapped to them, and added gridlines to the plot background.
+
+Now we will do it again with points as our geom, to produce a plot that actually shows the data. Geoms are added on to the core plot definition using `+`. Each geom has its own function, and these functions all begin with `geom_`. The function that we want for this example is called `geom_point()`. Because we have already defined the organization of the plot with `aes()`, `geom_point()` doesn't need any input telling it what to plot or where.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight)) + geom_point()
+```
+
+If we use any other dimensions when defining the plot, such as color, size, or shape, any geom that is able to represent that dimension will take this into account. For example, points will be shown in different colors if a variable is mapped to the color dimension. A legend for the colors is added automatically.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) + geom_point()
+```
+
+# Adding to plots
+
+We will often want to have a few different versions of our plot, for example a basic version showing the individual observations in the data, perhaps a version showing just mean values, a version that splits the data into two subgroups, and so on. It would be a bit tedious to have to repeat the basic underlying plot definition for each version, especially once our plot becomes quite complex. We should avoid this unnecessary repetition. The first step in doing so is to store the most basic form of our plot, so that we can use it repeatedly. We can store a plot by assigning it into a variable using `=`, just as we do for storing other types of information.
+
+```{r}
+fig1 = ggplot(bw, aes(y=Birth_weight, x=Weight)) + geom_point()
+```
+
+Now the plot is stored and we can re-use it under this name. One thing we can do with a stored plot is display it again. This is done with the same `print()` function used for printing out the contents of variables.
+
+```{r}
+print(fig1)
+```
+
+We can add new components to stored plots with `+`, and assign the result into a new variable in order to have a different version of the plot. For example, we can add a new aesthetic mapping with `aes()`.
+
+```{r}
+fig2 = fig1 + aes(color=Smoker)
+print(fig2)
+```
+
+We can change an existing aesthetic mapping in the same way.
+
+```{r}
+fig2 = fig1 + aes(x=Age)
+print(fig2)
+```
+
+As well as new mappings, we can add new geoms to an existing plot. For example, a common accompaniment to `geom_point()` is a trend line showing a smooth relationship between the *x* and *y* variables. We can add this with `geom_smooth()`.
+
+```{r}
+fig2 = fig1 + geom_smooth()
+print(fig2)
+```
+
+Notice that we also got a short message printed out when we ran `geom_smooth()`. This is not an error message but simply a warning. Some functions when we run them will print out a reminder of what the function is doing, so that we can check that it is really what we wanted. This occurs most often in cases where the function's default behavior might not be what some users typically want.
+
+The content of the warning message tells us something about a 'method' called 'loess', which `geom_smooth()` has used. **loess** stands for **lo**cally **e**timated **s**catterplot **s**mooth. Broadly speaking, it calculates the mean value of the *y* variable locally for each region of the *x* scale.
+
+This default option is more complex than we will usually need. To change the behaviors of plotting functions, we must give them some input specifying what aspect of their behavior we want to change and what we want to change it to. For example, we can change the `method` for `geom_smooth()` to `lm`, which stands for **l**inear **m**odel. This will show a straight line relationship between the two variables.
+
+```{r}
+fig2 = fig1 + geom_smooth(method=lm)
+print(fig2)
+```
+
+Most `geom_` functions have lots and lots of options that we can change in order to fine-tune our plot. For example, we can turn off the margin of error region that `geom_smooth()` draws by default, by setting the `se` argument to `FALSE`.
+
+```{r}
+fig2 = fig1 + geom_smooth(method=lm, se=FALSE)
+print(fig2)
+```
+
+(When writing a full data analysis, we will almost always assign plots into variables and then add to these plots to produce variations on the plot, as in the examples above. However, in most of the examples in the rest of this tutorial, I have repeated the commands for each new plot in full, so that it is easier to see all of the components of which each example plot consists.)
+
+The order in which we add geoms to the plot matters. They will be drawn in the order that we added them. For example, if we create the plot above by first adding the smooth line and then the points, it will look slightly different. The difference in this case is fairly subtle, but if you look carefully you notice that some of the points are now drawn over the line.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) + geom_smooth(method=lm) + geom_point()
+```
+
+When we create a plot with multiple components, we can make our R commands a little neater by putting each component of the plot on a new line after the initial plot definition. We can continue commands on a new line after the `+` symbol. This doesn't change anything about the plot, but it makes our R commands easier for other people to read and understand.
+
+```{r, fig.show="hide"}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) +
+  geom_smooth(method=lm) +
+  geom_point()
+```
+
+# Aesthetic mappings
+
+As noted above, the aesthetic mappings of a plot determine which dimensions of the plot are used to represent which variables in the data frame. Any geom that is able to reflect an aesthetic mapping will do so.
+
+## *x* and *y*
+
+We have already encountered the *x* and *y* aesthetics in the examples above. *x* and *y* are used in almost all plots, since they provide the basic 2-dimensional space of the plot.
+
+In our example above with babies' birth weights and their mothers' weight or age, both *x* and *y* variables were numeric. This does not have to be the case. In particular the *x* dimension can also be used to display a factor variable. A common combination is to map a factor variable to the *x* dimension, then use boxplots as a geom.
+
+The resulting plot compares the spread of *y* values for each level of the *x* variable, side by side. (We will see in a moment what exactly the boxplots tell us.)
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race)) +
+  geom_boxplot()
+```
+
+Note that the ordering of the factor levels along the *x* dimension reflects the order defined in the factor variable. By default this is alphabetical. If we change the ordering, it will be reflected in any new plots we create.
+
+```{r}
+levels(bw$Race)
+
+bw$Race = factor(bw$Race, levels=c("black", "white", "other"))
+
+ggplot(bw, aes(y=Birth_weight, x=Race)) +
+  geom_boxplot()
+```
+
+## color and fill
+
+The color aesthetic can be used to show either a factor or a numerical variable. For a factor, it shows each level of the factor in a separate color. Any geom added to a plot with a color mapping will be shown separately in each of the colors.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) +
+  geom_smooth(method=lm) +
+  geom_point()
+```
+
+ggplot distinguishes between geometric objects that do not enclose an area, such as points and lines, and those that do, such as rectangles, circles, and so on. The *color* aesthetic mapping determines the color of points and lines only. For shapes with an area, such as the central box of a boxplot, the color mapping will only be reflected in the outline of the shape.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, color=Smoker)) +
+  geom_boxplot()
+```
+
+The *fill* aesthetic mapping determines the color of the inside area of shapes. So if we would like to fill the whole area of an object with color, for example a boxplot, then we need to use `fill=` in the plot definition rather than `color=`.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, fill=Smoker)) +
+  geom_boxplot()
+```
+
+Points and lines have no area to fill, so they are unaffected by the fill aesthetic. The shaded margin of error around a smooth trend line does have an area, so it will reflect the fill mapping.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, fill=Smoker)) +
+  geom_smooth(method=lm) +
+  geom_point()
+```
+
+We can map a variable to more than one dimension. It is fairly common to do this for the color and fill mappings, since they both control color but for different kinds of objects or different parts of an object.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker, fill=Smoker)) +
+  geom_smooth(method=lm) +
+  geom_point()
+```
+
+Both color and fill can also be used with numeric variables. In this case, the color scale is a continuous gradient that gradually changes from one color to another along the scale of the numeric variable.
+
+```{r}
+ggplot(fat, aes(y=Waist, x=Weight, color=Fat)) +
+  geom_point()
+```
+
+## size
+
+The size aesthetic determines the size of geoms. This is most useful in combination with points.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Age, size=Weight)) +
+  geom_point()
+```
+
+But if we have more than just a few observations in our data, it can be difficult to see the variation in point size. The size aesthetic is best used where we have only a small number of observations or where they are far apart from each other on the plot. For example in the fat data set, which is fairly small, the size aesthetic allows us to display all three numeric variables on one plot to show the trend towards increasing proportions of body fat as waist size and weight increase.
+
+```{r}
+ggplot(fat, aes(y=Waist, x=Weight, size=Fat)) +
+  geom_point()
+```
+
+Because size varies continuously from small to large, it is best used to represent a numeric variable, and not the levels of a factor. If we show factor levels as different sizes, we give the misleading impression that they form an ordered progression from least to greatest. ggplot warns us if we make this choice.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, size=Race)) +
+  geom_point()
+```
+
+## linetype
+
+The linetype aesthetic draws different kinds of lines for each of the levels of a factor variable: solid, dashed, dotted etc.
+
+```{r}
+ggplot(marriage, aes(y=Marriage_age, x=Year, linetype=Sex)) +
+  geom_line()
+```
+
+Linetype affects not only the line geom but any lines drawn on the plot, for example the smooth trend lines drawn by `geom_smooth()`.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, linetype=Smoker)) +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_point()
+```
+
+It even affects the lines drawn for the outlines of boxplots. But this is not such a clear way of displaying separate boxplots. The fill aesthetic is better for this.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, linetype=Smoker)) +
+  geom_boxplot()
+```
+
+Numeric variables cannot be mapped to linetype, because there is no way for the type of line to vary continuously along a scale. If we try to do so then the result is an error.
+
+```{r, error=TRUE, fig.show="hide"}
+ggplot(bw, aes(y=Birth_weight, x=Weight, linetype=Visits)) +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_point()
+```
+
+If we have a numeric variable that has only a few possible values, and we would like to show different line types for each of these, then we must first convert the numeric variable to a factor using `factor()`. To avoid changing the original numeric variable or creating a new one, we can apply `factor()` directly within the plot definition.
+
+But with more than a few factor levels, the differences between line types become hard to distinguish. Linetype is best for just two or three levels.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, linetype=factor(Visits))) +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_point()
+```
+
+To keep a long plot definition more compact, some longer aesthetics have abbreviated names. `linetype` can be abbreviated to `lty`.
+
+```{r, fig.show="hide"}
+ggplot(marriage, aes(y=Marriage_age, x=Year, lty=Sex)) +
+  geom_line()
+```
+
+## shape
+
+The shape aesthetic determines what symbol is drawn for points. Like linetype, it works only for a factor variable. Shape is often not such a useful aesthetic. It works best together with linetype, for showing the points along a progression.
+
+```{r}
+ggplot(marriage, aes(y=Marriage_age, x=Year, linetype=Sex, shape=Sex)) +
+  geom_line() +
+  geom_point()
+```
+
+With more than just two levels, shapes quickly become very difficult to distinguish on a crowded plot.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight, shape=Race)) +
+  geom_point()
+```
+
+## group
+
+The group aesthetic is a special one. Unlike the other aesthetic mappings, group does not cause the appearance of geoms to vary with the values of a variable. However, it does still display geoms separately for each of the values of a variable. So the result of mapping a variable to group is that we see separate geoms for each of the values of the variable, but those geoms all have the same color, line type, etc.
+
+One common use of the group aesthetic is to show separate lines for each subject when we have recorded data from multiple subjects. The separate lines give an idea of how consistent any trend is across the various subjects.
+
+```{r}
+ggplot(salience, aes(y=Error, x=RT, group=Subject)) +
+  geom_point() +
+  geom_smooth(se=FALSE)
+```
+
+# Geometric objects
+
+Different geometric objects are useful for showing different types of data and different features of those data. In addition, each geom is affected by some aesthetic mappings and not by others. So when choosing geoms for our plot we need to think carefully about which will show the important information clearly, and which may obscure it or mislead us.
+
+The `?` help for each `geom_` function often gives some guidance on the appropriate use of the geom. It also gives a list of the aesthetics that the geom understands (under the heading **Aesthetics**). These help pages are linked in the sections below.
+
+## point
+
+The [point](https://ggplot2.tidyverse.org/reference/geom_point.html) is a very useful geom because it can show every individual observation, and therefore does not discard any information. We have seen points used in several examples above. The main disadvantage to points is 'overplotting'; if we have a large number of observations then the result may look like a solid cloud and any overall trend may be lost.
+
+```{r}
+ggplot(salience, aes(y=Error, x=RT)) +
+  geom_point()
+```
+
+A slight improvement can be made if we give each point a distinguishable outline. We can change this using arguments to the `geom_point()` function. Many arguments that change the appearance of a geom have the same name as the aesthetics that control those aspects of appearance. By specifying them in the geom function we just set them to a fixed value instead of mapping them to a variable. To give points distinct outlines, we can choose a shape that allows different colors for its outline and for its interior, such as a circle, and then fill the interior with a different color from the default point color (which as we can see from the example above is black).
+
+```{r}
+ggplot(salience, aes(y=Error, x=RT)) +
+  geom_point(shape="circle filled", fill="grey")
+```
+
+This can also make smaller plots clearer, particularly if we have also caused some points to overlap by varying their size.
+
+```{r}
+ggplot(fat, aes(y=Waist, x=Weight, size=Fat)) +
+  geom_point(shape="circle filled", fill="grey")
+```
+
+Another option for making the overall trend clearer when we have a large cloud of points it to add a smooth trend line with `geom_smooth()`, as we have seen above.
+
+Although points are a natural choice of geom for numeric *x* scales, we can also use them with a factor variable mapped to the *x* dimension. The result is to show a spread of points for each level of the factor.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_point()
+```
+
+But this does not give a very clear impression of the data because so many points overlap. We can improve this by **jittering** the points: spreading them out randomly to either side. The `position` argument for `geom_` functions allows us to fine-tune their positioning. The input to this argument is a ggplot `position_` function. `position_jitter()` applies jittering to points. The arguments to `position_jitter()` are in turn `width` and `height`. These determine the maximum horizontal and vertical distance that the points will be jittered. The units of `width` and `height` are the units of the variables that we have mapped to the *x* and *y* dimensions of the plot. If we have mapped a factor variable, then the scale is such that the distance between two neighboring categories equals 1. Therefore, to avoid points jittering over into the wrong category, we should keep the jitter for the factor axis well below 0.5.
+
+In our current example, we do not want any vertical jitter, as this would alter the apparent birth weights of the babies, which is misleading. We want only a bit of horizontal jitter.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_point(position=position_jitter(width=0.1, height=0))
+```
+
+Because jittered points are fairly commonly used, a convenience function `geom_jitter()` is provided that combines `geom_point()` with `position_jitter()`. This gives the same result.
+
+```{r, fig.show="hide"}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_jitter(width=0.1, height=0)
+```
+
+## line
+
+[Lines](https://ggplot2.tidyverse.org/reference/geom_path.html) are good for showing a progression along a numeric scale. For this, we need a numeric variable mapped to the *x* dimension, and not more than one observation at each of the values along the *x* dimension. These criteria are fulfilled in the marriage data, for example, as we saw in the line plot we created above.
+
+If we have more than one observation at each of the values along the *x* dimension, a line will join them in an arbitrary order, giving an unclear impression of the data.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Age)) +
+  geom_line()
+```
+
+We can also use a line to illustrate a progression across levels of a factor variable. However, this only makes sense if the levels of the variable have a meaningful order. This is the case for example in the deaths data, where the age groups are recorded in a factor variable.
+
+```{r}
+levels(deaths$Age)
+```
+
+If we add a line to a plot with a factor variable mapped to the *x* axis, the result is unfortunately not automatically a line showing the progression across levels.
+
+```{r, fig.show="hide"}
+accidents_1950 = subset(deaths, Cause=="accidents" & Year==1950)
+
+ggplot(accidents_1950, aes(y=Deaths, x=Age)) +
+  geom_line()
+```
+
+The warning message mentions that 'each group consists of only one observation'. What does this mean? The problem is that ggplot's default behavior is to display geoms separately for the different levels of a factor variable wherever possible. But when we have only one observation for each level of a factor, it is not possible to draw a line through just one observation.
+
+The warning message also hints at a solution. The solution to this problem is to override the default grouping using the group aesthetic. To instruct ggplot not to display geoms separated into groups at all, we must set the group aesthetic to 1 (meaning 'put all observations together in just 1 group'). This allows a line to join up observations that are in differen categories.
+
+```{r}
+ggplot(accidents_1950, aes(y=Deaths, x=Age, group=1)) +
+  geom_line()
+```
+
+In case there are some other grouping variables for which we *would* still like to display separate lines, then we should assign these variables to the group aesthetic.
+
+```{r}
+accidents = subset(deaths, Cause=="accidents")
+
+ggplot(accidents, aes(y=Deaths, x=Age, linetype=factor(Year), group=Year)) +
+  geom_line()
+```
+
+This use of the group aesthetic can be a bit tricky, and sometimes requires some trial and error before producing the plot that we want.
+
+One thing that we should definitely not use lines for is to join up factor levels that do not have a meaningful order. This creates the impression of a meaningful progression where the order of the factor levels is in fact arbitrary.
+
+For example the Cause variable in the deaths data does not have a meaningful order:
+
+```{r}
+deaths_young_2005 = subset(deaths, Age=="0 to 1" & Year==2005)
+
+ggplot(deaths_young_2005, aes(y=Deaths, x=Cause, group=1)) +
+  geom_line()
+```
+
+## column or bar
+
+A [column (or bar)](https://ggplot2.tidyverse.org/reference/geom_bar.html) varies its height according to the value of the *y* variable. In order for the height of the column to accurately reflect the value of the *y* variable, the *y* variable should have a meaningful zero point, i.e. a value of zero should indicate that there is none of whatever property the variable measures. This is most commonly the case for variables that count up how many instances of an event have occurred; a value of zero indicates that the event did not occur at all.
+
+ `geom_col()` adds columns to a plot.
+
+```{r}
+ggplot(deaths_young_2005, aes(y=Deaths, x=Cause)) +
+  geom_col()
+```
+
+A common use of columns is simply to count up how many observations we have. The `geom_bar()` function does this. It maps the count of observations to the *y* dimension, without us having to specify a *y* mapping.
+
+```{r}
+ggplot(tt, aes(x=Class)) +
+  geom_bar()
+```
+
+Behind the scenes, `geom_bar()` calculates the number of observations in each category of the factor variable that we have mapped to the *x* dimension. If we want, we can access these calculated variables in our plot definition. They are enclosed in `.. ..` to distinguish them from the original variables in our data frame. So the count of observations is referred to as `..count..`. If we map this variable to the *y* dimension, the result is the same as the default behavior of `geom_bar()`.
+
+```{r, fig.show="hide"}
+ggplot(tt, aes(y=..count.., x=Class)) +
+  geom_bar()
+```
+
+Some geoms calculate more than one new variable. `geom_bar()` also calculates the proportion of observations in each category. We can map this to the *y* dimension instead.
+
+```{r}
+ggplot(tt, aes(y=..prop.., x=Class)) +
+  geom_bar()
+```
+
+However, as we can see above, this does not get us the number of observations in each category as a proportion of the total number of observations. The cause of the problem is the same as that we encountered above for `geom_line()` with a factor variable: ggplot by default calculates and displays everything separately for each level of the factor. The number of observations in a category *as a proportion of the number of observations in that same category* is always 1, and therefore not very informative. The solution is the same as we saw earlier. We need to use the group aesthetic to tell `geom_bar()` not to calculate proportions in isolation within each category, but with respect to the entire ungrouped set of data.
+
+```{r}
+ggplot(tt, aes(y=..prop.., x=Class, group=1)) +
+  geom_bar()
+```
+
+`geom_bar()` is reserved specially for counts and proportions. It doesn't work with some other variable mapped to the *y* dimension. We will get an error if we try. If we want bars for a variable from our data frame, then we need `geom_col()` instead, as we saw above.
+
+```{r, fig.show="hide", error=TRUE}
+ggplot(deaths_young_2005, aes(y=Deaths, x=Cause)) +
+  geom_bar()
+```
+
+Columns and bars can be filled with color, so we can map a second factor variable to the fill dimension to show combinations of the levels of two factors.
+
+```{r}
+ggplot(tt, aes(x=Class, fill=Status)) +
+  geom_bar()
+```
+
+By default, bars in different colors are positioned stacked on top of each other. It is often clearer to show them side by side if we want to compare their heights. The `position` argument can achieve this. The term for placing objects side by side is **dodging**, and there is a positioning function for this: `position_dodge()`.
+
+```{r}
+ggplot(tt, aes(x=Class, fill=Status)) +
+  geom_bar(position=position_dodge())
+```
+
+Remember that the color aesthetic controls the color of *outlines* for filled shapes. This is rarely what we want for bars, as it is not easy to see.
+
+```{r}
+ggplot(tt, aes(x=Class, color=Status)) +
+  geom_bar(position=position_dodge())
+```
+
+Bars are not so good for numeric *x* variables with many different possible values or where *y* values are very far from zero. Lines are clearer for this.
+
+```{r}
+ggplot(marriage, aes(y=Marriage_age, x=Year, fill=Sex)) +
+  geom_col(position=position_dodge())
+```
+
+## boxplot
+
+We have seen that points are good for showing the full details of our data, as they can show every individual observation. But often this will be too much if we have a large number of observations. A subtle overall trend may be obscured in a cloud of points.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_jitter(width=0.2, height=0)
+```
+
+If we wish to compare the levels of a factor variable side by side, [boxplots](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) provide a good compromise between detail and summary. They compress the individual observations into a summary based on a few numbers.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_boxplot()
+```
+
+What numbers do the boxplots show? Some of these numbers we will explore in more detail in a later tutorial. For now we will look at a brief explanation of each. The summary numbers can be broken down into three components. First the 'box' at the center of each boxplot:
+
+* The line in the center of the box shows the **median** value: the value that splits the observations into a higher and lower half.
+* The lower and upper bounds of the box show the first and third **quartiles**: the values that in turn divide the lower and higher halves of the observations into lower and higher halves.
+
+The result is that the box shows the range of the central half of the observations, and therefore gives an indication of where along the *y* scale most of the observations are located.
+
+Then the 'whiskers' that extend outwards from the box. Their definition is somewhat convoluted:
+
+* First, the **I**nter**q**uartile **R**ange (**IQR**) is calculated. This is the height of the box as described above (i.e. the range of the middle half of the observations).
+* Then each whisker is drawn from the edge of the box up to the most extreme observation that is still less than 1 and a half times the IQR from the box.
+
+Finally, the individual points:
+
+* Any observation that is further than 1 and a half times the IQR from the box is shown as an individual point. These observations are often termed **outliers**, since they are quite a long way from the rest of the observations, and may therefore indicate an interesting unusual occurrence.
+
+Note that it is possible that there are no outliers. This is the case for example among the birth weights for babies of the non-smoking mothers in the plot above.
+
+If we would like to have both the compact summary provided by the boxplots and the more detailed view of the individual observations provided by points, we can. We can just add points after the boxplots.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_boxplot() +
+  geom_jitter(width=0.1, height=0)
+```
+
+However, if you look carefully at the plot above you will notice a small detail that makes the plot very slightly misleading. The outlier shown by the boxplot as an individual point is drawn again by `geom_point()`, making it look as though there are two such extreme observations. To prevent this from occurring, we can use the `outlier.shape` argument for `geom_boxplot()` to turn off the display of outliers. This argument determines what shape will be used to display the outliers, and we can set this shape to be an empty piece of text (`""`).
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_boxplot(outlier.shape="") +
+  geom_jitter(width=0.1, height=0)
+```
+
+Remember that the order in which geoms are added makes a difference to the layering of the objects on the plot.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
+  geom_jitter(width=0.1, height=0) +
+  geom_boxplot(outlier.shape="")
+```
+
+If we want to use boxplots to compare combinations of the levels of two factor variables, we can map one of them to the fill dimension. The differently-colored boxplots are automatically aligned side-by-side. When deciding which factor variable to map to the *x* dimension and which to the fill dimension, we should usually choose the most important factor for the fill dimension. This ensures that the different levels of this factor will be displayed immediately next to each other within each level of the other factor. Which factor variable is more important depends on what we want to know from the data.
+
+For example, if we are most interested in the relationship between smoking and birth weight in the birth weights data, we should map the smoking variable to the fill dimension when we are also including another factor variable.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, fill=Smoker)) +
+  geom_boxplot()
+```
+
+What if we also want to add points to a more complex collection of boxplots like the one above? Unfortunately, `geom_point()` (and `geom_jitter()`) do not take the fill variable into account when positioning the points.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, fill=Smoker)) +
+  geom_boxplot(outlier.shape="") +
+  geom_jitter(width=0.1, height=0)
+```
+
+For this, we need to return to the `position` argument for `geom_point()`. The positioning function `position_jitterdodge()` jitters points but also dodges them to align with all the groupings of observations defined in the other aesthetic mappings. Because its main purpose is to align points with boxplots, `position_jitterdodge()` applies by default no vertical jitter and an amount of horizontal jitter that matches fairly neatly the width of the boxplots, so we do not need to specify any width and height arguments unless we really need to fine-tune the appearance of the plot.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, fill=Smoker)) +
+  geom_boxplot(outlier.shape="") +
+  geom_point(position=position_jitterdodge())
+```
+
+Finally, what if we also want the points to reflect the fill aesthetic that we defined for the boxplots? The simplest way to achieve this is to set a fillable shape for the points, such as a circle, as we saw above when learning about the point geom.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Race, fill=Smoker)) +
+  geom_boxplot(outlier.shape="") +
+  geom_point(position=position_jitterdodge(), shape="circle filled")
+```
+
+## smooth
+
+A [smooth line](https://ggplot2.tidyverse.org/reference/geom_smooth.html) summarizes the overall trend in the relationship between numeric variables mapped to the *x* and *y* dimensions. As we saw above, this can be useful for displaying a subtle trend in a large cloud of points.
+
+We will learn more about `geom_smooth()` in later tutorials when we consider methods for quantifying trends in data.
+
+## text
+
+The [text](https://ggplot2.tidyverse.org/reference/geom_text.html) geom draws a text label for each observation. This requires an additional aesthetic mapping that we did not look at above: the 'label' aesthetic. This aesthetic has no effect on most geoms. Its effect on `geom_text()` is as expected: we see the value of the mapped variable printed on the plot. This is most useful when the mapped variable just contains an individual name for each observation.
+
+For example, in the wine data, we can add the individual names of the wines to a plot of points.
+
+```{r}
+ggplot(wine, aes(y=Fruity, x=Citrus, label=Name)) +
+  geom_point() +
+  geom_text()
+```
+
+Unfortunately, text is not automatically positioned so that all of it falls within the bounds of the plot. Pieces of text also overlap with points and sometimes with each other. This makes text difficult to get right. We can make some improvement by aligning the text differently. The `hjust` and `vjust` arguments 'justify' the text in the horizontal and vertical directions. For example, if we input `hjust="left"` and `vjust="top"`, the bottom left corner of the text is placed at the *xy* position of the observation.
+
+```{r}
+ggplot(wine, aes(y=Fruity, x=Citrus, label=Name)) +
+  geom_point() +
+  geom_text(hjust="left", vjust="bottom")
+```
+
+There are two special inputs to the alignment arguments. `"inward"` and `"outward"` move text towards the middle or the edges of the plot, respectively. The `"inward"` option can be useful for keeping text within the bounds of the plot, although sometimes at the cost of causing text to overlap.
+
+```{r}
+ggplot(wine, aes(y=Fruity, x=Citrus, label=Name)) +
+  geom_point() +
+  geom_text(hjust="inward")
+```
+
+## Additional geoms
+
+There are several useful geoms that we can use to put additional information on a plot. Often these geoms are used without an aesthetic mapping, just to show one value that is of importance for the interpretation of the data.
+
+For example, the [hline](https://ggplot2.tidyverse.org/reference/geom_abline.html) geom adds horizontal lines across the full width of the plot. The position of the lines is determined by the `yintercept` argument, which specifies where on the *y* scale the lines should be placed vertically. We can use this to indicate an important threshold, for example zero error in the salience data.
+
+```{r}
+ggplot(salience, aes(y=Error, x=RT)) +
+  geom_point(shape="circle filled", fill="grey") +
+  geom_hline(yintercept=0, lty="dashed", color="red")
+```
+
+We can input a vector of values instead of a single number, and the geom is drawn once for each value in the vector. This is useful for indicating a specific range of the *y* scale, for example the range of birth weights typically considered healthy.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight)) +
+  geom_point() +
+  geom_hline(yintercept=c(2.5,4.5), lty="dashed", color="red")
+```
+
+(There is of course also a `geom_vline()` for adding vertical lines, and its positioning argument is `xintercept`.)
+
+# Custom layers
+
+In the examples above we defined the data and the aesthetic mappings for the whole plot, and then each geom that we layered onto the plot displayed these data and mappings. Most of the time, this is what we want; the whole plot should conform to the same overall organization. However, occasionally we will want to apply a particular aesthetic mapping, or even different data, to just one of the geoms on the plot. For example, we may want one geom to map a particular variable to the color dimension, but it may be clearer for a different geom to map the same variable to the fill dimension instead. Or we may want one geom to display only a subset of the data.
+
+This is easy to achieve with ggplot. The data and aesthetic mappings can also be defined separately for a geom when we add that geom to the plot. We simply supply the data and/or mappings as input to the `geom_` function. Whereas the overall plot definition with the `ggplot()` function takes the data as its first input and the aesthetic mappings as the second, this is the other way around for the `geom_` functions. Although this can be confusing, it has a certain logic, since the data are the most important and fundamental thing for the plot as a whole (and aesthetic mappings can be added to it later), but the mappings are the most important and most frequently changed thing for geoms. So if we want a geom to have an additional aesthetic mapping, we must give the `aes()` function as the first input to the `geom_` function.
+
+One use of a custom mapping like this is to ensure that a variable is reflected in the fill color for filled points, but in the line color for lines.
+
+```{r}
+ggplot(bw, aes(y=Birth_weight, x=Weight)) +
+  geom_point(aes(fill=Smoker), shape="circle filled") +
+  geom_smooth(aes(color=Smoker), method=lm)
+```
+
+An alternative way of achieving the same thing is to define all the aesthetics for the main plot, but then 'switch off' some of them for specific geoms. We can switch an aesthetic mapping off by assigning the value `NULL`.
+
+```{r, fig.show="hide"}
+ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker, fill=Smoker)) +
+  geom_point(aes(color=NULL), shape="circle filled") +
+  geom_smooth(aes(fill=NULL), method=lm)
+```
+
+Notice that the mappings defined in the main plot function `ggplot()` still apply to the geoms that have their own mappings. Geoms **inherit** the mappings from the main plot, and then add or change any new mappings that we define just for them. (If we ever want to stop a geom from inheriting the aesthetic mappings from the main plot, we can set the argument `inherit.aes=FALSE` in the `geom_` function, but this is not necessary very often).
+
+Geoms may also display different data than those used for the main plot definition. One use of this is to use a geom to highlight only a small subset of the data. The text geom is frequently used with a subset of data, because applying it to the entire data frame usually results in a very cluttered plot.
+
+For example, we can add the name of the least fruity wine to the plot of wines.
+
+```{r}
+ggplot(wine, aes(y=Fruity, x=Citrus)) +
+  geom_point() +
+  geom_text(aes(label=Name), subset(wine, Fruity<3 & Citrus<2), hjust="inward")
+```
+
+Because the data are the second argument to `geom_`, we must assign the data argument by name (i.e. as `data=`) if we are not also supplying an aesthetic mapping to the `geom_` function.
+
+```{r, fig.show="hide"}
+ggplot(wine, aes(y=Fruity, x=Citrus, label=Name)) +
+  geom_point() +
+  geom_text(data=subset(wine, Fruity<3 & Citrus<2), hjust="inward")
+```
+
+# Labels
+
+In the plots above, we relied on ggplot to fill in labels for the dimensions of the plot. It took these labels from the names of the variables that we mapped to the plot dimensions. Where feasible, we can just name the variables appropriately in the original data frame, and then their plot labels will be as we want them. But fairly often we will want to modify the labels on the plot. If we want labels with spaces in them, or if we want to state the units of the variable, it is very unwieldy to incorporate this into the name of the variable in the data frame. An alternative is to specify labels manually using the `labs()` function.
+
+As with `aes()`, the arguments to the `labs()` function are assignments to plot dimensions. Because the labels are just literal text, and do not refer to a function or object in R, they must be given in quotation marks.
+
+```{r}
+fig1 = ggplot(bw, aes(y=Birth_weight, x=Weight, color=Smoker)) +
+  geom_point() +
+  labs(y="Birth weight (kg)", x="Mother's weight (kg)")
+
+print(fig1)
+```
+
+We can also use `labs()` to assign a caption. We don't always need this, but one good use of the caption is to provide a brief reference for where the data come from. This can be important for plots that might be shown without their original context, because it ensures that a record of the source is built in to the plot image.
+
+```{r}
+fig1 = fig1 +
+  labs(caption="Data: Baystate Medical Center, 1986")
+
+print(fig1)
+```
+
+`labs()` can also assign a title at the top of the plot. Again, we won't always need this, but one use of a title is to assign a distinguishing label to a plot that we will later use as one of several plots presented at once.
+
+```{r}
+fig1 = fig1 +
+  labs(title="Study A")
+
+print(fig1)
+```
+
+Since writing out labels can be tedious, and we don't want to have to repeat it for multiple plots of the same data, the labels should be one of the first things we add to a basic plot definition. We can then add different geoms and mappings to this basic plot, and the labels will be reflected in each new version we create.
+
+```{r}
+fig0 = ggplot(bw, aes(y=Birth_weight)) +
+  labs(y="Birth weight (kg)", caption="Data: Baystate Medical Center, 1986")
+
+fig1 = fig0 +
+  aes(x=Weight) +
+  geom_point()
+
+fig2 = fig0 +
+  aes(x=Smoker) +
+  geom_boxplot()
+
+# ... and so on.
+```
+
+# Statistical summaries
+
+So far, we have mostly been creating plots that display all of the observations in our data frame. This is usually what we want to do, at least for an initial plot. Otherwise we might miss important features of our data, such as single extreme observations that warrant extra attention. But we have already encountered a few ggplot functions that calculate and display some summary statistics from the data rather than the data themselves.
+
+* `geom_smooth()` summarizes a smooth relationship between *x* and *y* variables
+* `geom_bar()` counts up how many observations there are in a group, or the proportion of observations in a group
+* `geom_boxplot()` shows a summary of the spread of the observations, using the median and the IQR, as we learned above
+
+There is a more general ggplot function for first summarizing the data in a few statistics, and then displaying those statistics instead of (or as well as) the data themselves. The [stat](https://ggplot2.tidyverse.org/reference/stat_summary.html) function `stat_summary()` does this.
+
+Let's see what it does by default for a simple side-by-side comparison of a two-level factor variable.
+
+```{r}
+fig_smoking = fig0 +
+  aes(x=Smoker) +
+  stat_summary()
+
+print(fig_smoking)
+```
+
+As we have seen before, a function that has a specific default behavior that we might want to change will warn us what default options it is using (for example, we saw this for the smoothing method of `geom_smooth()` earlier). `stat_summary()` requires a 'summary function': an R function that will take the data as its input and will output one or more summary statistics to be plotted. We are told here that the default summary function for `stat_summary()` is `mean_se()`. This function calculates the mean value of the *y* variable, along with its **S**tandard **E**rror (**SE**). We will learn more about Standard Errors in a later tutorial, but for now consider the Standard Error as giving a sort of 'margin of error' for estimating the true value of some statistic in the general population from which our observations were drawn.
+
+Let's look at the output of `mean_se()` when applied to the birth weights of the babies born to non-smoking mothers.
+
+```{r}
+mean_se(bw$Birth_weight[bw$Smoker=="no"])
+```
+
+The output comes in the form of a data frame with three columns:
+
+* **y**: the mean value of the *y* variable, in this case birth weight
+* **ymin**: the mean value of the *y* variable, minus the SE
+* **ymax**: the mean value of the *y* variable, plus the SE
+
+Together, ymin and ymax provide a margin of error for estimating the mean value of the *y* variable in the general population from the values in our data. This can be a useful way of summarizing our data if the goal of our project is to conclude something about the population. It is these values that `stat_summary()` displays. We can see this if we compare the values we just got from `mean_se()` to the left half of the plot above.
+
+`stat_summary()` takes a summary function and applies it separately to each grouping that we defined for the plot. Because we mapped the smoking factor variable to the *x* dimension, we see the mean ± the Standard Error displayed for each level of this factor separately.
+
+We can supply a summary function to the `fun.data` argument for `stat_summary()`. If we supply the `mean_se()` function, we get the same plot as by default.
+
+```{r}
+fig_smoking = fig0 +
+  aes(x=Smoker) +
+  stat_summary(fun.data=mean_se)
+```
+
+There are alternative summary functions. For example, `mean_sdl()` calculates the mean value of the *y* variable ± the **S**tandard **D**eviation (**SD**). Unlike the Standard Error, the Standard Deviation is not concerned with estimating anything in the population in general, and is just a description of how spread out our observed data are along the *y* scale. Again, this is something that we will learn about in more detail later.
+
+```{r}
+mean_sdl(bw$Birth_weight[bw$Smoker=="no"])
+
+fig_smoking = fig0 +
+  aes(x=Smoker) +
+  stat_summary(fun.data=mean_sdl)
+
+print(fig_smoking)
+```
+
+For simpler summaries that summarize the data in a single number, we can use a summary function that calculates a single value. We have seen some such functions already in an earlier tutorial, such as `mean()` and `median()`. Because the `fun.data` argument expects a function that outputs a range with a ymin and a ymax, we must use a different argument for single-number summaries: `fun.y`. We must also tell `stat_summary()` which geom we want to use to display the summary, since the default is to use a point with lines (`geom_pointrange`). We can supply the name of the geom to the `geom` argument.
+
+```{r}
+fig_smoking = fig0 +
+  aes(x=Smoker) +
+  stat_summary(fun.y=mean, geom="point")
+
+print(fig_smoking)
+```
+
+But a plot with just a single summary statistic on it is very low in information. More often we will want to use `stat_summary()` as an addition to displaying the individual observations. For example the individual observations as points and then a summary pointrange on top.
+
+```{r}
+fig_smoking = fig0 +
+  aes(x=Smoker) +
+  geom_jitter(width=0.1, height=0) +
+  stat_summary(fun.data=mean_sdl, color="red")
+
+print(fig_smoking)
+```
+
+To make sure our plot can be interpreted correctly, we should always mention in our written description of the plot what statistics the points and ranges of the summary show.
+
+# Scales
+
+In all our example plots so far, ggplot has decided for us which values to label along the axes of the plot. And it tends to make fairly good decisions about this. But sometimes we will want to take control of this aspect of our plot ourselves. For example, if we are showing values on a rating scale that uses particular numbers, such as ratings from 0 to 10, we might want to show only these numbers along the plot axis.
+
+ggplot's `scale_` functions customize the appearance of scales. There are lots of such functions, and it can sometimes take a bit of work to find out which one we want. But generally the function will have the name of the plot dimension whose scale we wish to alter, plus some indication of what kind of scale we want to apply. For example, if we want to change the values shown for the birth weights, we need the function `scale_y_continuous()`, because we are dealing with the *y* dimension and because birth weight is a numeric variable with a continous scale.
+
+The `breaks` argument tells the `scale_` function at what points on the scale we would like to label the values. The input is a vector of values. The breaks are reflected in the numbering along the axis and in the placing of gridlines in the plot background.
+
+```{r}
+wine_ratings = ggplot(wine, aes(y=Overall_preference, x=Label)) +
+  geom_jitter(width=0.1, height=0)
+
+wine_ratings +
+  scale_y_continuous(breaks=0:10)
+```
+
+The `limits` argument sets the lower and upper end of the scale. The input for this is a vector of two values (minimum then maximum).
+
+```{r}
+wine_ratings +
+  scale_y_continuous(breaks=0:10, limits=c(0,10))
+```
+
+And the `labels` argument allows us to specify something other than numbers for the labelling of the values. The input is a vector of the same length as the `breaks` argument.
+
+```{r}
+wine_ratings +
+  scale_y_continuous(breaks=c(0,5,10), labels=c("bad","medium","good"), limits=c(0,10))
+```
+
+To change the colors assigned to factor levels by the color and fill aesthetics, we can use `scale_color_manual()`. The required input is again a vector, but this time a vector of color names, one for each level of the factor, in an order corresponding to the order of the factor levels. Since these are not 'break points' along a scale, the argument is called `values` rather than `breaks`. In addition, we can determine which aesthetic mappings the scale applies to, using the `aesthetics` argument. If we input the name of a single aesthetic, for example `"fill"`, the scale will be applied to that aesthetic, but we can also input a vector of names of aesthetics to apply the same scale to both the color and fill dimensions.
+
+```{r}
+levels(bw$Smoker)
+
+fig_smoking = fig0 +
+  aes(x=Weight) +
+  scale_color_manual(values=c("skyblue","brown"), aesthetics="fill") +
+  geom_point(aes(fill=Smoker), shape="circle filled")
+
+print(fig_smoking)
+```
+
+And to change the continuous color gradient for a numeric variable, we can use `scale_color_gradient()`. The `low` and `high` arguments specify the color at each end of the scale, and a smooth gradient of color is filled in betwen them to represent the values along the scale.
+
+```{r}
+fig_fat = ggplot(fat, aes(y=Waist, x=Weight, fill=Fat)) +
+  labs(y="Waist circumference (cm)", x="Weight (kg)", fill="Proportion\nbody fat") +
+  scale_color_gradient(low="yellow", high="red", aesthetics="fill") +
+  geom_point(shape="circle filled",size=3)
+
+print(fig_fat)
+```
+
+(If you are wondering what named colors are available in R, you can see a full list of them by typing `colors()` into the console.)
+
+There are also several packages for R that provide special color scales. For example, the `viridis` package provides a color scale that is more easily readable by people with the most common forms of color blindness.
+
+```{r, message=FALSE}
+library(viridis)
+```
+
+```{r}
+fig_fat + scale_color_viridis(aesthetics="fill")
+```
+
+# Facets
+
+If we want to compare levels of a factor variable, such as smokers and non-smokers, different varieties of wine, and so on, we can map these variables to the *x* or color dimensions, as we did in many of the examples above. But sometimes the simplest way to compare subsets of the data is in two or more separate plots, shown side by side. Indeed, if we have already used the *x* and color dimensions for something else in our plot, then splitting the plot into separate panels may be our only choice if we want to show one more variable.
+
+Separate panels showing subsets of the data are called 'facets'. ggplot's `facet_` functions apply facets to a plot. To split a plot into separate panels, we just add a `facet_` function to the plot, specifying which variable to split the data by. `facet_wrap()` handles the simplest case of splitting the data by just one variable. The input to `facet_wrap()` is a **formula** for splitting the data. We have not yet learned about formulas in R, and we will do so in more detail in a later tutorial. For now, just remember that a formula contains a `~` symbol, and that the variable (or variables) that accompany the `~` are used to split the data.
+
+So to split our plot of birth weights into three panels, one for each ethnic group:
+
+```{r}
+fig_smoking + facet_wrap(~Race)
+```
+
+One common use of facets is to check the behavior of each subject separately when we have collected data from multiple subjects. If a faceted plot has many separate panels, `facet_wrap()` organizes them into a grid.
+
+```{r, fig.width=12, fig.height=9}
+fig_salience = ggplot(salience, aes(y=Error, x=RT, fill=SOA)) +
+  labs(x="Reaction Time (ms)") +
+  geom_point(shape="circle filled") +
+  geom_hline(yintercept=0, lty="dashed", color="red")
+
+fig_salience + facet_wrap(~Subject)
+```
+
+By default, each facet has the same scale for the *x* and *y* axes This is usually what we want, because we would like to be able to identify subjects who are in very different places along the scale. However, if we do not care so much about comparing the subjects all across the same scale, then we can allow each one to have their own scale, using the `scales` argument. Setting `scales="free"` will allow both *x* and *y* scales to differ for each facet, and setting `scales="free_x"` or `scales="free_y"` will allow only one of the scales to differ.
+
+```{r, fig.width=12, fig.height=9}
+fig_salience + facet_wrap(~Subject, scales="free")
+```
+
+If we wish to show facets for the combination of levels from two factor variables, we can arrange the facets in a grid such that each row represents a level of one variable and each column represents a level of the other variable.
+
+`facet_grid()` does this. The variable before the `~` in the formula is assigned to the rows, and the variable after the `~` to the columns.
+
+```{r}
+fig_salience + facet_grid(Luminance~Orientation)
+```
+
+In the example above, the titles for each facet are not very helpful. This is because the levels of the Luminance and Orientation variables are just 'absent' and 'present'. If we would like to see not only the names of the levels but also the names of the variables in the facet titles, we can set the argument `labeller="label_both"`.
+
+```{r}
+fig_salience + facet_grid(Luminance~Orientation, labeller="label_both")
+```
+
+# Updating
+
+If our data frame has changed, for example if we have recalculated the values of a variable, or have discarded some observations, then we will want to create a new plot for our modified data frame. Rather than write out all the plot commands again, we can update the existing plot by 'adding' the new data frame.
+
+The symbol for adding a new data frame to a plot is slightly different from that for adding other plot features: `%+%`. (Commands enclosed in `% %` represent special, non-standard uses of a symbol or word. We won't need to use these very often, so you can just remember that `%+%` means 'change the data for a plot'.)
+
+For example, if we discard some of the observations from the salience data set by subsetting the data frame, we can then add the subsetted data frame to the existing plot to see the result of the change.
+
+```{r}
+salience_fast = subset(salience, RT<400)
+
+fig_salience %+% salience_fast
+```
+
+It is important to remember that the new data frame *replaces* the original one, and is not drawn onto the plot additionally, as the `+` in `%+%` seems to suggest.
+
+# Themes
+
+Perhaps we want to publish our plots in a journal or book that has specific style guidelines. For this, we will need to change more specific aspects of the plot's appearance, such as the presence of gridlines, the placement of the legend, and so on. The `theme()` function makes changes to the appearance of a plot. This function has a great many different arguments, each of which controls one minor stylistic detail. They are too many to go into here, but you can look them up in the [documentation](https://ggplot2.tidyverse.org/reference/theme.html) to the `theme()` function should you ever need them.
+
+A few 'prepackaged' theme functions are provided, which make multiple changes to a plot according to a particular style. For example, the 'classic' theme does not have guiding gridlines or a shaded background.
+
+```{r}
+fig_smoking + theme_classic()
+```
+
+# Saving plots
+
+Of course we also want to save our plots as images so we can put them in articles, websites, presentations, and posters. One way of saving a plot is via the **Export** button in RStudio's **Plots** tab. This is good for saving a 'one-off' plot that we aren't likely to want to come back to and modify. But if we want to make the creation of the image reproducible, then we should include it as a command in our R script or markdown file. This allows us to come back and just run our entire analysis again, maybe with new data, and get the new plot image automatically.
+
+The `ggsave()` function saves a plot to an image file. The first input is the name we want to give the file, and the second input is the plot object. We use the suffix of the filename to specify what image format we want.
+
+## png
+
+**PNG** (**P**ortable **N**etwork **G**raphics) is a good multi-purpose image format that usually does not result in a huge file size, but preserves a decent image quality. It is good for displaying on a website.
+
+Here we save one of the plots already created above as a png file:
+
+```{r}
+ggsave("example_figure.png", fig_smoking)
+```
+
+A message informs us of the function's default behavior. In this case it refers to the dimensions of the image. If we want to change the width and height of the image, we have to specify the `width`and `height` arguments.
+
+The units of the image dimensions are by default inches (abbreviated to 'in' in the message above). Small values in the range of 2 or 3 will give a small, chunky image in which the text and objects are large relative to the overall plot size. Values much larger than 10 will give a more sparse-looking plot, in which text and points are relatively small. You will often need to experiment a bit until you find a size that looks good.
+
+```{r}
+ggsave("example_figure.png", fig_smoking, width=5, height=3)
+```
+
+## svg
+
+If we are going to display our image in a very large size, for example on a poster or a big screen, then a scalable format such as **SVG** (**S**calable **V**ector **G**raphics) is best. Instead of being stored as pixels, which will get fuzzy when the image is scaled up to a large size, an svg image is stored as a description of lines and shapes, so it stays crisp at whatever size it is scaled up to.
+
+```{r}
+ggsave("example_figure.svg", fig_smoking, width=5, height=3)
+```
+
+(In order to create svg files on your own computer you may need to first install the R package `svglite`.)
