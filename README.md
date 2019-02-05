@@ -12,7 +12,7 @@ A work in flux, maybe even progress.
 
 ## Packages
 
-R packages loaded in the tutorials:
+R packages used in the tutorials:
 
 * `GGally`
 * `ggplot2`
@@ -21,3 +21,5 @@ R packages loaded in the tutorials:
 * `psych`
 * `readxl`
 * `reshape2`
+* `svglite`
+* `viridis`
