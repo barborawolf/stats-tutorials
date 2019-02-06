@@ -6,7 +6,7 @@ Data on newborn babies and their mothers, collected at the Baystate Medical Cent
 
 ## deaths
 
-Death counts per 100 000 people for various causes of death in several age groups in the USA, in 1950 and in 2005. From the book [Selfish Reasons to Have More Kids](https://www.basicbooks.com/titles/bryan-caplan/selfish-reasons-to-have-more-kids/9780465028610/) by Bryan Caplan.
+Death counts per 100 000 people for various causes of death in several age groups in the USA, in 1950 and in 2005. Data collected by the Centers for Disease Control, supplemented by Bryan Caplan. From the book [Selfish Reasons to Have More Kids](https://www.basicbooks.com/titles/bryan-caplan/selfish-reasons-to-have-more-kids/9780465028610/) by Bryan Caplan (table 4.3 in chapter 4: What About the Children?).
 
 ## decathlon
 
