@@ -205,7 +205,7 @@ cor_mat = cor(d[,1:10])
 cor_mat
 ```
 
-But a large correlation matrix is not so easy to read. We can turn it into something more visual. A 'heat map' is an alternative representation of a correlation matrix using colored tiles instead of numbers. Each tile represents the correlation coefficient for one pair of variables as a color. The intensity and/or hue of the color varies with the correlation coefficient.
+But a large correlation matrix is not so easy to read. We can turn it into something visual to make it clearer. A 'heat map' is an alternative representation of a correlation matrix using colored tiles instead of numbers. Each tile represents the correlation coefficient for one pair of variables as a color. The intensity and/or hue of the color varies with the correlation coefficient.
 
 For a heat map we will need to map the names of the variables in our data set to both the *x* axis and the *y* axis, and map the correlation coefficient to the fill color dimension. For this, we will need a data frame with three columns: variable 1, variable 2, then the correlation coefficient for that pair of variables. Fortunately, the `melt()` function from the `reshape2` package performs exactly this transformation on a matrix: turn the row and column names of the matrix into two columns, and the contents of the matrix into a third.
 
@@ -336,11 +336,11 @@ parallel_plot = scree +
 print(parallel_plot)
 ```
 
-The scree line for the random uncorrelated data sets is not simply flat. Even if we did not program any systematic correlation among the variables into our simulation, some weak correlations will arise just by coincidence, and the first Principal Component will always 'try its best' to use these correlations into an axis that is related to more than one variable, and so will always have an Eigenvalue at least a little above 1.
+The scree line for the random uncorrelated data sets is not simply flat. Even if we did not program any systematic correlation among the variables into our simulation, some weak correlations will arise just by coincidence, and the first Principal Component will always 'try its best' to use these correlations to draw an axis that is related to more than one variable, and so will always have an Eigenvalue at least a little above 1.
 
 For the decathlon data, it looks as though the variance explained by the first 3 Principal Components is more than we expect to occur by chance among unrelated variables.
 
-There are various possible refinements of parallel analysis. For example, if there are other features of our data that we wish to take into account, such as non-normally distributed variables or groupings of observations into categories, then we could program these into the parallel analysis as well.
+There are various possible refinements of parallel analysis. For example, if there are other features of our data that we wish to take into account, such as non-normally distributed variables or groupings of observations into categories, then we could program these into the simulated data sets in the parallel analysis.
 
 ## Communality and uniqueness
 
@@ -387,6 +387,8 @@ complexity(c(0.1, 0.1, 0.1))
 complexity(c(1, 1, 1))
 complexity(c(0.5, -0.5, -0.5, -0.5))
 ```
+
+Applying this understanding to the psych output above, we can see that performance in the javelin event is a more 'complex' variable, because it is an approximately equal reflection of all three components. Performance in the 100m is a less complex variable because it primarily reflects just one component.
 
 ## Loadings
 
