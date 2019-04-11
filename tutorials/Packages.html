@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="LT" />
 
 
 <title>Packages</title>
@@ -2597,9 +2596,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -2630,8 +2627,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -2790,6 +2785,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -2807,7 +2812,6 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Packages</h1>
-<h4 class="author"><em>LT</em></h4>
 
 </div>
 
@@ -2878,9 +2882,9 @@ print(fig)</code></pre>
 <h1>Updating</h1>
 <p>If you want to know what packages are loaded in your current R session, you can look at the packages tab in RStudio and see which packages have a tick next to their names. Or you can use the <code>sessionInfo()</code> function in the console. Under <strong>other attached packages</strong> you see the names of packages that you have loaded, along with their version number.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.5.2 (2018-12-20)
+<pre><code>## R version 3.5.3 (2019-03-11)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 18.04.1 LTS
+## Running under: Ubuntu 18.04.2 LTS
 ## 
 ## Matrix products: default
 ## BLAS: /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
@@ -2898,21 +2902,20 @@ print(fig)</code></pre>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] psych_1.8.4   ggplot2_3.0.0 haven_2.0.0   readxl_1.2.0  MASS_7.3-51.1
+## [1] psych_1.8.4   ggplot2_3.0.0 haven_2.1.0   readxl_1.3.1  MASS_7.3-51.3
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.0       cellranger_1.1.0 pillar_1.3.1     compiler_3.5.2  
-##  [5] plyr_1.8.4       bindr_0.1.1      forcats_0.3.0    tools_3.5.2     
-##  [9] digest_0.6.18    nlme_3.1-137     lattice_0.20-38  jsonlite_1.6    
-## [13] evaluate_0.12    tibble_2.0.0     gtable_0.2.0     pkgconfig_2.0.2 
-## [17] rlang_0.3.1      parallel_3.5.2   yaml_2.2.0       xfun_0.4        
-## [21] bindrcpp_0.2.2   withr_2.1.2      stringr_1.3.1    dplyr_0.7.8     
-## [25] knitr_1.21       hms_0.4.2        grid_3.5.2       tidyselect_0.2.5
-## [29] glue_1.3.0       R6_2.3.0         foreign_0.8-71   rmarkdown_1.11  
-## [33] purrr_0.2.5      readr_1.3.1      magrittr_1.5     scales_1.0.0    
-## [37] htmltools_0.3.6  mnormt_1.5-5     assertthat_0.2.0 colorspace_1.3-2
-## [41] labeling_0.3     stringi_1.2.4    lazyeval_0.2.1   munsell_0.5.0   
-## [45] crayon_1.3.4</code></pre>
+##  [1] Rcpp_1.0.1       cellranger_1.1.0 pillar_1.3.1     compiler_3.5.3  
+##  [5] plyr_1.8.4       forcats_0.4.0    tools_3.5.3      digest_0.6.18   
+##  [9] nlme_3.1-137     lattice_0.20-38  jsonlite_1.6     evaluate_0.13   
+## [13] tibble_2.1.1     gtable_0.3.0     pkgconfig_2.0.2  rlang_0.3.3     
+## [17] parallel_3.5.3   yaml_2.2.0       xfun_0.6         withr_2.1.2     
+## [21] stringr_1.4.0    dplyr_0.8.0.1    knitr_1.22       hms_0.4.2       
+## [25] grid_3.5.3       tidyselect_0.2.5 glue_1.3.1       R6_2.4.0        
+## [29] foreign_0.8-71   rmarkdown_1.12   readr_1.3.1      purrr_0.3.2     
+## [33] magrittr_1.5     scales_1.0.0     htmltools_0.3.6  mnormt_1.5-5    
+## [37] assertthat_0.2.1 colorspace_1.4-1 labeling_0.3     stringi_1.4.3   
+## [41] lazyeval_0.2.2   munsell_0.5.0    crayon_1.3.4</code></pre>
 <p><code>sessionInfo()</code> also tells us our version of R and some other information about the way our system is set up. This information can be useful if we want to make our analysis completely transparent and reproducible. If we include the output of <code>sessionInfo()</code> in an appendix to our analysis, others can see exactly what version of R and certain packages we used, and make sure they use the same versions when checking our work. For most basic work this isn’t strictly necessary, but it becomes more important for more elaborate analyses that use cutting-edge packages whose behavior may change slightly from one version to the next.</p>
 <p>From time to time packages are updated and improved by the people who maintain them. Before embarking on a new project, we should check that we have the latest version. In the packages tab in RStudio there is an <strong>Update</strong> button, which will download and install new versions of installed packages if available. Alternatively, you can achieve this with the <code>update.packages()</code> function in the console.</p>
 </div>

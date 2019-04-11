@@ -1,6 +1,5 @@
 ---
 title: "Likelihood"
-author: "LT"
 output:
   html_document:
     toc: TRUE

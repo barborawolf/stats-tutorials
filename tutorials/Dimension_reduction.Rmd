@@ -1,6 +1,5 @@
 ---
 title: "Dimension reduction"
-author: "LT"
 output:
   html_document:
     toc: TRUE

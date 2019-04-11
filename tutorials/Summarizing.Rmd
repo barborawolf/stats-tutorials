@@ -1,0 +1,62 @@
+---
+title: "Summarizing"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+We learned in the last tutorial how to display data in plots. A good plot can show what the data have to tell us, in a way that is clear and intuitive. However, one thing that plots can't do so well for us is to show exactly
+
+Let's load again the **birth weights** data:
+
+```{r}
+bw = read.csv("data/birth_weights.csv")
+head(bw)
+```
+
+
+We won't always receive our data in exactly the form we want them to have. We might need to rework the data a little before we can produce a plot or begin statistical analysis. As we have seen, many tasks in R can be performed more easily with the help of a package created specifically for that task. There are two important packages for working with data that we will learn about here: `reshape2` and `dplyr`. We will see what each of these can do below. First we must load them with `library()`.
+
+We can see from the messages that the dplyr package 'masks' some basic R functions (we learned about masking in the **Packages** tutorial).
+
+```{r}
+library(ggplot2)
+
+library(reshape2)
+library(dplyr)
+```
+
+As usual, we start by loading an example data set. We met these data briefly in the **Plotting** tutorial. Now we will look in a little more detail at their structure.
+
+```{r}
+salience = read.csv("data/salience.csv")
+head(salience)
+```
+
+Unlike most of the other data sets we have seen so far, the **salience** data have a 'hierarchical' structure. The main outcome variables, **RT** and **Error** were measured mutiple times for each **Subject**, so the measurements are 'grouped' by subject. We will usually want to take this fact into account.
+
+* **Subject**: which subject was doing the task
+* **Trial**: which attempt they were making at the task (first, second, third, etc.)
+* **Orientation**: whether the object was unusually oriented
+* **Luminance**: whether the object was unusually bright
+* **SOA**: how long a delay elasped between preparing for the task and the object appearing (in ms)
+* **RT**: the Reaction Time (in ms), i.e. how fast the person reacted
+* **Error**: the amount of error made in the task, where a value of 0 indicates no error (i.e. perfect accuracy)
+
+
+
+
+# The tidyverse
+
+## ggplot
+
+
+## dplyr
+
+
+## reshape2
+
+
+
