@@ -2,7 +2,7 @@
 
 The first few tutorials introduce R.
 
-1. Introduction
+1. [Introduction](Introduction.html)
 2. Data types
 3. Files
 4. Packages

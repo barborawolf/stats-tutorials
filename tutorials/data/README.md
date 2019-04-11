@@ -32,6 +32,10 @@ Some very non-normally-distributed ratings, divided into two groups. Data posted
 
 A small subset of just 14 of the ratings from the **ratings** data.
 
+## repeated_measures
+
+Just a simple made-up data set.
+
 ## salience
 
 Speed and accuracy of eye movements from several subjects in [an eye tracking experiment](https://doi.org/10.3758/s13414-017-1480-9). Slightly simplified from the full set of data.
