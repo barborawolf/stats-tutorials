@@ -7,6 +7,8 @@ The first few tutorials introduce R.
 3. [Files](Files.html)
 4. [Packages](Packages.html)
 
+[Exercises](Exercises_1.html)
+
 # Data
 
 Then we look at how to work with data.
