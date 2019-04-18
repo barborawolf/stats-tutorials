@@ -211,14 +211,14 @@ In this case it looks like a good summary of the center of the distribution.
 Let's try the same with the CEOs data.
 
 ```{r}
-ceo_hist = ggplot(ceos, aes(x=Annual_compensation)) +
+ceos_hist = ggplot(ceos, aes(x=Annual_compensation)) +
   geom_histogram(binwidth=0.5) +
   labs(x="Compensation in 2005 (millions of $)")
 
-ceo_midrange = (min(ceos$Annual_compensation) + max(ceos$Annual_compensation)) / 2
-ceo_midrange
+ceos_midrange = (min(ceos$Annual_compensation) + max(ceos$Annual_compensation)) / 2
+ceos_midrange
 
-ceo_hist + geom_vline(xintercept=ceo_midrange, lty="dashed")
+ceos_hist + geom_vline(xintercept=ceos_midrange, lty="dashed")
 ```
 
 In this case, the midrange is not such a great summary of the data. It gives the impression that a typical, middle-of-the-range level of compensation is around 100 million dollars. But in fact only very few CEOs got anywhere near this amount. This is because the distribution of compensation is very 'positively skewed'; there are a few extremely high values but most are much lower. Because the midrange depends only on the minimum and maximum, if one of these values is very extreme and unrepresentative of the rest of the observations, the midrange will also be unrepresentative.
@@ -228,10 +228,10 @@ In this case, the midrange is not such a great summary of the data. It gives the
 To avoid basing our summary only on the most extreme observations, we can instead ask what value divides the scale in two, such that equal numbers of observations lie above and below it. This value is known as the median. It is important enough to have its own R function.
 
 ```{r}
-ceo_median = median(ceos$Annual_compensation)
-ceo_median
+ceos_median = median(ceos$Annual_compensation)
+ceos_median
 
-ceo_hist + geom_vline(xintercept=ceo_median, lty="dashed")
+ceos_hist + geom_vline(xintercept=ceos_median, lty="dashed")
 ```
 
 When there is an odd number of observations, the median is one of the observations itself, namely the one that is in the middle when all the values are arranged in order.
@@ -319,8 +319,8 @@ Where:
 
 * $y$ is the variable whose mean we are calculating (birth weight in this example)
 * $\bar y$ means 'the mean of $y$'
-* $\sum$ represents the sum function, just like `sum()` in R
 * $n$ is the total number of observations
+* $\sum$ represents the sum function, just like `sum()` in R
 * $\sum_{i=1}^n {y_i}$ means 'the sum of all observations of $y$ from the $1$st to the $n$th'
 
 As we have already seen, there is an R function for calculating the mean directly.
@@ -332,10 +332,12 @@ mean(bw$Birth_weight)
 Let's compare the median and mean birth weights visually. If we want to add a summary statistic to a plot, we can also calculate the statistic within the `geom_` function, using the `aes()` function to map a variable from the plot data to the `xintercept` aesthetic.
 
 ```{r}
-bw_hist +
+bw_center = bw_hist +
   geom_vline(aes(xintercept=median(Birth_weight)), lty="dashed", color="blue") +
   geom_vline(aes(xintercept=mean(Birth_weight)), lty="dashed", color="red") +
   labs(caption="median in blue\nmean in red")
+
+print(bw_center)
 ```
 
 In the case of the birth weights, the mean (shown in red) and median (shown in blue) are almost the same. This will tend to be the case when we do not have any very extreme values in our data.
@@ -343,48 +345,47 @@ In the case of the birth weights, the mean (shown in red) and median (shown in b
 This is slightly different for the CEO compensation data. Because the mean takes the magnitudes of all the observations into account, it is influenced by extreme values.
 
 ```{r}
-ceo_hist = ceo_hist +
+ceos_center = ceos_hist +
   geom_vline(aes(xintercept=median(Annual_compensation)), lty="dashed", color="blue") +
   geom_vline(aes(xintercept=mean(Annual_compensation)), lty="dashed", color="red") +
   labs(caption="median in blue\nmean in red")
 
-print(ceo_hist)
+print(ceos_center)
 ```
 
-Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot for extreme values. However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value.
+Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot to see whether there are any extreme values. However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value.
 
-We can see this principle in action if we display the plot above again for a smaller subset of the CEO data. The mean is now somewhat closer to the extreme values.
+We can see this principle in action with a quick test. For a smaller set of data, the mean is more strongly 'pulled' towards the extreme values.
 
 ```{r}
-ceos_small = ceos[seq(from=1, to=nrow(ceos), by=20),]
-
-ceo_hist %+% ceos_small
+mean(c(5,5,5,5,9000))
+mean(c(rep(5,200),9000))
 ```
 
-Another way of thinking about the mean is as a 'balancing point'. If the scale of our observations were an actual scale ruler on which each observation were placed as a weight, then the mean would be the point at which we could balance the ruler horizontally.
+Another way of thinking about the mean is as a 'balancing point'. If the scale of our observations were an actual ruler on which each observation were placed as a weight, then the mean would be the point at which we could balance the ruler horizontally.
 
-This is subtly different from the notion of the median as a midpoint. Whereas the median requires equal *numbers* of observations on either side of itself, the mean requires in a certain sense an equal *weight* of observations either side.
+This is subtly different from the notion of the median as a midpoint. Whereas the median requires equal *numbers* of observations on either side of itself, the mean requires in a certain sense an equal *weight* of observations on either side.
 
 ## Spread
 
-Measures of center, such as the mean, give us a single number to summarize where the data are located on the scale of measurement. A reasonable next question to ask is: How representative is this summary? Are the observations mostly close to this summary, or far away from it? This is asking aout the **spread** of the distribution.
+Measures of center, such as the mean, give us a single number to summarize where the data are located on the scale of measurement. A reasonable next question to ask is: How representative is this summary? Are the observations mostly close to this center, or far away from it? This is asking aout the **spread** of the distribution.
 
 ### Range
 
-An intuitive summary of the spread of a distribution is the distance between the minimum and maximum values. This value is called the range.
+An intuitive first attempt at summarizing of the spread of a distribution is to calculate the distance between the minimum and maximum values. This value is called the range.
 
 ```{r}
 max(bw$Birth_weight) - min(bw$Birth_weight)
 ```
 
-Note that `range()` gives us a vector containing the minimum and maximum values. It doesn't give us the distance between them. To calculate the range we can ask additionally for the difference between the two values, using `diff()`.
+Note that the R function `range()` gives us a vector containing the minimum and maximum values. It doesn't give us the distance between them. To calculate the range we can ask additionally for the difference between the two values, using `diff()`.
 
 ```{r}
 range(bw$Birth_weight)
 diff(range(bw$Birth_weight))
 ```
 
-But as we saw in the case of the midrange, summaries based only on the most extreme values can be misleading. The range of CEO earnings is very wide, but this number doesn't really represent how spread out most of the CEOs are along the scale.
+As we saw in the case of the midrange, summaries based only on the most extreme values can be misleading. The range of CEO earnings is extremely wide, but this number doesn't really represent how spread out most of the CEOs are along the scale.
 
 ```{r}
 diff(range(ceos$Annual_compensation))
@@ -392,9 +393,9 @@ diff(range(ceos$Annual_compensation))
 
 ### Interquartile Range
 
-A better summary of spread is the distance between the first and third quartiles (see the section on quantiles above). This distance is known as the **I**nter**q**uartile **R**ange, or **IQR**. It tells us how much of the scale is covered by the middle half of the data, and as such is a good indication of how far most observations tend to be from the center.
+A more robust summary of spread is the distance between the first and third quartiles (see the section on **quantiles** above). This distance is known as the **I**nter**q**uartile **R**ange, or **IQR**. It tells us how much of the scale is covered by the middle half of the data, and as such is a good indication of how far most observations tend to be from the center.
 
-We can calculate the IQR using `quantile()` to get the first and third quartiles, and then finding the difference between them. (Purely to avoid confusion in reading the result, we can turn off the percentage labeling of the output from `quantile()`.)
+We can calculate the IQR by using `quantile()` to get the first and third quartiles, and then find the difference between them. (Purely to avoid confusion in reading the result, we can turn off the percentage labeling of the output from `quantile()`.)
 
 ```{r}
 diff(quantile(ceos$Annual_compensation, probs=c(0.25, 0.75), names=FALSE))
@@ -404,6 +405,17 @@ But there is also an `IQR()` function.
 
 ```{r}
 IQR(ceos$Annual_compensation)
+```
+
+A visual check is always good. On a histogram, the simplest visualization of the IQR is to show the first and third quartiles as vertical lines, as we did for the median or the mean above.
+
+```{r}
+ceos_Q1Q3 = data.frame(Q=c("Q1","Q3"),
+                       value=quantile(ceos$Annual_compensation, probs=c(0.25, 0.75)))
+
+ceos_hist +
+  geom_vline(aes(xintercept=value), data=ceos_Q1Q3, lty="dashed") +
+  geom_text(aes(x=value, y=0, label=Q), data=ceos_Q1Q3, vjust="top")
 ```
 
 ### Median Absolute Deviation
