@@ -7,56 +7,420 @@ output:
     df_print: "paged"
 ---
 
-We learned in the last tutorial how to display data in plots. A good plot can show what the data have to tell us, in a way that is clear and intuitive. However, one thing that plots can't do so well for us is to show exactly
+We learned in the last tutorial how to display data in plots. A good plot gives a clear impression of overall patterns in the data. The next thing we will often want to do is to supplement this impression with descriptive statistics, some specific numbers that summarize the data.
 
-Let's load again the **birth weights** data:
+There are many simple ways to create summaries of data using basic R functions. Some of these functions, such as `mean()` and `sd()` we already saw briefly in earlier tutorials. We will begin by looking in a bit more detail at what they tell us.
+
+However, as we have seen already in the case of plotting, many tasks in R can be performed more easily with the help of a package created specifically for that task. The `dplyr` package can help us to produce more comprehensive and specific summaries of our data. After looking at basic R functions for summarizing data, we will look at just a few of the additional things we can do with dplyr.
+
+```{r}
+library(ggplot2)
+
+library(dplyr)
+```
+
+(We can see from the messages that the dplyr package 'masks' some basic R functions. We learned about masking in the **Packages** tutorial).
+
+To have some data to work with, let's load again the **birth weights** data:
 
 ```{r}
 bw = read.csv("data/birth_weights.csv")
 head(bw)
 ```
 
-
-We won't always receive our data in exactly the form we want them to have. We might need to rework the data a little before we can produce a plot or begin statistical analysis. As we have seen, many tasks in R can be performed more easily with the help of a package created specifically for that task. There are two important packages for working with data that we will learn about here: `reshape2` and `dplyr`. We will see what each of these can do below. First we must load them with `library()`.
-
-We can see from the messages that the dplyr package 'masks' some basic R functions (we learned about masking in the **Packages** tutorial).
+And let's add a new data set, 'CEOs':
 
 ```{r}
-library(ggplot2)
-
-library(reshape2)
-library(dplyr)
+ceos = read.csv("data/CEOs.csv")
+head(ceos)
 ```
 
-As usual, we start by loading an example data set. We met these data briefly in the **Plotting** tutorial. Now we will look in a little more detail at their structure.
+These data give the financial compensation paid to the CEOs of various companies in 2005, in US dollars.
+
+Because the financial compensation scale goes into the millions of dollars, let's make the numbers visually a bit more manageable by expressing them in millions.
 
 ```{r}
-salience = read.csv("data/salience.csv")
-head(salience)
+ceos$Annual_compensation = ceos$Annual_compensation / 1000000
 ```
 
-Unlike most of the other data sets we have seen so far, the **salience** data have a 'hierarchical' structure. The main outcome variables, **RT** and **Error** were measured mutiple times for each **Subject**, so the measurements are 'grouped' by subject. We will usually want to take this fact into account.
+# Distributions
 
-* **Subject**: which subject was doing the task
-* **Trial**: which attempt they were making at the task (first, second, third, etc.)
-* **Orientation**: whether the object was unusually oriented
-* **Luminance**: whether the object was unusually bright
-* **SOA**: how long a delay elasped between preparing for the task and the object appearing (in ms)
-* **RT**: the Reaction Time (in ms), i.e. how fast the person reacted
-* **Error**: the amount of error made in the task, where a value of 0 indicates no error (i.e. perfect accuracy)
+Let's consider first a single variable from the birth weights data, the babies' birth weights. Here are all the birth weights:
 
+```{r}
+bw$Birth_weight
+```
 
+One way of approaching a set of numbers like this is to ask how they are spread out, or 'distributed', along their scale of measurement. In principle, this information is already conveyed by just printing out the numbers, but not in a way that makes it easy to see.
 
+To compress the numbers down into something smaller and more manageable, we can cut the scale of measurement into intervals, and then just ask how many observations there are in each interval. So in this case: 1 baby between 0 and 1 kilogram, 18 babies between 1 and 2 kilograms, and so on.
+
+The `cut()` function takes a numeric variable and assigns each value into an interval. We tell `cut()` where the 'breaks' between the intervals should be, using `:` to specify a range.
+
+```{r}
+bw$Birth_weight_group = cut(bw$Birth_weight, breaks=0:6)
+```
+
+The result is a new factor variable, where the levels of the factor are the intervals, divided at the points we specified using the `breaks` argument.
+
+```{r}
+class(bw$Birth_weight_group)
+levels(bw$Birth_weight_group)
+```
+
+The names of the levels are given using standard [interval notation](https://en.wikipedia.org/wiki/Interval_(mathematics)#Notations_for_intervals). The round parenthesis indicates a number that bounds the interval but is not itself included inside it.  kilograms are not included in that interval (they are included instead in the interval below). The square parenthesis indicates a number that bounds the interval and is included inside it. So for example, `(2 3]` means '2 to 3 kilograms, including babies weighing exactly 3 kilograms but excluding those weighing exactly 2 kilograms'.
+
+If we now apply the `table()` function to this new factor variable, we see how many babies are in each interval. This smaller set of numbers is already more manageable and gives a clear impression of where most of the babies are on the scale.
+
+```{r}
+table(bw$Birth_weight_group)
+```
+
+When summarizing data, there is often a trade-off between detail and manageability. In this case, the trade-off is determined by the number of intervals we use to divide the scale of measurement. If we divide it into a larger number of intervals, we get a more detailed summary, with the data divided into more, finer categories.
+
+```{r}
+table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=0.5)))
+```
+
+And if we divide it into a smaller number of intervals, we get a less detailed summary, with many observations lumped together into fewer broad categories. But the result is easier to read at a glance.
+
+```{r}
+table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=2)))
+```
+
+# Histogram
+
+A plot that shows this kind of summary, observations grouped into intervals and then counted up, is called a 'histogram'. A histogram uses bars to show the number of observations in each interval along the scale.
+
+```{r}
+bw_hist = ggplot(bw, aes(x=Birth_weight)) +
+  labs(x="Birth weight (kg)")
+
+bw_hist + geom_histogram()
+```
+
+`geom_histogram()` prints us a message warning of its default behavior. It mentions something about 'bins' and a 'binwidth'. In this context, dividing observations into intervals is sometimes termed 'binning' the observations, and the intervals are termed 'bins'. The ggplot function `geom_histogram()` allows us to specify the number of bins we want to divide the scale of measurement into.
+
+```{r}
+bw_hist + geom_histogram(bins=10)
+```
+
+Alternatively, instead of specifying the number of bins with the `bins` argument, we can specify the width of each bin with the `binwidth` argument. For example, bins each half a kilogram wide.
+
+```{r}
+bw_hist + geom_histogram(binwidth=0.5)
+```
+
+When summarizing the data as counts of observations in intervals (or 'bins'), we may need to experiment a bit with these options until we get a clear impression of how the data are distributed.
+
+Let's save the version of the histogram with a half-kilogram bin width.
+
+```{r}
+bw_hist = bw_hist +
+  geom_histogram(binwidth=0.5)
+```
+
+The table of counts and the histogram both show us how the data are distributed. We can see where along the scale of measurement most of the observations are located, and where there are fewer observations. We would now like to compress the data down even more and summarize this information in just a few numbers. Different numbers can tell us different things about the distribution.
+
+## Center
+
+Usually the first thing we want to know is: Where on the scale do observations tend to be located? This question is asking about the **center** of the distribution. And there are different ways to answer it.
+
+### Mode
+
+Most simply, we could ask: At what value on the scale is there the greatest number of observations? This value is called the 'mode', or sometimes the 'modal value'.
+
+In the case of the babies' weights, we would be asking: What is the most common weight among the babies?
+
+We can get the mode from a table. Remember that `table()` counts up how many observations there are with each value.
+
+```{r}
+bw_counts = table(bw$Birth_weight)
+bw_counts
+```
+
+The birth weight that has the maximum number of entries in the table is the modal birth weight. For our data, this is 3.062 kilograms.
+
+```{r}
+max(bw_counts)
+bw_counts[bw_counts==max(bw_counts)]
+```
+
+But as we can see from the output above, only 5 of the babies (out of 189 in total) have exactly this weight, so it perhaps isn't such a great summary of the center of the distribution. It doesn't really tell us where *most* of the observations are located. When calculating the mode for a variable like birth weigt that can have lots of different possible values, it is more common to first 'bin' the observations into intervals, as we did when creating the histogram above, and then find the 'modal interval'. If we choose intervals that are not too narrow, the modal interval will be one in which quite a lot of observations are located.
+
+Here is how we could find the modal interval using `cut()` and `table()`.
+
+```{r}
+bw_counts = table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=0.5)))
+bw_counts[bw_counts==max(bw_counts)]
+```
+
+The modal interval is 3 to 3.5 kilograms, and 45 babies have a birth weight in this range. Comparing this answer with our histograms above, it seems like a reasonable summary of the center of the distribution. Most of the babies are located in this range of weights or close to it.
+
+Of course, the modal interval is dependent on our choice of intervals. If we make a different choice, we will get a slightly different answer.
+
+There can even be more than one mode, as is the case for quarter-kilogram intervals.
+
+```{r}
+bw_counts = table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=0.25)))
+bw_counts[bw_counts==max(bw_counts)]
+```
+
+For variables that do not have very many different possible values, it may be unnecessary to first bin the observations. The modal value is a good enough summary of the distribution. This is the case for the 'visits' variable in the birth weights data, which tracks how many visits the mother received from a doctor during the first trimester of the pregnancy.
+
+The `unique()` function tells us what the unique values of a variable are. We can use it here to confirm that the visits variable does not have many different possible values. The table shows us that a majority of the mothers received no visits at all.
+
+```{r}
+unique(bw$Visits)
+table(bw$Visits)
+```
+
+You might be wondering whether there is a `mode()` function in R. It would be convenient if there were. Unfortunately, there is not. Or rather, there is a function called `mode()`, but it does something completely different from calculating the mode of a distribution (it does something similar to the `class()` function, telling us about the type of data stored in a variable). So beware that this function does not do what the name suggests.
+
+```{r}
+mode(bw$Visits)
+```
+
+There are various alternative ways of getting the mode of a distribution with combinations of R commands, but the method we used above with `table()` and `max()` is fine for basic purposes.
+
+### Midrange
+
+As we saw for the birth weights, the mode may not always be a particularly good summary of the center of a distribution, or we may have to make a somewhat arbitrary choice about how to bin our data before finding the mode. An alternative is to find some value that represents the center of the distribution, without that value necessarily being one of the observations themselves.
+
+An intuitive first choice is to find the point that is exactly half way between the minimum and maximum value among the observations. After all, this represents the middle of the range of the data. This statistic is called the 'midrange'. Again, there is no R function for calculating the midrange, but we can calculate it from the minimum and maximum, using the R functions to get these two values.
+
+```{r}
+bw_midrange = (min(bw$Birth_weight) + max(bw$Birth_weight)) / 2
+bw_midrange
+```
+
+Note that an alternative here would be to use the `range()` function, which gives us the minimum and maximum in a vector of 2 values, and then sum them. But this is slightly less intuitive to read, since understanding it depends on knowing how the `range()` function behaves.
+
+```{r}
+sum(range(bw$Birth_weight)) / 2
+```
+
+A good way of checking whether a summary statistic is an accurate summary of the data is to show it on top of a histogram or other plot.
+
+```{r}
+bw_hist + geom_vline(xintercept=bw_midrange, lty="dashed")
+```
+
+In this case it looks like a good summary of the center of the distribution.
+
+Let's try the same with the CEOs data.
+
+```{r}
+ceo_hist = ggplot(ceos, aes(x=Annual_compensation)) +
+  geom_histogram(binwidth=0.5) +
+  labs(x="Compensation in 2005 (millions of $)")
+
+ceo_midrange = (min(ceos$Annual_compensation) + max(ceos$Annual_compensation)) / 2
+ceo_midrange
+
+ceo_hist + geom_vline(xintercept=ceo_midrange, lty="dashed")
+```
+
+In this case, the midrange is not such a great summary of the data. It gives the impression that a typical, middle-of-the-range level of compensation is around 100 million dollars. But in fact only very few CEOs got anywhere near this amount. This is because the distribution of compensation is very 'positively skewed'; there are a few extremely high values but most are much lower. Because the midrange depends only on the minimum and maximum, if one of these values is very extreme and unrepresentative of the rest of the observations, the midrange will also be unrepresentative.
+
+### Median
+
+To avoid basing our summary only on the most extreme observations, we can instead ask what value divides the scale in two, such that equal numbers of observations lie above and below it. This value is known as the median. It is important enough to have its own R function.
+
+```{r}
+ceo_median = median(ceos$Annual_compensation)
+ceo_median
+
+ceo_hist + geom_vline(xintercept=ceo_median, lty="dashed")
+```
+
+When there is an odd number of observations, the median is one of the observations itself, namely the one that is in the middle when all the values are arranged in order.
+
+```{r}
+median(c(1,3,4,5,9))
+```
+
+When there is an even number of observations, there is no middle value among the observations themselves. In this case the median is the value half way between the two middle values.
+
+```{r}
+median(c(1,3,4,9))
+```
+
+The median divides the data into a lower and upper lower half. But apart from that, it does not care about how high or low any of the observations in each half is. This makes the median a 'robust' summary statistic; it isn't influenced by the magnitude of any really extreme values.
+
+```{r}
+median(c(1,3,4,5,9))
+median(c(1,3,4,5,9000))
+```
+
+Whether the maximum value is 9 or 9000, it doesn't matter. The middle value remains the middle value. (Except in the special case when we have only two values, but this is a rare situation when analyzing real data, and in any case it doesn't make much sense to want to sumarize just two values.)
+
+### Quantiles
+
+The concept of the median can be generalized to divide the data in other ways. The median is the value that divides the data into a lower and upper half, but we can also ask what value divides the lower quarter from the remaining three quarters, or what value divides the top third from the bottom two thirds, and so on. These numbers are known as quantiles.
+
+R has a function for calculating quantiles. By default it calculates the **quartiles** (note the *r* in the middle of the word), which are the values that divide the data into **quarters**.
+
+```{r}
+quantile(bw$Birth_weight)
+```
+
+The output is given using percentages. The percentage labels tell us what proportion of the observations lies below each value. So:
+
+* The 0% quantile is the same thing as the minimum; 0% of the observations lie below the minimum.
+* The 25% quantile (also known as the first *quartile* or 'Q1') is the value below which the bottom quarter of the observations lies.
+* The 50% quantile is the same thing as the median.
+* The 75% quantile (also known as the third *quartile* or 'Q3') is the value below which the bottom three quarters of the observations lie.
+* The 100% quantile is the same thing as the maximum; 100% of the observations are below (or are equal to) the maximum.
+
+If for whatever reason we wish to omit the percentage labels for the quantile values, we can set the `names` argument to `FALSE`.
+
+```{r}
+quantile(bw$Birth_weight, names=FALSE)
+```
+
+If we want to summarize the data in some other way, for example by dividing them into thirds rather than quarters, then we can specify the `probs` argument. This argument should be a vector containing the points at which we want to divide the data (given on a scale from 0 to 1, not as percentages).
+
+```{r}
+quantile(bw$Birth_weight, probs=c(0, 1/3, 2/3, 1))
+```
+
+We can also just input a single value if we want only one quantile. A common use of this is to find out where the most extreme observations are. For example, where on the scale are the top 10% of high-earning CEOs?
+
+```{r}
+quantile(ceos$Annual_compensation, probs=0.9)
+```
+
+The top 10% of CEOs each got more than around 24 million dollars.
+
+**Note**:
+
+It turns out that there are several subtly different ways of defining exactly what the quantile values should be, depending among other things on how we deal with the space in between values when the quantile should fall between two observations. You can read some explanation of the different options if you call up the help for the `quantile()` function (`? quantile`). If you really need to use one variant rather than another, you can specify which type of quantile to calculate, using the `type` argument. But the differences between the various methods diminish once we have a reasonably large number of observations. The default quantile type (`type=7`) is fine for most purposes.
+
+### Mean
+
+The median is a robust representation of the center of the data, and for this reason it is a good first choice of single-number summary. But the median's main strength is also its main weakness: It doesn't take into account the values of all the observations. For example, even if there are quite a lot of very high values, the median won't reflect this. If we want a summary that takes into account the values of *all* the observations, we need to do something other than just divide the data in two.
+
+Consider first that there is a certain total amount of our quantity of interest, for example the total earnings of all CEOs put together. Now imagine that we take that total quantity and distribute it equally among all the observations. For example, we take the total amount of money and give each CEO an equal share of it. This 'equal share' represents a sort of average. This principle remains the same even if the quantity in question is not really redistributable. For example, we could imagine taking the total body mass of all the babies and then redistributing it so that all the babies are of equal weight. The resulting weight is an average weight.
+
+This sort of average value is known as the mean. We can calculate it as the sum of the observations divided by the number of observations.
+
+```{r}
+sum(bw$Birth_weight) / nrow(bw)
+```
+
+As a formula, the calculation for the mean looks like this:
+
+$$
+\bar y = \frac{\sum_{i=1}^n {y_i}}{n}
+$$
+
+Where:
+
+* $y$ is the variable whose mean we are calculating (birth weight in this example)
+* $\bar y$ means 'the mean of $y$'
+* $\sum$ represents the sum function, just like `sum()` in R
+* $n$ is the total number of observations
+* $\sum_{i=1}^n {y_i}$ means 'the sum of all observations of $y$ from the $1$st to the $n$th'
+
+As we have already seen, there is an R function for calculating the mean directly.
+
+```{r}
+mean(bw$Birth_weight)
+```
+
+Let's compare the median and mean birth weights visually. If we want to add a summary statistic to a plot, we can also calculate the statistic within the `geom_` function, using the `aes()` function to map a variable from the plot data to the `xintercept` aesthetic.
+
+```{r}
+bw_hist +
+  geom_vline(aes(xintercept=median(Birth_weight)), lty="dashed", color="blue") +
+  geom_vline(aes(xintercept=mean(Birth_weight)), lty="dashed", color="red") +
+  labs(caption="median in blue\nmean in red")
+```
+
+In the case of the birth weights, the mean (shown in red) and median (shown in blue) are almost the same. This will tend to be the case when we do not have any very extreme values in our data.
+
+This is slightly different for the CEO compensation data. Because the mean takes the magnitudes of all the observations into account, it is influenced by extreme values.
+
+```{r}
+ceo_hist = ceo_hist +
+  geom_vline(aes(xintercept=median(Annual_compensation)), lty="dashed", color="blue") +
+  geom_vline(aes(xintercept=mean(Annual_compensation)), lty="dashed", color="red") +
+  labs(caption="median in blue\nmean in red")
+
+print(ceo_hist)
+```
+
+Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot for extreme values. However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value.
+
+We can see this principle in action if we display the plot above again for a smaller subset of the CEO data. The mean is now somewhat closer to the extreme values.
+
+```{r}
+ceos_small = ceos[seq(from=1, to=nrow(ceos), by=20),]
+
+ceo_hist %+% ceos_small
+```
+
+Another way of thinking about the mean is as a 'balancing point'. If the scale of our observations were an actual scale ruler on which each observation were placed as a weight, then the mean would be the point at which we could balance the ruler horizontally.
+
+This is subtly different from the notion of the median as a midpoint. Whereas the median requires equal *numbers* of observations on either side of itself, the mean requires in a certain sense an equal *weight* of observations either side.
+
+## Spread
+
+Measures of center, such as the mean, give us a single number to summarize where the data are located on the scale of measurement. A reasonable next question to ask is: How representative is this summary? Are the observations mostly close to this summary, or far away from it? This is asking aout the **spread** of the distribution.
+
+### Range
+
+An intuitive summary of the spread of a distribution is the distance between the minimum and maximum values. This value is called the range.
+
+```{r}
+max(bw$Birth_weight) - min(bw$Birth_weight)
+```
+
+Note that `range()` gives us a vector containing the minimum and maximum values. It doesn't give us the distance between them. To calculate the range we can ask additionally for the difference between the two values, using `diff()`.
+
+```{r}
+range(bw$Birth_weight)
+diff(range(bw$Birth_weight))
+```
+
+But as we saw in the case of the midrange, summaries based only on the most extreme values can be misleading. The range of CEO earnings is very wide, but this number doesn't really represent how spread out most of the CEOs are along the scale.
+
+```{r}
+diff(range(ceos$Annual_compensation))
+```
+
+### Interquartile Range
+
+A better summary of spread is the distance between the first and third quartiles (see the section on quantiles above). This distance is known as the **I**nter**q**uartile **R**ange, or **IQR**. It tells us how much of the scale is covered by the middle half of the data, and as such is a good indication of how far most observations tend to be from the center.
+
+We can calculate the IQR using `quantile()` to get the first and third quartiles, and then finding the difference between them. (Purely to avoid confusion in reading the result, we can turn off the percentage labeling of the output from `quantile()`.)
+
+```{r}
+diff(quantile(ceos$Annual_compensation, probs=c(0.25, 0.75), names=FALSE))
+```
+
+But there is also an `IQR()` function.
+
+```{r}
+IQR(ceos$Annual_compensation)
+```
+
+### Median Absolute Deviation
+
+### Standard Deviation
+
+## Shape
+
+### Skewness
+
+### Kurtosis
+
+# Boxplot
 
 # The tidyverse
 
 ## ggplot
 
-
 ## dplyr
-
-
-## reshape2
-
-
 

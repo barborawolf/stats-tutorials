@@ -19,11 +19,10 @@ Then we look at how to work with data.
 
 The next set of tutorials cover concepts in statistics.
 
-* Likelihood
-
 # More statistics
 
 Later tutorials assume familiarity with the **Statistics** tutorials, but otherwise cover stand-alone topics and can be consulted in any order:
 
 * [Dimension reduction](Dimension_reduction.html)
+* [Likelihood](Likelihood.html)
 * [Resampling](Resampling.html)

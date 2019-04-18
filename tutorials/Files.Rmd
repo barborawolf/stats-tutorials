@@ -45,7 +45,7 @@ class(bw)
 * whether or not she smoked during the pregnancy
 * her ethnic group (recorded only as 'black', 'white', or 'other')
 * whether or not she has a history of hypertension
-* the number of visits she received from a doctor during the pregnancy
+* the number of visits she received from a doctor during the first trimester of the pregnancy
 
 To see the data in R, we can just type the name of the variable in the console, as we have seen before.
 

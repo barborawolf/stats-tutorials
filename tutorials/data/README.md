@@ -4,6 +4,10 @@
 
 Data on newborn babies and their mothers, collected at the Baystate Medical Center in Springfield, Massachusetts, in 1986. Adapted from the [`birthwt`](https://www.rdocumentation.org/packages/MASS/topics/birthwt) data from the `MASS` package.
 
+## CEOs
+
+Financial compensation paid to the CEOs of various companies in 2005, in US dollars. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 5: Understanding and Comparing Distributions).
+
 ## deaths
 
 Death counts per 100 000 people for various causes of death in several age groups in the USA, in 1950 and in 2005. Data collected by the Centers for Disease Control, supplemented by Bryan Caplan. From the book [Selfish Reasons to Have More Kids](https://www.basicbooks.com/titles/bryan-caplan/selfish-reasons-to-have-more-kids/9780465028610/) by Bryan Caplan (table 4.3 in chapter 4: What About the Children?).

@@ -5,6 +5,9 @@ bw_grams.*
 results.txt
 example_figure.*
 
+# Directories generated when knitting Rmarkdown
+*_files/
+
 
 # General R ignores:
 
