@@ -4,7 +4,7 @@ For each exercise, write a short R script that carries out the tasks described. 
 
 ## 1
 
-a. Load the **fat.csv** data set from the class website. You can find the file at: [https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/fat.csv]. See the tutorial on [files](Files.html#the_internet) for a reminder of how to load a .csv file from the internet. These data show the waist size, weight, and proportion body fat of a group of people.
+a. Load the **fat.csv** data set from the class website. You can find the file at: https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/fat.csv. See the tutorial on [files](Files.html) for a reminder of how to load a .csv file from the internet. These data show the waist size, weight, and proportion body fat of a group of people.
 
 b. Print out the first six rows of the data. The variables have clearly been recorded in metric units (*cm* for the waist sizes, and *kg* for the weights). We would like to have them in imperial units as well (*inches* and *pounds*, respectively).
 
@@ -22,7 +22,7 @@ d. Print out a summary of the altered data set so you can compare the two new va
 
 ## 2
 
-a. Load the **wines.csv** data set from the class website: [https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/wine.csv]. These data give ratings for many features of several wines tasted at a wine tasting event.
+a. Load the **wines.csv** data set from the class website: https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/wine.csv. These data give ratings for many features of several wines tasted at a wine tasting event.
 
 b. Print out the names of all the columns in the data.
 
