@@ -847,7 +847,7 @@ fig_smoking = fig0 +
   stat_summary(fun.data=mean_se)
 ```
 
-There are alternative summary functions. For example, `mean_sdl()` calculates the mean value of the *y* variable ± the **S**tandard **D**eviation (**SD**). Unlike the Standard Error, the Standard Deviation is not concerned with estimating anything in the population in general, and is just a description of how spread out our observed data are along the *y* scale. Again, this is something that we will learn about in more detail later.
+There are alternative summary functions. For example, `mean_sdl()` calculates the mean value of the *y* variable ± 2 **S**tandard **D**eviations (**SD**s). Unlike the Standard Error, the Standard Deviation is not concerned with estimating anything in the population in general, and is just a description of how spread out our observed data are along the *y* scale. Again, this is something that we will learn about in more detail later.
 
 ```{r}
 mean_sdl(bw$Birth_weight[bw$Smoker=="no"])

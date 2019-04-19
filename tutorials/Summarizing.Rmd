@@ -259,7 +259,7 @@ Whether the maximum value is 9 or 9000, it doesn't matter. The middle value rema
 
 The concept of the median can be generalized to divide the data in other ways. The median is the value that divides the data into a lower and upper half, but we can also ask what value divides the lower quarter from the remaining three quarters, or what value divides the top third from the bottom two thirds, and so on. These numbers are known as quantiles.
 
-R has a function for calculating quantiles. By default it calculates the **quartiles** (note the *r* in the middle of the word), which are the values that divide the data into **quarters**.
+R has a function for calculating quantiles. By default it calculates the **quartiles** (note the **r** in the middle of the word), which are the values that divide the data into **quarters**.
 
 ```{r}
 quantile(bw$Birth_weight)
@@ -295,15 +295,17 @@ The top 10% of CEOs each got more than around 24 million dollars.
 
 **Note**:
 
-It turns out that there are several subtly different ways of defining exactly what the quantile values should be, depending among other things on how we deal with the space in between values when the quantile should fall between two observations. You can read some explanation of the different options if you call up the help for the `quantile()` function (`? quantile`). If you really need to use one variant rather than another, you can specify which type of quantile to calculate, using the `type` argument. But the differences between the various methods diminish once we have a reasonably large number of observations. The default quantile type (`type=7`) is fine for most purposes.
+It turns out that there are several subtly different ways of defining exactly what the quantile values should be, depending among other things on how we deal with the space in between values when the quantile should fall between two observations. You can read some explanation of the different options if you call up the help for the `quantile()` function (`? quantile`). If we really need to use one variant rather than another, we can specify which type of quantile to calculate, using the `type` argument. But the differences between the various methods diminish once we have a reasonably large number of observations. The default quantile type (`type=7`) is fine for most purposes.
 
 ### Mean
 
-The median is a robust representation of the center of the data, and for this reason it is a good first choice of single-number summary. But the median's main strength is also its main weakness: It doesn't take into account the values of all the observations. For example, even if there are quite a lot of very high values, the median won't reflect this. If we want a summary that takes into account the values of *all* the observations, we need to do something other than just divide the data in two.
+The median is a robust representation of the center of the data, and for this reason it is a good first choice of single-number summary. But the median's main strength is also its main weakness: It doesn't take into account the values of all the observations. For example, even if there are quite a lot of very large values, the median won't reflect this so long as the middle value of the data is not large. If we want a summary that takes into account the values of *all* the observations, we need to do something other than just divide the data in two.
 
-Consider first that there is a certain total amount of our quantity of interest, for example the total earnings of all CEOs put together. Now imagine that we take that total quantity and distribute it equally among all the observations. For example, we take the total amount of money and give each CEO an equal share of it. This 'equal share' represents a sort of average. This principle remains the same even if the quantity in question is not really redistributable. For example, we could imagine taking the total body mass of all the babies and then redistributing it so that all the babies are of equal weight. The resulting weight is an average weight.
+Consider first that there is a certain total amount of our quantity of interest, for example the total earnings of all CEOs put together. This quantity is called the **sum** of the values. Now imagine that we take that sum and distribute it equally among all the observations. For example, we take the total amount of money and imagine giving each CEO an equal share of it. This 'equal share' represents a sort of average amount. This sort of average value is known as the mean.
 
-This sort of average value is known as the mean. We can calculate it as the sum of the observations divided by the number of observations.
+The principle of the mean as an 'equal redistribution' remains the same even if the quantity in question is not really redistributable. For example, we could imagine taking the total body mass of all the babies and then redistributing it so that all the babies are of equal weight. The resulting weight is an average weight.
+
+We can calculate the mean as the sum of the observations divided by the number of observations.
 
 ```{r}
 sum(bw$Birth_weight) / nrow(bw)
@@ -329,33 +331,31 @@ As we have already seen, there is an R function for calculating the mean directl
 mean(bw$Birth_weight)
 ```
 
-Let's compare the median and mean birth weights visually. If we want to add a summary statistic to a plot, we can also calculate the statistic within the `geom_` function, using the `aes()` function to map a variable from the plot data to the `xintercept` aesthetic.
+Let's compare the median and mean birth weights visually.
+
+If we want to add a summary statistic to a plot, we can also calculate the statistic within the `geom_` function, using the `aes()` function to map a variable from the plot data to the `xintercept` aesthetic.
 
 ```{r}
-bw_center = bw_hist +
+bw_hist +
   geom_vline(aes(xintercept=median(Birth_weight)), lty="dashed", color="blue") +
   geom_vline(aes(xintercept=mean(Birth_weight)), lty="dashed", color="red") +
   labs(caption="median in blue\nmean in red")
-
-print(bw_center)
 ```
 
-In the case of the birth weights, the mean (shown in red) and median (shown in blue) are almost the same. This will tend to be the case when we do not have any very extreme values in our data.
+In the case of the birth weights, the mean (shown in red) and median (shown in blue) are almost the same. This will tend to be the case when we do not have any very extreme values in our data. The middle value is the same as the 'equal share' value.
 
-This is slightly different for the CEO compensation data. Because the mean takes the magnitudes of all the observations into account, it is influenced by extreme values.
+This is slightly different for the CEO compensation data. Because the mean takes the magnitudes of all the observations into account, it is influenced by extreme values, and is 'drawn towards' them.
 
 ```{r}
-ceos_center = ceos_hist +
+ceos_hist +
   geom_vline(aes(xintercept=median(Annual_compensation)), lty="dashed", color="blue") +
   geom_vline(aes(xintercept=mean(Annual_compensation)), lty="dashed", color="red") +
   labs(caption="median in blue\nmean in red")
-
-print(ceos_center)
 ```
 
 Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot to see whether there are any extreme values. However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value.
 
-We can see this principle in action with a quick test. For a smaller set of data, the mean is more strongly 'pulled' towards the extreme values.
+We can see this principle in action with a quick test. For a smaller set of data, the mean is more influenced by the magnitude of an extreme value.
 
 ```{r}
 mean(c(5,5,5,5,9000))
@@ -393,7 +393,7 @@ diff(range(ceos$Annual_compensation))
 
 ### Interquartile Range
 
-A more robust summary of spread is the distance between the first and third quartiles (see the section on **quantiles** above). This distance is known as the **I**nter**q**uartile **R**ange, or **IQR**. It tells us how much of the scale is covered by the middle half of the data, and as such is a good indication of how far most observations tend to be from the center.
+A somewhat more robust summary of spread is the distance between the first and third quartiles (see the section on **quantiles** above). This distance is known as the **I**nter**q**uartile **R**ange, or **IQR**. It tells us how much of the scale is covered by the middle half of the data, and as such is a good indication of how far most observations tend to be from the center.
 
 We can calculate the IQR by using `quantile()` to get the first and third quartiles, and then find the difference between them. (Purely to avoid confusion in reading the result, we can turn off the percentage labeling of the output from `quantile()`.)
 
@@ -420,7 +420,115 @@ ceos_hist +
 
 ### Median Absolute Deviation
 
+Another way of thinking about spread is to take the question more literally: How far do observations tend to be from the center? We can calculate the distance of each observation from our center summary statistic, and then calculate some summary of these distances.
+
+Let's try this for the birth weights. We first find the median birth weight, then subtract this value from each of the birth weights to find their distances from the median. Then we find the median of these differences.
+
+```{r}
+bw_median = median(bw$Birth_weight)
+bw_deviations = bw$Birth_weight - bw_median
+
+median(bw_deviations)
+```
+
+The value that we get does not seem right. We were aiming for a summary of how far the birth weights tend to be from the median birth weight, and it is pretty clear from our histogram above that the babies are not 0 kilograms away from the median weight on average. The problem is that the subtraction in the procedure above produced some negative values (representing birth weights that are lower than the median) and some positive values (representing birth weights that are higher than the median). Taken together, the center of these negative and positive differences is 0.
+
+One solution to this problem is simply to ignore the sign of the differences, i.e. to treat negative and positive values of the same magnitude as equivalent. This is known as converting numbers into **absolute values**: differences from 0 in either direction.
+
+There is a function for converting numbers into absolute values: `abs()`. It makes negative values positive, and leaves positive values unchanged.
+
+```{r}
+abs(-5)
+abs(5)
+```
+
+We can use this function to find the *median distance from the median*, known as the **M**edian **A**bsolute **D**eviation(**MAD**).
+
+```{r}
+bw_median
+median(abs(bw_deviations))
+```
+
+The median and MAD in this case tell us that a middling birth weight among the babies is nearly 3 kilograms, and a middling deviation from this typical value is (plus or minus) about 500 grams.
+
+There is also a function `mad()` for calculating the MAD. However, be sure to check the help page (`? mad`) before using it. Unfortunately, the default behavior of the function is to multiply the MAD by a factor of 1.4826. This gives us a different value from the one we calculated above.
+
+```{r}
+mad(bw$Birth_weight)
+```
+
+This default adjustment is useful in certain other contexts in statistics, but it is clearly not what we want if we would just like to describe how far our observations tend to be from their center. To get the 'unadjusted' MAD, we need to specify that we would like to multiply the MAD by 1 instead (i.e. leave it unchanged). The `constant` argument does this.
+
+```{r}
+mad(bw$Birth_weight, constant=1)
+```
+
+### Variance
+
+The MAD is a good accompaniment to the median, since they are both based on the same principle of finding a 'middle value'. What measure of spread is a good accompaniment to the mean? Recall that the mean can be thought of as an 'equal redistribution' value. We can aply the same principle to *distances from the mean*, and ask: If we sum up the total distances from the mean and redistribute them equally among the observations, how far would each observation be from the mean?
+
+This notion leads to the last two measures of spread that we will look at: the **variance** and the **Standard Deviation**. Almost. There are two small subtleties in the calculation of these statistics, which for now I will ask you just to accept. We will learn only later on why these extra steps are the way they are.
+
+First, instead of just calculating the absolute deviations from the center, as we did for the MAD, we instead square the deviations. Recall that squaring a negative number gives a positive number as a result, so this solves the same problem with negative deviations that we encountered above.
+
+```{r}
+(-3) ^ 2
+```
+
+Second, after summing up all the squared deviations, instead of 'redistributing' this total deviation across all the observations, we instead redistribute it across all the observations but one. So when we divide up the total deviation, we divide by the number of observations minus one. For now you should just remember this, but I promise to explain it in a later tutorial.
+
+With the steps so far, we have:
+
+1. Subtract the mean from every observation to get its deviation from the mean.
+2. Square these values to make them all positive.
+3. Sum the squared deviations.
+4. Divide the sum of squared deviations by the number of observations minus one.
+
+The result of this calculation is known as the **variance**, and in a formula is often represented using the Greek letter sigma ($\sigma$), squared:
+
+$$
+\sigma ^ 2 = \frac{\sum_{i=1}^n (y_i - \bar y)^2}{n - 1}
+$$
+
+We can calculate the variance using basic math in R, just as a bit of practice.
+
+```{r}
+sum((bw$Birth_weight - mean(bw$Birth_weight))^2) / (nrow(bw) - 1)
+```
+
+But of course there is also a function for the variance.
+
+```{r}
+var(bw$Birth_weight)
+```
+
 ### Standard Deviation
+
+The variance tells us about the spread of our data. If the observations are more spread out, then their squared deviations will be greater, and the variance will be greater. However, the actual value of the variance is not intuitive to interpret. Above, we obtained a value of about 0.5 for the variance of the birth weights. This number is not easy to relate to the scale of measurement (kilograms) because in calculating it, we squared the deviations. Squaring changes their magnitudes as well as making them all positive.
+
+So although the variance plays an important role behind the scenes in many statistical procedures, for describing our data we prefer a value that says something directly about how far the observations tend to be from the mean. This value is the **S**tandard **D**eviation (often abbreviated to **SD**). Once we have understood the variance, the Standard Deviation is simple, it is just the square root of the variance. The square root operation 'undoes' the squaring that we applied when calculating the variance, and brings the resulting value back onto the original scale of measurement.
+
+In formulas, the Standard Deviation is often represented by the Greek letter sigma (and this explains why the variance is sigma *squared*):
+
+$$
+\sigma = \sqrt{\sigma^2} = \sqrt{ \frac{\sum_{i=1}^n (y_i - \bar y)^2}{n - 1} }
+$$
+
+Here is the R function for the Standard Deviation.
+
+```{r}
+sd(bw$Birth_weight)
+```
+
+We can see that the result is the same as the square root of the variance.
+
+```{r}
+sqrt(var(bw$Birth_weight))
+```
+
+The Standard Deviation is a very common measure of spread. 
+
+## *z* scores
 
 ## Shape
 
@@ -428,7 +536,11 @@ ceos_hist +
 
 ### Kurtosis
 
+### Bimodality
+
 # Boxplot
+
+# Grouped summaries
 
 # The tidyverse
 

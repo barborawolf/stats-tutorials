@@ -26,3 +26,11 @@ head(salience)
 ```
 
 Unlike most of the other data sets we have seen so far, the **salience** data have a 'hierarchical' structure. The main outcome variables, **RT** and **Error** were measured mutiple times for each **Subject**, so the measurements are 'grouped' by subject. We will usually want to take this fact into account.
+
+# Reshaping
+
+## Long format
+
+## Wide format
+
+# Missing values
