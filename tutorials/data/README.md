@@ -44,6 +44,10 @@ Just a simple made-up data set.
 
 Speed and accuracy of eye movements from several subjects in [an eye tracking experiment](https://doi.org/10.3758/s13414-017-1480-9). Slightly simplified from the full set of data.
 
+## sleep
+
+Extra sleep gained while on one of two drugs. Data reported in Student's article '[The probable error of a mean](https://www.jstor.org/stable/2331554)' in *Biometrika*.
+
 ## titanic
 
 Survival of passengers on the Titanic. Data collected by the British Board of Trade. Adapted from the [`Titanic`](https://www.rdocumentation.org/packages/datasets/topics/Titanic) data in R (by converting from a table into a data frame).
