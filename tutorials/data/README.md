@@ -50,4 +50,4 @@ Survival of passengers on the Titanic. Data collected by the British Board of Tr
 
 ## wine
 
-Several wine experts' mean ratings of 10 wines, on many different features. Adapted from tutorials provided to accompany the [FactoMineR](http://factominer.free.fr/course/index.html) package.
+Several wine experts' mean ratings of 10 wines, on many different features. Adapted from tutorials provided to accompany the [`FactoMineR`](http://factominer.free.fr/course/index.html) package.
