@@ -14,12 +14,14 @@ A work in flux, maybe even progress.
 
 R packages used in the tutorials:
 
+* `dplyr`
 * `GGally`
 * `ggplot2`
 * `haven`
+* `Hmisc`
 * `MASS`
 * `psych`
 * `readxl`
-* `reshape2`
 * `svglite`
 * `viridis`
+

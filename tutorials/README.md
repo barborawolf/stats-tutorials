@@ -14,7 +14,7 @@ The first few tutorials introduce R.
 Then we look at how to work with data.
 
 5. [Plotting](Plotting.html)
-6. Summarizing
+6. [Summarizing](Summarizing.html)
 7. Reorganizing
 
 # Statistics

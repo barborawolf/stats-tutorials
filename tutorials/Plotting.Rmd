@@ -9,7 +9,7 @@ output:
 
 An important first step in any data analysis is to display the important features of the data in a plot. We will now learn how to do this, using the ggplot package.
 
-```{r}
+```{r, message=FALSE}
 library(ggplot2)
 ```
 
@@ -493,7 +493,7 @@ ggplot(deaths_young_2005, aes(y=Deaths, x=Cause, group=1)) +
 
 A [column (or bar)](https://ggplot2.tidyverse.org/reference/geom_bar.html) varies its height according to the value of the *y* variable. In order for the height of the column to accurately reflect the value of the *y* variable, the *y* variable should have a meaningful zero point, i.e. a value of zero should indicate that there is none of whatever property the variable measures. This is most commonly the case for variables that count up how many instances of an event have occurred; a value of zero indicates that the event did not occur at all.
 
- `geom_col()` adds columns to a plot.
+`geom_col()` adds columns to a plot.
 
 ```{r}
 ggplot(deaths_young_2005, aes(y=Deaths, x=Cause)) +
@@ -579,7 +579,7 @@ ggplot(bw, aes(y=Birth_weight, x=Smoker)) +
   geom_boxplot()
 ```
 
-What numbers do the boxplots show? Some of these numbers we will explore in more detail in a later tutorial. For now we will look at a brief explanation of each. The summary numbers can be broken down into three components. First the 'box' at the center of each boxplot:
+What numbers do the boxplots show? Some of these numbers we will explore in more detail in a [later tutorial](Summarizing.html). For now we will look at a brief explanation of each. The summary numbers can be broken down into three components. First the 'box' at the center of each boxplot:
 
 * The line in the center of the box shows the **median** value: the value that splits the observations into a higher and lower half.
 * The lower and upper bounds of the box show the first and third **quartiles**: the values that in turn divide the lower and higher halves of the observations into lower and higher halves.
@@ -847,7 +847,7 @@ fig_smoking = fig0 +
   stat_summary(fun.data=mean_se)
 ```
 
-There are alternative summary functions. For example, `mean_sdl()` calculates the mean value of the *y* variable ± 2 **S**tandard **D**eviations (**SD**s). Unlike the Standard Error, the Standard Deviation is not concerned with estimating anything in the population in general, and is just a description of how spread out our observed data are along the *y* scale. Again, this is something that we will learn about in more detail later.
+There are alternative summary functions. For example, `mean_sdl()` calculates the mean value of the *y* variable ± 2 **S**tandard **D**eviations (**SD**s). Unlike the Standard Error, the Standard Deviation is not concerned with estimating anything in the population in general, and is just a description of how spread out our observed data are along the *y* scale. Again, this is something that we will learn about in more detail in a [later tutorial](Summarizing.html).
 
 ```{r}
 mean_sdl(bw$Birth_weight[bw$Smoker=="no"])
@@ -859,7 +859,7 @@ fig_smoking = fig0 +
 print(fig_smoking)
 ```
 
-For simpler summaries that summarize the data in a single number, we can use a summary function that calculates a single value. We have seen some such functions already in an earlier tutorial, such as `mean()` and `median()`. Because the `fun.data` argument expects a function that outputs a range with a ymin and a ymax, we must use a different argument for single-number summaries: `fun.y`. We must also tell `stat_summary()` which geom we want to use to display the summary, since the default is to use a point with lines (`geom_pointrange`). We can supply the name of the geom to the `geom` argument.
+For simpler summaries that summarize the data in a single number, we can use a summary function that calculates a single value. We have seen some such functions already, such as `mean()` and `median()`. Because the `fun.data` argument expects a function that outputs a range with a 'ymin' and a 'ymax', we must use a different argument for single-number summaries: `fun.y`. We must also tell `stat_summary()` which geom we want to use to display the summary, since the default is to use a point with lines (`geom_pointrange`). We can supply the name of the geom to the `geom` argument.
 
 ```{r}
 fig_smoking = fig0 +
@@ -985,10 +985,10 @@ If we wish to show facets for the combination of levels from two factor variable
 fig_salience + facet_grid(Luminance~Orientation)
 ```
 
-In the example above, the titles for each facet are not very helpful. This is because the levels of the Luminance and Orientation variables are just 'absent' and 'present'. If we would like to see not only the names of the levels but also the names of the variables in the facet titles, we can set the argument `labeller="label_both"`.
+In the example above, the titles for each facet are not very helpful. This is because the levels of the Luminance and Orientation variables are just 'absent' and 'present'. If we would like to see not only the names of the levels but also the names of the *variables* in the facet titles, we can set the argument `labeller=label_both`.
 
 ```{r}
-fig_salience + facet_grid(Luminance~Orientation, labeller="label_both")
+fig_salience + facet_grid(Luminance~Orientation, labeller=label_both)
 ```
 
 # Updating

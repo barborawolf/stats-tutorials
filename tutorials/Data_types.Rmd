@@ -7,7 +7,7 @@ output:
     df_print: "paged"
 ---
 
-We have seen how to store information inside a variable.
+In the [previous tutorial](Introduction.html), we saw how to store information inside a variable.
 
 ```{r}
 x = 10
@@ -98,7 +98,7 @@ total
 
 If we try to do math with vectors of different lengths, R will still work out the answer for the parts of the vectors that match up, but it will print out a warning.
 
-We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that part of our program is wrong.
+We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that one or more of the commands that we wrote is wrong.
 
 ```{r}
 score3 = c(12,21,18,100,66)
@@ -106,7 +106,7 @@ score3 = c(12,21,18,100,66)
 score + score3
 ```
 
-There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a later tutorial.)
+There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a [later tutorial](Summarizing.html).)
 
 ```{r}
 mean(score)
@@ -282,7 +282,7 @@ class(group[3])
 
 # Factors
 
-Often, we will want to use text to represent categories, for example things like sex, group, language, and so on. We can use character vectors to do this, but R also provides another option. A **factor** is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the **levels** of the factor.
+Often, we will want to use text to represent categories, for example things like sex, group, drug type, language, and so on. We can use character vectors to do this, but R also provides another option. A **factor** is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the **levels** of the factor.
 
 We can create a factor using the `factor()` function. We input a vector of category memberships.
 
@@ -347,7 +347,7 @@ sex
 
 As with numeric and character vectors, we can convert other types of data into a factor using `as.factor()`.
 
-One of the main uses of this is to convert a vector of numbers that indicate category memberships into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor.
+One of the main uses of this is to take a vector of numbers that indicate category memberships and convert it into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor, not as numeric.
 
 ```{r}
 id = rep(1:3, each=10)
@@ -399,6 +399,7 @@ d = data.frame(age=c(36,64,40,53,29),
                sex=factor(c("male","female","female","male","female"),
                           levels=c("female","male","other")),
                location=c("Germany","UK","France","UK","Ireland"))
+
 d
 ```
 
@@ -440,6 +441,14 @@ d$sex
 d$sex[3]
 ```
 
+The dollar symbol also allows us to create a new column. We just choose a name for the column, ad assign into it using `=`. One common use of this is to create a new column whose values are based on the values in an existing column. For example, if we want to express values on a different scale.
+
+```{r}
+d$age_months = d$age * 12
+
+d
+```
+
 We can pick out multiple columns by using a vector of column names as the column index.
 
 ```{r}
@@ -466,6 +475,7 @@ We can find out the names of the columns in a data frame with the `names()` func
 names(d)
 
 names(d)[3] = "country"
+
 d
 ```
 
@@ -488,14 +498,6 @@ The `table()` function can be used to create a 2-by-2 table of the combinations 
 table(d$sex, d$country)
 ```
 
-Adding to a data frame is not always so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the `rbind()` function, which sticks together two (or more) data frames.
-
-```{r}
-new_row = data.frame(age=25, sex="other", country="Germany")
-d = rbind(d, new_row)
-d
-```
-
 As well as creating a data frame by writing out all the values it contains, there are a few R functions that create data frames more compactly. The most important of these is `expand.grid()`. The input to this function is a set of named vectors giving the columns of the data frame, just like the input to `data.frame()`. However, `expand.grid()` takes the values in each column and generates all the possible combinations of values as the rows of the data frame.
 
 ```{r}
@@ -505,6 +507,8 @@ meal_combos = expand.grid(starter=factor(c("soup","salad")),
 
 meal_combos
 ```
+
+Note that although we will occasionally need to create new data frames in R, it is much more common to load a data frame from a spreadsheet or other file. When we load data from a file, R reads them into a data frame so that we do not need to manually allocate all the values into the correct columns in the correct order. Loading data from a file is the subject of the [next tutorial](Files.html).
 
 # Logicals
 
@@ -556,7 +560,13 @@ d$sex == "male"
 d$sex != "male"
 ```
 
-If a logical vector is converted to numeric, the `FALSE` values become 0 and the `TRUE` values become 1. When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.
+If a logical vector is converted to numeric, the `FALSE` values become 0 and the `TRUE` values become 1.
+
+```{r}
+as.numeric(d$age < 40)
+```
+
+When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.
 
 For example, the mean of a vector of 0s and 1s is just the proportion of 1s, so for a logical statement the proportion of cases for which the statement is true. Likewise, the sum tells us the number of cases for which the statement is true.
 
@@ -612,7 +622,7 @@ d # (oops)
 
 # Special values
 
-R stores a few special values that can be useful. For example, the constant *π* (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`.
+R stores a few special values that can be useful. For example, the constant $\pi$ (for the ratio of a circle's circumference to its diameter) is stored under the name `pi`.
 
 ```{r}
 pi
@@ -628,7 +638,7 @@ Inf
 Among the most useful special values is the 'missing' value `NA` (**N**ot **A**vailable, or maybe **N**o **A**nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.
 
 ```{r}
-d = rbind(d, data.frame(age=NA, sex="male", country="France"))
+d$age[1] = NA
 
 d
 ```

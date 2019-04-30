@@ -2816,7 +2816,7 @@ div.tocify {
 </div>
 
 
-<p>We have seen how to store information inside a variable.</p>
+<p>In the <a href="Introduction.html">previous tutorial</a>, we saw how to store information inside a variable.</p>
 <pre class="r"><code>x = 10
 x</code></pre>
 <pre><code>## [1] 10</code></pre>
@@ -2868,14 +2868,14 @@ total = score + score2
 total</code></pre>
 <pre><code>## [1]  62 104  85 165 145  70 122 130</code></pre>
 <p>If we try to do math with vectors of different lengths, R will still work out the answer for the parts of the vectors that match up, but it will print out a warning.</p>
-<p>We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that part of our program is wrong.</p>
+<p>We should pay attention to this warning message. It is very rare that we will want to work with vectors of different lengths. So if we encounter this warning, it is probably an indication that one or more of the commands that we wrote is wrong.</p>
 <pre class="r"><code>score3 = c(12,21,18,100,66)
 
 score + score3</code></pre>
 <pre><code>## Warning in score + score3: longer object length is not a multiple of
 ## shorter object length</code></pre>
 <pre><code>## [1]  54  86  83 169 161  32  63 108</code></pre>
-<p>There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a later tutorial.)</p>
+<p>There are several statistical functions that take a vector of numbers as their input. They mostly have intuitive names. (We will learn more about what these statistics tell us in a <a href="Summarizing.html">later tutorial</a>.)</p>
 <pre class="r"><code>mean(score)</code></pre>
 <pre><code>## [1] 61</code></pre>
 <pre class="r"><code>median(score)</code></pre>
@@ -2998,7 +2998,7 @@ group</code></pre>
 </div>
 <div id="factors" class="section level1">
 <h1>Factors</h1>
-<p>Often, we will want to use text to represent categories, for example things like sex, group, language, and so on. We can use character vectors to do this, but R also provides another option. A <strong>factor</strong> is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the <strong>levels</strong> of the factor.</p>
+<p>Often, we will want to use text to represent categories, for example things like sex, group, drug type, language, and so on. We can use character vectors to do this, but R also provides another option. A <strong>factor</strong> is a vector of category memberships. It differs from a character vector in having a specified set of possible categories. These possible categories are called the <strong>levels</strong> of the factor.</p>
 <p>We can create a factor using the <code>factor()</code> function. We input a vector of category memberships.</p>
 <pre class="r"><code>sex = factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;))
 class(sex)</code></pre>
@@ -3048,7 +3048,7 @@ levels(sex)</code></pre>
 <pre><code>## [1] &lt;NA&gt;   &lt;NA&gt;   female male  
 ## Levels: male female other</code></pre>
 <p>As with numeric and character vectors, we can convert other types of data into a factor using <code>as.factor()</code>.</p>
-<p>One of the main uses of this is to convert a vector of numbers that indicate category memberships into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor.</p>
+<p>One of the main uses of this is to take a vector of numbers that indicate category memberships and convert it into a factor. If we have used numbers to label categories, or to assign ID numbers to people, then the numbers are really just categories, and should be treated as a factor, not as numeric.</p>
 <pre class="r"><code>id = rep(1:3, each=10)
 id</code></pre>
 <pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3</code></pre>
@@ -3089,6 +3089,7 @@ d</code></pre>
                sex=factor(c(&quot;male&quot;,&quot;female&quot;,&quot;female&quot;,&quot;male&quot;,&quot;female&quot;),
                           levels=c(&quot;female&quot;,&quot;male&quot;,&quot;other&quot;)),
                location=c(&quot;Germany&quot;,&quot;UK&quot;,&quot;France&quot;,&quot;UK&quot;,&quot;Ireland&quot;))
+
 d</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -3126,6 +3127,15 @@ d</code></pre>
 <pre class="r"><code>d$sex[3]</code></pre>
 <pre><code>## [1] female
 ## Levels: female male other</code></pre>
+<p>The dollar symbol also allows us to create a new column. We just choose a name for the column, ad assign into it using <code>=</code>. One common use of this is to create a new column whose values are based on the values in an existing column. For example, if we want to express values on a different scale.</p>
+<pre class="r"><code>d$age_months = d$age * 12
+
+d</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"36","2":"male","3":"Germany","4":"432"},{"1":"64","2":"female","3":"UK","4":"768"},{"1":"40","2":"female","3":"France","4":"480"},{"1":"53","2":"male","3":"UK","4":"636"},{"1":"29","2":"female","3":"Ireland","4":"348"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <p>We can pick out multiple columns by using a vector of column names as the column index.</p>
 <pre class="r"><code>d[,c(&quot;age&quot;,&quot;location&quot;)]</code></pre>
 <div data-pagedtable="false">
@@ -3137,35 +3147,36 @@ d</code></pre>
 <pre class="r"><code>d[2:4,]</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"64","2":"female","3":"UK","_rn_":"2"},{"1":"40","2":"female","3":"France","_rn_":"3"},{"1":"53","2":"male","3":"UK","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["location"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"64","2":"female","3":"UK","4":"768","_rn_":"2"},{"1":"40","2":"female","3":"France","4":"480","_rn_":"3"},{"1":"53","2":"male","3":"UK","4":"636","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>There are a few useful functions that can help us explore a data frame. <code>dim()</code> tells us the ‘dimensions’ of the data frame. That is, how many rows and how many columns it has. The output follows the general convention in R of rows first, columns second. There are also functions for finding out separately the number of rows and the number of columns.</p>
 <pre class="r"><code>dim(d)</code></pre>
-<pre><code>## [1] 5 3</code></pre>
+<pre><code>## [1] 5 4</code></pre>
 <pre class="r"><code>nrow(d)</code></pre>
 <pre><code>## [1] 5</code></pre>
 <pre class="r"><code>ncol(d)</code></pre>
-<pre><code>## [1] 3</code></pre>
+<pre><code>## [1] 4</code></pre>
 <p>We can find out the names of the columns in a data frame with the <code>names()</code> function. This function can also be used to change one or more of the column names.</p>
 <pre class="r"><code>names(d)</code></pre>
-<pre><code>## [1] &quot;age&quot;      &quot;sex&quot;      &quot;location&quot;</code></pre>
+<pre><code>## [1] &quot;age&quot;        &quot;sex&quot;        &quot;location&quot;   &quot;age_months&quot;</code></pre>
 <pre class="r"><code>names(d)[3] = &quot;country&quot;
+
 d</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"36","2":"male","3":"Germany","4":"432"},{"1":"64","2":"female","3":"UK","4":"768"},{"1":"40","2":"female","3":"France","4":"480"},{"1":"53","2":"male","3":"UK","4":"636"},{"1":"29","2":"female","3":"Ireland","4":"348"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>The <code>head()</code> function shows us the first few rows of a data frame, so we can quickly check its structure without having to print out the entire thing, and the <code>tail()</code> function does the same for the last few rows. The <code>summary()</code> function, which we have already seen for summarizing a vector, prints out a summary of each of the variables in a data frame.</p>
 <pre class="r"><code>summary(d)</code></pre>
-<pre><code>##       age           sex       country 
-##  Min.   :29.0   female:3   France :1  
-##  1st Qu.:36.0   male  :2   Germany:1  
-##  Median :40.0   other :0   Ireland:1  
-##  Mean   :44.4              UK     :2  
-##  3rd Qu.:53.0                         
-##  Max.   :64.0</code></pre>
+<pre><code>##       age           sex       country    age_months   
+##  Min.   :29.0   female:3   France :1   Min.   :348.0  
+##  1st Qu.:36.0   male  :2   Germany:1   1st Qu.:432.0  
+##  Median :40.0   other :0   Ireland:1   Median :480.0  
+##  Mean   :44.4              UK     :2   Mean   :532.8  
+##  3rd Qu.:53.0                          3rd Qu.:636.0  
+##  Max.   :64.0                          Max.   :768.0</code></pre>
 <p>The other functions that we have already seen for calculating something from a vector can also be applied to a single column of a data frame.</p>
 <pre class="r"><code>summary(d$country)</code></pre>
 <pre><code>##  France Germany Ireland      UK 
@@ -3179,15 +3190,6 @@ d</code></pre>
 ##   female      1       0       1  1
 ##   male        0       1       0  1
 ##   other       0       0       0  0</code></pre>
-<p>Adding to a data frame is not always so easy. Generally, we will work with finished data frames, so we will not need to add to them, but it can be done. In order to add a new row to a data frame, we need to first prepare the row itself as a data frame. Then we can add it using the <code>rbind()</code> function, which sticks together two (or more) data frames.</p>
-<pre class="r"><code>new_row = data.frame(age=25, sex=&quot;other&quot;, country=&quot;Germany&quot;)
-d = rbind(d, new_row)
-d</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"UK"},{"1":"40","2":"female","3":"France"},{"1":"53","2":"male","3":"UK"},{"1":"29","2":"female","3":"Ireland"},{"1":"25","2":"other","3":"Germany"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
 <p>As well as creating a data frame by writing out all the values it contains, there are a few R functions that create data frames more compactly. The most important of these is <code>expand.grid()</code>. The input to this function is a set of named vectors giving the columns of the data frame, just like the input to <code>data.frame()</code>. However, <code>expand.grid()</code> takes the values in each column and generates all the possible combinations of values as the rows of the data frame.</p>
 <pre class="r"><code>meal_combos = expand.grid(starter=factor(c(&quot;soup&quot;,&quot;salad&quot;)),
                           main=factor(c(&quot;meat&quot;,&quot;fish&quot;,&quot;vegetarian&quot;)),
@@ -3199,6 +3201,7 @@ meal_combos</code></pre>
 {"columns":[{"label":["starter"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["main"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["dessert"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"soup","2":"meat","3":"fruit"},{"1":"salad","2":"meat","3":"fruit"},{"1":"soup","2":"fish","3":"fruit"},{"1":"salad","2":"fish","3":"fruit"},{"1":"soup","2":"vegetarian","3":"fruit"},{"1":"salad","2":"vegetarian","3":"fruit"},{"1":"soup","2":"meat","3":"ice cream"},{"1":"salad","2":"meat","3":"ice cream"},{"1":"soup","2":"fish","3":"ice cream"},{"1":"salad","2":"fish","3":"ice cream"},{"1":"soup","2":"vegetarian","3":"ice cream"},{"1":"salad","2":"vegetarian","3":"ice cream"},{"1":"soup","2":"meat","3":"cheese"},{"1":"salad","2":"meat","3":"cheese"},{"1":"soup","2":"fish","3":"cheese"},{"1":"salad","2":"fish","3":"cheese"},{"1":"soup","2":"vegetarian","3":"cheese"},{"1":"salad","2":"vegetarian","3":"cheese"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
+<p>Note that although we will occasionally need to create new data frames in R, it is much more common to load a data frame from a spreadsheet or other file. When we load data from a file, R reads them into a data frame so that we do not need to manually allocate all the values into the correct columns in the correct order. Loading data from a file is the subject of the <a href="Files.html">next tutorial</a>.</p>
 </div>
 <div id="logicals" class="section level1">
 <h1>Logicals</h1>
@@ -3214,7 +3217,7 @@ x</code></pre>
 <p>Much more often than creating a logical vector by typing out <code>TRUE</code> and <code>FALSE</code> ourselves, we will instead create a logical vector by asking whether a certain condition holds for each of the values in another vector.</p>
 <p>For example, we could ask whether each of the people in our data frame is over a certain age, using the ‘greater than’ operator <code>&gt;</code>:</p>
 <pre class="r"><code>d$age &gt; 40</code></pre>
-<pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE</code></pre>
 <p>We see the answer for each of the values.</p>
 <p>There are several other operators for asking ‘true/false’ questions:</p>
 <ul>
@@ -3225,28 +3228,31 @@ x</code></pre>
 <li><code>!=</code> not equal to</li>
 </ul>
 <pre class="r"><code>d$age &lt; 40</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE  TRUE</code></pre>
 <pre class="r"><code>d$age &gt;= 40</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE  TRUE FALSE</code></pre>
 <pre class="r"><code>d$age &lt;= 40</code></pre>
-<pre><code>## [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
 <pre class="r"><code>d$age == 40</code></pre>
-<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE</code></pre>
 <p>Of these, only <code>==</code> and <code>!=</code> are applicable to character vectors or factors.</p>
 <pre class="r"><code>d$sex == &quot;male&quot;</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE  TRUE FALSE FALSE</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE  TRUE FALSE</code></pre>
 <pre class="r"><code>d$sex != &quot;male&quot;</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
-<p>If a logical vector is converted to numeric, the <code>FALSE</code> values become 0 and the <code>TRUE</code> values become 1. When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.</p>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE  TRUE</code></pre>
+<p>If a logical vector is converted to numeric, the <code>FALSE</code> values become 0 and the <code>TRUE</code> values become 1.</p>
+<pre class="r"><code>as.numeric(d$age &lt; 40)</code></pre>
+<pre><code>## [1] 1 0 0 0 1</code></pre>
+<p>When applied to a logical vector, mathematical functions will automatically first convert the logical vector to 0s and 1s. This fact leads to some useful shortcuts.</p>
 <p>For example, the mean of a vector of 0s and 1s is just the proportion of 1s, so for a logical statement the proportion of cases for which the statement is true. Likewise, the sum tells us the number of cases for which the statement is true.</p>
 <pre class="r"><code>mean(d$age &lt; 40)</code></pre>
-<pre><code>## [1] 0.5</code></pre>
+<pre><code>## [1] 0.4</code></pre>
 <pre class="r"><code>sum(d$age &lt; 40)</code></pre>
-<pre><code>## [1] 3</code></pre>
+<pre><code>## [1] 2</code></pre>
 <p>There is one other logical symbol that can sometimes be useful. <code>%in%</code> asks whether each of the values in one vector is in another vector.</p>
 <p>For example to see which rows have ‘UK’ or ‘Germany’ in the ‘country’ column:</p>
 <pre class="r"><code>d$country %in% c(&quot;UK&quot;,&quot;Germany&quot;)</code></pre>
-<pre><code>## [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE  TRUE FALSE</code></pre>
 <p>We can combine or convert logical statements using further logical symbols:</p>
 <ul>
 <li><code>!</code> NOT</li>
@@ -3255,22 +3261,22 @@ x</code></pre>
 </ul>
 <p>Some examples:</p>
 <pre class="r"><code>d$age &lt; 40 &amp; d$sex == &quot;male&quot; # (male and under 40)</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code>d$age &lt; 40 | d$sex == &quot;male&quot; # (male or under 40)</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE  TRUE  TRUE</code></pre>
 <pre class="r"><code>!(d$age &lt; 40 | d$sex == &quot;male&quot;) # (neither male nor under 40)</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE FALSE</code></pre>
 <p>We can use logical statements in the indexing parentheses <code>[]</code> to pick out only the values for which a statement is true.</p>
 <p>Some examples:</p>
 <pre class="r"><code>d$age[d$age &lt; 40] # (show the ages below 40)</code></pre>
-<pre><code>## [1] 36 29 25</code></pre>
+<pre><code>## [1] 36 29</code></pre>
 <pre class="r"><code>d$age[d$sex == &quot;male&quot;] # (show the men's ages)</code></pre>
 <pre><code>## [1] 36 53</code></pre>
 <p>If we want to pick out only those rows of a data frame for which a condition holds, we can use the <code>subset()</code> function. The first input to <code>subset()</code> is the data frame, and the second input is the condition. Because we have input the data frame, we do not need to also prepend the name of the data frame to the variables in the condition; they are assumed to refer to the columns of the data frame.</p>
 <pre class="r"><code>subset(d, age &lt; 40)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany","_rn_":"1"},{"1":"29","2":"female","3":"Ireland","_rn_":"5"},{"1":"25","2":"other","3":"Germany","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"36","2":"male","3":"Germany","4":"432","_rn_":"1"},{"1":"29","2":"female","3":"Ireland","4":"348","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Beware that the single equals sign <code>=</code> is used for assignment, and the double equals <code>==</code> for logical statements. If you accidentally use <code>=</code> when you meant to use <code>==</code>, you may overwrite the values instead of asking about them.</p>
@@ -3279,13 +3285,13 @@ x</code></pre>
 d # (oops)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"36","2":"male","3":"Germany","4":"432"},{"1":"64","2":"female","3":"Germany","4":"768"},{"1":"40","2":"female","3":"Germany","4":"480"},{"1":"53","2":"male","3":"Germany","4":"636"},{"1":"29","2":"female","3":"Germany","4":"348"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 <div id="special-values" class="section level1">
 <h1>Special values</h1>
-<p>R stores a few special values that can be useful. For example, the constant <em>π</em> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>.</p>
+<p>R stores a few special values that can be useful. For example, the constant <span class="math inline">\(\pi\)</span> (for the ratio of a circle’s circumference to its diameter) is stored under the name <code>pi</code>.</p>
 <pre class="r"><code>pi</code></pre>
 <pre><code>## [1] 3.141593</code></pre>
 <p>Infinity is stored under <code>Inf</code> (with uppercase ‘I’). We can also make this into negative infinity by appending the minus sign <code>-</code>.</p>
@@ -3294,25 +3300,25 @@ d # (oops)</code></pre>
 <pre class="r"><code>-Inf</code></pre>
 <pre><code>## [1] -Inf</code></pre>
 <p>Among the most useful special values is the ‘missing’ value <code>NA</code> (<strong>N</strong>ot <strong>A</strong>vailable, or maybe <strong>N</strong>o <strong>A</strong>nswer). We can use this value to indicate that a value in a data frame is missing, for example if the person recorded in that row did not provide a particular piece of information.</p>
-<pre class="r"><code>d = rbind(d, data.frame(age=NA, sex=&quot;male&quot;, country=&quot;France&quot;))
+<pre class="r"><code>d$age[1] = NA
 
 d</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"36","2":"male","3":"Germany"},{"1":"64","2":"female","3":"Germany"},{"1":"40","2":"female","3":"Germany"},{"1":"53","2":"male","3":"Germany"},{"1":"29","2":"female","3":"Germany"},{"1":"25","2":"other","3":"Germany"},{"1":"NA","2":"male","3":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["age_months"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"NA","2":"male","3":"Germany","4":"432"},{"1":"64","2":"female","3":"Germany","4":"768"},{"1":"40","2":"female","3":"Germany","4":"480"},{"1":"53","2":"male","3":"Germany","4":"636"},{"1":"29","2":"female","3":"Germany","4":"348"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>We can check which values are missing from a column using <code>is.na()</code>. If we want to know which rows are ‘complete’ (i.e. have no missing values in any column), we can use the <code>complete.cases()</code> function on the whole data frame.</p>
 <pre class="r"><code>is.na(d$age)</code></pre>
-<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code>complete.cases(d)</code></pre>
-<pre><code>## [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
 <p>If there are any <code>NA</code> values anywhere in a vector, mathematical functions applied to that vector will also output <code>NA</code>. Although this may seem like a stupid inconvenience, it can help to alert us to the presence of missing values.</p>
 <pre class="r"><code>mean(d$age)</code></pre>
 <pre><code>## [1] NA</code></pre>
 <p>If we nonetheless want to apply the function to the vector but ignore the missing values, we can specify this using the <code>na.rm</code> argument (the <code>rm</code> in <code>na.rm</code> is short for ‘remove’). Since this is an argument that specifies a yes/no option, its input is a logical value, where <code>TRUE</code> means ‘yes, apply this option’ (i.e. calculate the result with the <code>NA</code> values removed).</p>
 <pre class="r"><code>mean(d$age, na.rm=TRUE)</code></pre>
-<pre><code>## [1] 41.16667</code></pre>
+<pre><code>## [1] 46.5</code></pre>
 <p>There is also a special value called <code>NULL</code> in R. This value indicates ‘emptiness’. It can be used to create an empty variable that does not yet store anything.</p>
 <pre class="r"><code>x = NULL
 
@@ -3324,7 +3330,7 @@ class(x)</code></pre>
 d</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"36","2":"male"},{"1":"64","2":"female"},{"1":"40","2":"female"},{"1":"53","2":"male"},{"1":"29","2":"female"},{"1":"25","2":"other"},{"1":"NA","2":"male"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["age_months"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"NA","2":"male","3":"432"},{"1":"64","2":"female","3":"768"},{"1":"40","2":"female","3":"480"},{"1":"53","2":"male","3":"636"},{"1":"29","2":"female","3":"348"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -3395,14 +3401,12 @@ class(survey)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <pre class="r"><code>survey</code></pre>
 <pre><code>## $data
-##   age    sex
-## 1  36   male
-## 2  64 female
-## 3  40 female
-## 4  53   male
-## 5  29 female
-## 6  25  other
-## 7  NA   male
+##   age    sex age_months
+## 1  NA   male        432
+## 2  64 female        768
+## 3  40 female        480
+## 4  53   male        636
+## 5  29 female        348
 ## 
 ## $locations
 ## [1] &quot;Berlin&quot;     &quot;Manchester&quot;

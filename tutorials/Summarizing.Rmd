@@ -7,19 +7,25 @@ output:
     df_print: "paged"
 ---
 
-We learned in the last tutorial how to display data in plots. A good plot gives a clear impression of overall patterns in the data. The next thing we will often want to do is to supplement this impression with descriptive statistics, some specific numbers that summarize the data.
-
-There are many simple ways to create summaries of data using basic R functions. Some of these functions, such as `mean()` and `sd()` we already saw briefly in earlier tutorials. We will begin by looking in a bit more detail at what they tell us.
-
-However, as we have seen already in the case of plotting, many tasks in R can be performed more easily with the help of a package created specifically for that task. The `dplyr` package can help us to produce more comprehensive and specific summaries of our data. After looking at basic R functions for summarizing data, we will look at just a few of the additional things we can do with dplyr.
-
-```{r}
+```{r, message=FALSE}
 library(ggplot2)
-
-library(dplyr)
 ```
 
-(We can see from the messages that the dplyr package 'masks' some basic R functions. We learned about masking in the **Packages** tutorial).
+We learned in the [last tutorial](Plotting.html) how to display data in plots. A good plot gives a clear impression of overall patterns in the data. The next thing we will often want to do is to supplement this impression with descriptive statistics: some specific numbers that summarize the data.
+
+There are many simple ways to create summaries of data using basic R functions. Some of these functions, such as `mean()` and `sd()` we have already used briefly. We will begin by looking in a bit more detail at what they tell us.
+
+However, as we have seen already in the case of plotting, many tasks in R can be performed more easily with the help of a package created specifically for that task. A few simple functions for summarizing data are provided in the `Hmisc` package.
+
+```{r, message=FALSE}
+library(Hmisc)
+```
+
+And the `dplyr` package can help us to produce more comprehensive and specific summaries of our data. After looking at basic R functions for summarizing data, we will look at just a few of the additional things we can do with dplyr.
+
+```{r, message=FALSE}
+library(dplyr)
+```
 
 To have some data to work with, let's load again the **birth weights** data:
 
@@ -28,19 +34,26 @@ bw = read.csv("data/birth_weights.csv")
 head(bw)
 ```
 
-And let's add a new data set, 'CEOs':
+And let's add two new new data sets.
+
+The first is the **CEOs** data. These data list the financial compensation paid to the CEOs of various companies in 2005, in US dollars.
 
 ```{r}
 ceos = read.csv("data/CEOs.csv")
 head(ceos)
 ```
 
-These data give the financial compensation paid to the CEOs of various companies in 2005, in US dollars.
-
 Because the financial compensation scale goes into the millions of dollars, let's make the numbers visually a bit more manageable by expressing them in millions.
 
 ```{r}
 ceos$Annual_compensation = ceos$Annual_compensation / 1000000
+```
+
+And the second is the **cereals** data. These data list the proportion of sugar found in various brands of breakfast cereal.
+
+```{r}
+cereals = read.csv("data/cereals.csv")
+head(cereals)
 ```
 
 # Distributions
@@ -68,7 +81,7 @@ class(bw$Birth_weight_group)
 levels(bw$Birth_weight_group)
 ```
 
-The names of the levels are given using standard [interval notation](https://en.wikipedia.org/wiki/Interval_(mathematics)#Notations_for_intervals). The round parenthesis indicates a number that bounds the interval but is not itself included inside it.  kilograms are not included in that interval (they are included instead in the interval below). The square parenthesis indicates a number that bounds the interval and is included inside it. So for example, `(2 3]` means '2 to 3 kilograms, including babies weighing exactly 3 kilograms but excluding those weighing exactly 2 kilograms'.
+The names of the levels are given using standard [interval notation](https://en.wikipedia.org/wiki/Interval_(mathematics)#Notations_for_intervals). The round parenthesis indicates a number that bounds the interval but is not itself included inside it. The square parenthesis indicates a number that bounds the interval and is included inside it. So for example, `(2 3]` means '2 to 3 kilograms, including babies weighing exactly 3 kilograms but excluding those weighing exactly 2 kilograms'.
 
 If we now apply the `table()` function to this new factor variable, we see how many babies are in each interval. This smaller set of numbers is already more manageable and gives a clear impression of where most of the babies are on the scale.
 
@@ -76,7 +89,7 @@ If we now apply the `table()` function to this new factor variable, we see how m
 table(bw$Birth_weight_group)
 ```
 
-When summarizing data, there is often a trade-off between detail and manageability. In this case, the trade-off is determined by the number of intervals we use to divide the scale of measurement. If we divide it into a larger number of intervals, we get a more detailed summary, with the data divided into more, finer categories.
+When summarizing data, there is often a trade-off between detail and clarity. In this case, the trade-off is determined by the number of intervals we use to divide the scale of measurement. If we divide it into a larger number of intervals, we get a more detailed summary, with the data divided into more, finer categories.
 
 ```{r}
 table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=0.5)))
@@ -90,7 +103,7 @@ table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=2)))
 
 # Histogram
 
-A plot that shows this kind of summary, observations grouped into intervals and then counted up, is called a 'histogram'. A histogram uses bars to show the number of observations in each interval along the scale.
+A plot that shows observations grouped into intervals and then counted up is called a 'histogram'. A histogram uses bars to show the number of observations in each interval along the scale. ggplot provides a geom function for creating a histogram, so we don't have to manually group the values.
 
 ```{r}
 bw_hist = ggplot(bw, aes(x=Birth_weight)) +
@@ -113,14 +126,16 @@ bw_hist + geom_histogram(binwidth=0.5)
 
 When summarizing the data as counts of observations in intervals (or 'bins'), we may need to experiment a bit with these options until we get a clear impression of how the data are distributed.
 
-Let's save the version of the histogram with a half-kilogram bin width.
+Let's store the version of the histogram with a half-kilogram bin width.
 
 ```{r}
 bw_hist = bw_hist +
   geom_histogram(binwidth=0.5)
 ```
 
-The table of counts and the histogram both show us how the data are distributed. We can see where along the scale of measurement most of the observations are located, and where there are fewer observations. We would now like to compress the data down even more and summarize this information in just a few numbers. Different numbers can tell us different things about the distribution.
+# Summary statistics
+
+The table of counts and the histogram both show us how the data are distributed. We can see where along the scale of measurement most of the observations are located, and where there are fewer observations. We would now like to compress the data down even more and summarize this information in just a few numbers. These summarizing numbers are sometimes called 'summary statistics'. Different statistics can tell us different things about the distribution of our data.
 
 ## Center
 
@@ -146,7 +161,7 @@ max(bw_counts)
 bw_counts[bw_counts==max(bw_counts)]
 ```
 
-But as we can see from the output above, only 5 of the babies (out of 189 in total) have exactly this weight, so it perhaps isn't such a great summary of the center of the distribution. It doesn't really tell us where *most* of the observations are located. When calculating the mode for a variable like birth weigt that can have lots of different possible values, it is more common to first 'bin' the observations into intervals, as we did when creating the histogram above, and then find the 'modal interval'. If we choose intervals that are not too narrow, the modal interval will be one in which quite a lot of observations are located.
+But as we can see from the output above, only 5 of the babies (out of 189 in total) have exactly this weight, so it perhaps isn't such a great summary of the center of the distribution. It doesn't really tell us where *most* of the observations are located. When calculating the mode for a variable like birth weigt that can have lots of different possible values, it is more common to first 'bin' the observations into intervals, as we did when creating the histogram above, and then find the modal *interval*. If we choose intervals that are not too narrow, the modal interval will be one in which quite a lot of observations are located.
 
 Here is how we could find the modal interval using `cut()` and `table()`.
 
@@ -155,7 +170,7 @@ bw_counts = table(cut(bw$Birth_weight, breaks=seq(from=0, to=6, by=0.5)))
 bw_counts[bw_counts==max(bw_counts)]
 ```
 
-The modal interval is 3 to 3.5 kilograms, and 45 babies have a birth weight in this range. Comparing this answer with our histograms above, it seems like a reasonable summary of the center of the distribution. Most of the babies are located in this range of weights or close to it.
+The modal interval is 3 to 3.5 kilograms, and 45 babies have a birth weight in this range. Comparing this answer with our histograms above, it seems like a reasonable summary of the center of the distribution. Many of the babies are located in this range of weights or close to it.
 
 Of course, the modal interval is dependent on our choice of intervals. If we make a different choice, we will get a slightly different answer.
 
@@ -257,7 +272,7 @@ Whether the maximum value is 9 or 9000, it doesn't matter. The middle value rema
 
 ### Quantiles
 
-The concept of the median can be generalized to divide the data in other ways. The median is the value that divides the data into a lower and upper half, but we can also ask what value divides the lower quarter from the remaining three quarters, or what value divides the top third from the bottom two thirds, and so on. These numbers are known as quantiles.
+The concept of the median can be generalized to divide the data in other ways. The median is the value that divides the data into a lower and upper half, but we can also ask what value divides the lower quarter from the remaining three quarters, or what value divides the top third from the bottom two thirds, and so on. These 'dividing' numbers are known as quantiles.
 
 R has a function for calculating quantiles. By default it calculates the **quartiles** (note the **r** in the middle of the word), which are the values that divide the data into **quarters**.
 
@@ -279,7 +294,7 @@ If for whatever reason we wish to omit the percentage labels for the quantile va
 quantile(bw$Birth_weight, names=FALSE)
 ```
 
-If we want to summarize the data in some other way, for example by dividing them into thirds rather than quarters, then we can specify the `probs` argument. This argument should be a vector containing the points at which we want to divide the data (given on a scale from 0 to 1, not as percentages).
+If we want to summarize the spread of the data in some other way, for example by dividing them into thirds rather than quarters, then we can specify the `probs` argument. This argument should be a vector containing the points at which we want to divide the data (given on a scale from 0 to 1, not as percentages).
 
 ```{r}
 quantile(bw$Birth_weight, probs=c(0, 1/3, 2/3, 1))
@@ -295,13 +310,13 @@ The top 10% of CEOs each got more than around 24 million dollars.
 
 **Note**:
 
-It turns out that there are several subtly different ways of defining exactly what the quantile values should be, depending among other things on how we deal with the space in between values when the quantile should fall between two observations. You can read some explanation of the different options if you call up the help for the `quantile()` function (`? quantile`). If we really need to use one variant rather than another, we can specify which type of quantile to calculate, using the `type` argument. But the differences between the various methods diminish once we have a reasonably large number of observations. The default quantile type (`type=7`) is fine for most purposes.
+It turns out that there are several subtly different ways of defining exactly what the quantile values should be, depending among other things on how we deal with the space in between values when the quantile should fall between two observations. You can read some explanation of the different methods if you call up the help for the `quantile()` function (`? quantile`). If we really need to use one method rather than another, we can specify which type of quantile to calculate, using the `type` argument. But the differences between the various methods diminish once we have a reasonably large number of observations. The default quantile type (`type=7`) is fine for most purposes.
 
 ### Mean
 
-The median is a robust representation of the center of the data, and for this reason it is a good first choice of single-number summary. But the median's main strength is also its main weakness: It doesn't take into account the values of all the observations. For example, even if there are quite a lot of very large values, the median won't reflect this so long as the middle value of the data is not large. If we want a summary that takes into account the values of *all* the observations, we need to do something other than just divide the data in two.
+The median is a robust representation of the center of the data, and for this reason it is a good first choice of single-number summary. But the median's main strength is also its main weakness: It doesn't take into account the values of all the observations. For example, even if there are quite a lot of very large values, the median won't reflect this so long as the middle value of the data is not large. If we want a summary that takes into account the values of *all* the observations, we need to do something other than just split the data in two.
 
-Consider first that there is a certain total amount of our quantity of interest, for example the total earnings of all CEOs put together. This quantity is called the **sum** of the values. Now imagine that we take that sum and distribute it equally among all the observations. For example, we take the total amount of money and imagine giving each CEO an equal share of it. This 'equal share' represents a sort of average amount. This sort of average value is known as the mean.
+How can we do this? Consider first that there is a certain total amount of our quantity of interest, for example the total earnings of all CEOs put together. This quantity is called the **sum** of the values. Now imagine that we take that sum and distribute it equally among all the observations. For example, we take the total amount of money and imagine giving each CEO an equal share of it. This 'equal share' represents a sort of average amount. This sort of average value is known as the mean.
 
 The principle of the mean as an 'equal redistribution' remains the same even if the quantity in question is not really redistributable. For example, we could imagine taking the total body mass of all the babies and then redistributing it so that all the babies are of equal weight. The resulting weight is an average weight.
 
@@ -353,9 +368,9 @@ ceos_hist +
   labs(caption="median in blue\nmean in red")
 ```
 
-Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot to see whether there are any extreme values. However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value.
+Because of this property of the mean, we should be cautious about using it as a summary of the data without also checking a plot to see whether there are any extreme values.
 
-We can see this principle in action with a quick test. For a smaller set of data, the mean is more influenced by the magnitude of an extreme value.
+However, the extent to which the mean is influenced by a single extreme value diminishes the more observations we have. In a large set of data, a large number of typical values will tend to outweigh the influence of one very extreme value. We can see this principle in action with a quick test. For a smaller set of data, the mean is more influenced by the magnitude of an extreme value.
 
 ```{r}
 mean(c(5,5,5,5,9000))
@@ -368,7 +383,7 @@ This is subtly different from the notion of the median as a midpoint. Whereas th
 
 ## Spread
 
-Measures of center, such as the mean, give us a single number to summarize where the data are located on the scale of measurement. A reasonable next question to ask is: How representative is this summary? Are the observations mostly close to this center, or far away from it? This is asking aout the **spread** of the distribution.
+Measures of center, such as the mean, give us a single number to summarize where the data are located on the scale of measurement. A reasonable next question to ask is: How representative is this central value? Are the observations mostly close to the center, or far away from it? This is asking aout the **spread** of the distribution.
 
 ### Range
 
@@ -407,22 +422,24 @@ But there is also an `IQR()` function.
 IQR(ceos$Annual_compensation)
 ```
 
-A visual check is always good. On a histogram, the simplest visualization of the IQR is to show the first and third quartiles as vertical lines, as we did for the median or the mean above.
+A visual check is always good. On a histogram, the simplest visualization of the IQR is to show the first and third quartiles as vertical lines, as we did for the median and the mean above.
 
 ```{r}
 ceos_Q1Q3 = data.frame(Q=c("Q1","Q3"),
                        value=quantile(ceos$Annual_compensation, probs=c(0.25, 0.75)))
 
 ceos_hist +
-  geom_vline(aes(xintercept=value), data=ceos_Q1Q3, lty="dashed") +
+  geom_segment(aes(x=value, xend=value, y=0, yend=Inf), data=ceos_Q1Q3, lty="dashed") +
   geom_text(aes(x=value, y=0, label=Q), data=ceos_Q1Q3, vjust="top")
 ```
 
+But this plot isn't so easy to read, especially if the quartiles are quite close together as they are here. A boxplot provides a clearer way to visualize quartiles. (We learned about boxplots in the [plotting tutorial](Plotting.html).)
+
 ### Median Absolute Deviation
 
-Another way of thinking about spread is to take the question more literally: How far do observations tend to be from the center? We can calculate the distance of each observation from our center summary statistic, and then calculate some summary of these distances.
+Another way of thinking about spread is to take the question more literally: How far do observations tend to be from the center? We can calculate the distance of each observation from the center, and then calculate some summary of these distances.
 
-Let's try this for the birth weights. We first find the median birth weight, then subtract this value from each of the birth weights to find their distances from the median. Then we find the median of these differences.
+Let's try this for the birth weights. We first find the median birth weight and use this as our center value. We then subtract this value from each of the birth weights to find their distances from the center. Then we find the median of these differences.
 
 ```{r}
 bw_median = median(bw$Birth_weight)
@@ -442,7 +459,7 @@ abs(-5)
 abs(5)
 ```
 
-We can use this function to find the *median distance from the median*, known as the **M**edian **A**bsolute **D**eviation(**MAD**).
+We can use this function to find the *median distance from the median*, known as the **M**edian **A**bsolute **D**eviation (**MAD**).
 
 ```{r}
 bw_median
@@ -465,11 +482,11 @@ mad(bw$Birth_weight, constant=1)
 
 ### Variance
 
-The MAD is a good accompaniment to the median, since they are both based on the same principle of finding a 'middle value'. What measure of spread is a good accompaniment to the mean? Recall that the mean can be thought of as an 'equal redistribution' value. We can aply the same principle to *distances from the mean*, and ask: If we sum up the total distances from the mean and redistribute them equally among the observations, how far would each observation be from the mean?
+The MAD is a good accompaniment to the median, since they are both based on the same principle of finding a 'middle value' that splits the data in half. What measure of spread is a good accompaniment to the mean? Recall that the mean can be thought of as an 'equal redistribution' value. We can apply the same principle to *distances from the mean*, and ask: If we sum up the total distances from the mean and redistribute them equally among the observations, how far would each observation be from the mean?
 
 This notion leads to the last two measures of spread that we will look at: the **variance** and the **Standard Deviation**. Almost. There are two small subtleties in the calculation of these statistics, which for now I will ask you just to accept. We will learn only later on why these extra steps are the way they are.
 
-First, instead of just calculating the absolute deviations from the center, as we did for the MAD, we instead square the deviations. Recall that squaring a negative number gives a positive number as a result, so this solves the same problem with negative deviations that we encountered above.
+First, instead of just calculating the absolute deviations from the center, as we did for the MAD, we instead square the deviations when calculating the variance or Standard Deviation. Recall that squaring a negative number gives a positive number as a result, so this solves the same problem with negative deviations that we encountered above.
 
 ```{r}
 (-3) ^ 2
@@ -496,7 +513,7 @@ We can calculate the variance using basic math in R, just as a bit of practice.
 sum((bw$Birth_weight - mean(bw$Birth_weight))^2) / (nrow(bw) - 1)
 ```
 
-But of course there is also a function for the variance.
+But of course there is also a function for the variance: `var()`.
 
 ```{r}
 var(bw$Birth_weight)
@@ -504,9 +521,9 @@ var(bw$Birth_weight)
 
 ### Standard Deviation
 
-The variance tells us about the spread of our data. If the observations are more spread out, then their squared deviations will be greater, and the variance will be greater. However, the actual value of the variance is not intuitive to interpret. Above, we obtained a value of about 0.5 for the variance of the birth weights. This number is not easy to relate to the scale of measurement (kilograms) because in calculating it, we squared the deviations. Squaring changes their magnitudes as well as making them all positive.
+The variance tells us about the spread of our data. If the observations are more spread out, then their squared deviations will be greater, and the variance will be greater. However, the actual value of the variance is not intuitive to interpret. Above, we obtained a value of about 0.5 for the variance of the birth weights. This number is not easy to relate to the scale of measurement (kilograms) because in calculating it, we squared the deviations. Squaring the deviations changes their magnitudes as well as making them all positive.
 
-So although the variance plays an important role behind the scenes in many statistical procedures, for describing our data we prefer a value that says something directly about how far the observations tend to be from the mean. This value is the **S**tandard **D**eviation (often abbreviated to **SD**). Once we have understood the variance, the Standard Deviation is simple, it is just the square root of the variance. The square root operation 'undoes' the squaring that we applied when calculating the variance, and brings the resulting value back onto the original scale of measurement.
+So although the variance plays an important role behind the scenes in many statistical procedures, for describing our data we prefer a value that says something more directly about how far the observations tend to be from the mean. This value is the **S**tandard **D**eviation (often abbreviated to **SD**). Once we have understood the variance, the Standard Deviation is simple, it is just the square root of the variance. This final step 'undoes' the squaring that we applied when calculating the variance, and brings the resulting value back onto the original scale of measurement.
 
 In formulas, the Standard Deviation is often represented by the Greek letter sigma (and this explains why the variance is sigma *squared*):
 
@@ -526,25 +543,169 @@ We can see that the result is the same as the square root of the variance.
 sqrt(var(bw$Birth_weight))
 ```
 
-The Standard Deviation is a very common measure of spread. 
+The Standard Deviation is a very common measure of spread. Together with the mean, it is often given as a standard summary of a set of data.
 
-## *z* scores
+Because these two statistics are so often reported together, the Hmisc package (which we loaded at the beginning of this tutorial) provides a function that calculates both of them, for convenience.
+
+```{r}
+smean.sd(bw$Birth_weight)
+```
+
+Another way of succinctly summarizing a distribution is as its mean together with a lower and an upper 'bound' for the central region of the data. A typical method for constructing these bounds is as the mean ± (minus and plus) 1 Standard Deviation. The Hmisc package also provides a function for calculating this summary.
+
+```{r}
+smean.sdl(bw$Birth_weight)
+```
+
+But look carefully at the output of `smean.sdl()` and compare the 'Lower' and 'Upper' values to the value of the Standard Deviation that we calculated above. They don't look right. Again, this is one of those cases that illustrates the importance of checking the documentation for a function before we use it. Call up the help page for this function (`? smean.sdl`) and you will see that by default it calculates the bounds as the mean ± **2** Standard Deviations. To override this, we must specify the `mult` argument, which is a multiplier applied to the Standard Deviation.
+
+```{r}
+smean.sdl(bw$Birth_weight, mult=1)
+```
 
 ## Shape
 
-### Skewness
+We have seen how to condense a set of values into a summary of their **center** and **spread**. To be able to interpret such a summary correctly, it is important also to know something about the distribution's **shape**. To see why, let's consider two cases in which a 'center and spread' summary using the mean ± 1 Standard Deviation may still give a misleading or incomplete impression of our data.
 
-### Kurtosis
+In most cases what we want a summary to tell us is what range of values are typical of our data. But values within one Standard Deviation of the mean are only typical if the distribution of our data has certain other properties: It should be approximately symmetrical and most observations should be clustered around the center.
+
+### Skew
+
+We have already seen one example of a distribution in which the first of these conditions is not met. The distribution of CEO earnings is very asymmetrical. There are a few very high-earning CEOs, and most of the other CEOs earned a lot less. The Standard Deviation of the CEO earnings reflects in part the very large distance of the highest earners from the mean. As a result, the span of the mean ± 1 Standard Deviation covers parts of the scale that are definitely not typical of the CEOs, and even goes beyond the minimum observed earnings.
+
+```{r}
+ceos_summary = smean.sdl(ceos$Annual_compensation, mult=1)
+ceos_summary
+```
+
+For a bit of plotting variety, this span is shown on the histogram below as a shaded region.
+
+```{r}
+ceos_hist +
+  geom_rect(xmin=ceos_summary["Lower"],
+            xmax=ceos_summary["Upper"],
+            ymin=-Inf, ymax=Inf,
+            alpha=0.005) +
+  geom_vline(xintercept=ceos_summary["Mean"])
+```
+
+An asymmetrical distribution with a greater weight of extremely high values is 'positively skewed'. The **skew** of a distribution refers to the nature of its asymmetry: Is there a greater weight of extreme positive or of extreme negative deviations from the mean?
+
+There are summary statistics that can quantify the skewness of a distribution in a single number. But these are not so commonly used, so we don't go into them here. A good visualization of the distribution such as a histogram can show us the extent and direction of a distribution's asymmetry.
 
 ### Bimodality
 
-# Boxplot
+The mean may be a very 'atypical' value even if the distribution of the observations is symmetrical. The breakfast cereal data illustrate one common way in which this can occur.
+
+```{r}
+cereal_hist = ggplot(cereals, aes(x=Sugar)) +
+  geom_histogram(binwidth=0.05) +
+  labs(x="Proportion sugar") +
+  geom_vline(aes(xintercept=mean(Sugar)), lty="dashed", color="red")
+```
+
+The distribution of sugar content among the cereals is not particularly skewed. The reason that the mean is atypical is instead because it falls between two approximately equally-sized 'subgroups' of cereals, one with a lower sugar content and one with a higher sugar content. A distribution like this with two apparent clusters of observations is 'bimodal'. This term refers to the fact that the distribution has two modes; two different most frequently occurring values (or intervals).
+
+A distribution does not really have to have two modes in the strict sense for us to term it 'bimodal'. We use the term somewhat loosely, to refer to two separate peaks in the data, even if they do not occur exactly equally frequently.
+
+Note also that bimodality doesn't just make the mean an atypical value. The median also falls in the atypical region between the two subgroups.
+
+```{r}
+cereal_hist + geom_vline(aes(xintercept=median(Sugar)), lty="dashed", color="blue")
+```
+
+Rather, bimodality presents a problem for summarizing a set of data in a single measure of its center. A bimodal distribution doesn't really have a single center, it has two. This is usually an indication that our data really contain observations of two different phenomena. In the case of the cereals for example, this could be children's and adults' cereals.
+
+Depending on what we want to find out from our data, a bimodal distribution could be an indication that we need to dig a little deeper and look for other information that can help us separate out the two different types of observation. We will learn a bit more about splitting and filtering our data in the next tutorial, but for now we will just take this example of bimodality as another reminder that we should always plot our data before we go ahead and interpret summary statistics.
 
 # Grouped summaries
 
-# The tidyverse
+Let's now look at one final common task when summarizing data. Often we are interested in the differences between various groupings within our data. For example in the birth weights data, we might be interested in the difference in birth weight between babies born to smoking and non-smoking mothers, or between babies born to mothers who have a history of high blood pressure and to those who don't. In order to describe these differences, we would like to calculate some of the summary statistics we have just learned about, but separately for the different groups.
 
-## ggplot
+## Formulas
+
+R provides one basic function for calculating grouped summaries, the `aggregate()` function. This function works in a particular way that we have not yet learned about. The first argument to `aggregate()` is a **formula**. We will see formulas a lot more often in later tutorials. For now, just remember that a formula imposes a certain structure on a set of data. This structure can be fairly complex, but it can also be something simple, such as dividing a set of data into groups.
+
+Broadly, this is how a formula works in a simple case of a grouped summary:
+
+* the `~` character appears in the middle of the formula
+* to the left of the `~` appears the name of the variable in the data that we want to summarize
+* to the right of the `~` appear the other variables that we want to group by
+
+So for example the formula `Birth_weight ~ Smoker` tells the `aggregate()` function to produce a summary of the `Birth_weight` variable, but separately for the different levels of the factor variable `Smoker`.
+
+If this seems a little bit abstract, it will become clearer when we see it in action. Let's apply the grouped summary we just described to the birth weights data frame. The remaining two arguments to `aggregate()` tell it what data frame to apply the summary formula to, and what function (`FUN`) to use to calculate the summary statistic (for example `mean`, `median`, or `sd`).
+
+```{r}
+aggregate(Birth_weight ~ Smoker, data=bw, FUN=mean)
+```
+
+The result is a very small data frame in which each row represents one grouping (in this case just smokers and non-smokers) and the final column gives the summary statistic for each.
+
+We can also use a formula to ask for *combinations* of factor levels. For example, we might want to know about the four possible groups that arise from combinations of the two smoking categories and the two hypertension categories. To ask for combinations of variables in a formula, we put a `*` symbol between the names of the factor variables whose levels we wish to combine.
+
+Again, seeing the result may make clearer what this entails:
+
+```{r}
+aggregate(Birth_weight ~ Smoker*Hypertension, data=bw, FUN=mean)
+```
+
+We get the mean birth weight for all four possible combinations of smoking and hypertension, and we can see for example that mean birth weight is highest among babies born to non-smoking, non-hypertensive mothers.
+
+If we are wondering about the variation in birth weight within each of these groupings, we can apply the same formula but with a measure of spread, such as `sd`.
+
+```{r}
+aggregate(Birth_weight ~ Smoker*Hypertension, data=bw, FUN=sd)
+```
+
+And we see for example that the babies of the smoking, hypertensive mothers seem to have the most variable birth weights.
 
 ## dplyr
 
+However, `aggregate()` has its limitations. The most important of these is that it only allows calculating one summary statistic at a time. Above, we had to run `aggregate()` once to calculate the group means, and then again to calculate the Standard Deviations. `aggregate()` also doesn't label the output very clearly. The relevant column in the output data frame isn't called, for example, 'Birth_weight_mean'. So we need to either remember what statistic we calculated when we come to look at our output later, or we need to change the names of the columns in the output data frame after running `aggregate()`.
+
+The dplyr package, which we imported at the beginning of this tutorial, offers a more flexible method of calculating grouped summaries. dplyr brings with it several functions for grouping, summarizing, filtering, and otherwise restructuring data. We will now take a look at how the same summaries that we calculated above can be achieved with functions from dplyr.
+
+In general, dplyr works by specifying a 'processing pipeline' for our data. A processing pipeline is just a sequence of steps that our data go through. For example, there might be a first step that filters out some of the observations, perhaps because they have been recorded incorrectly or because we are only interested in a subset of the data, then there might be a second step that splits the data into groups, and then there might be a final step that calculates summary statistics for each group.
+
+A pipeline begins with the data frame that contains our data, and then continues with one or more dplyr functions, each of which specifies one step in the pipeline. To let R know that these steps all belong together one after the other, we connect them with the symbols `%>%`. These symbols are part of the dplyr package. This looks a bit odd, but the `>` is supposed to represent an arrow pointing our data forward on to the next step.
+
+Let's see this in action for the mean birth weights in the two smoking groups:
+
+```{r}
+bw %>%
+  group_by(Smoker) %>%
+  summarize(Mean_birth_weight=mean(Birth_weight))
+```
+
+The result is the same as we got from `aggregate()` above. The two dplyr functions `group_by()` and `summarize()` carried out the grouping and the summarizing.
+
+The input to `group_by()` is the name of the variable in the data frame that we want to group by. This is fairly clear and intuitive. The input to `summarize()` is slightly more complex. It is an assignment of the result of some calculation into a newly-named column, using `=`. To the right of the `=` goes some combination of R commands using one or more of the variables in the data frame. Here we just applied the `mean()` function to the 'Birth_weight' variable. To the left of the `=` goes a new name that we choose for the output column. We should use this to give a clear description of what summary statistic is shown in the column.
+
+Each of these two functions can do a bit more, to produce a more detailed summary. `group_by()` can group by combinations of factor levels, just by adding the names of more grouping variables as further inputs. And `summarize()` can add more summary statistics if we add more `=` assignments as inputs.
+
+Let's see an example of a slightly more thorough summary of the birth weights:
+
+```{r}
+bw %>%
+  group_by(Smoker, Hypertension) %>%
+  summarize(Mean_birth_weight=mean(Birth_weight),
+            SD=sd(Birth_weight),
+            n=n())
+```
+
+Note the use of the `n()` function for one of the summary statistics. This function simply counts up the number of observations, and if the data have already passed through a `group_by()` step, then it is the number of observations in each grouping. This information is particularly useful here, as it shows us that the summary statistics for the babies of hypertensive mothers are based on very few mothers.
+
+The result of a dplyr pipeline can be assigned into a variable with `=` just as anything else in R. We might do this for example if we want to print our summary into a results file.
+
+```{r}
+bw_summary = bw %>%
+  group_by(Smoker, Hypertension) %>%
+  summarize(Mean_birth_weight=mean(Birth_weight),
+            SD=sd(Birth_weight),
+            n=n())
+
+# ... and then for example print bw_summary into a results file
+```
+
+That's all for dplyr for the moment, but we will learn more about it in future tutorials.

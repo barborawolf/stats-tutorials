@@ -9,9 +9,7 @@ output:
 
 # Loading data
 
-We have seen how to create data frames to organize data. For a large set of data, typing the individual values into an R script would be extremely tedious. Much more often we will load data from a file.
-
-(Later on, we will still occasionally create our own data frames, if we want to generate simulated data, or data for a short demonstration or graphic.)
+In the [last tutorial](Data_types.html), we saw how to create data frames to organize data. For a large set of data, typing the individual values into an R script would be extremely tedious. Much more often we will load data from a file.
 
 R can load data from many different file types. We will look at three common ones here:
 
@@ -23,7 +21,7 @@ R can load data from many different file types. We will look at three common one
 
 R has its own data format. If we or somebody else has processed some data using R, then the result may already be in R format. We can recognize such files by the file suffix *.RData*, and they can be loaded using the `load()` function. The input to `load()` is the name of the R data file we want to load. The names of files and folders are enclosed in quotation marks, which distinguishes them from the names of variables and functions.
 
-Remember that R will look for data files in our current working directory, which we can find out using `getwd()`. If the file is located in a subfolder within that folder, then we can supply the name of the subfolder, along with the file path separator `/`. The data files for these tutorials are stored in a subfolder called 'data'.
+Remember that R will look for data files in our current working directory, which we can find out using `getwd()`. If the file is located in a subfolder within that folder, then we can supply the name of the subfolder, along with the path separator `/`. The data files for these tutorials are stored in a subfolder called 'data'.
 
 ```{r}
 load("data/birth_weights.RData")
@@ -99,6 +97,8 @@ bw = read.csv("data/birth_weights.csv")
 
 We will mostly use csv files and RData files in the remaining tutorials that involve loading data.
 
+### Alternative delimiters
+
 In some countries, for example in Germany, the comma is used as a decimal point indicator, so that the number `2.4` is written as `2,4`. If somebody has created a csv file using a spreadsheet program in a country that uses the comma as a decimal point, the separator character will usually be the semicolon `;`.
 
 We can load such files either by setting the `dec` (**decimal**) argument to the semicolon, i.e. `dec=";"`, or by using the convenience function `read.csv2()`, which handles this file format.
@@ -153,12 +153,12 @@ write.csv(bw, file="")
 Here we can see that by default R adds a column of row numbers, and puts all non-numeric values in quotation marks. This doesn't matter so much if we only plan to load the resulting file back into R, but in case we want to use the file in another program that does not expect these formatting features, we can turn them off with some extra arguments:
 
 ```{r, results=FALSE}
-write.csv(bw, file="", row.names=FALSE, quote=FALSE)
+write.csv(bw, file="bw_grams.csv", row.names=FALSE, quote=FALSE)
 ```
 
 # Saving output
 
-Above we saw how to write data frames into text files. R can write other kinds of information into text files as well. Sometimes we might like to save the outputs that are shown in the console into a text file instead. We won't often want to do this, since it is better to save both the outputs and the R commands that generated them together, and we can accomplish this with a markdown file, or we can write an R script and let people run it in order to see the outputs.
+Above we saw how to write data frames into text files. R can write other kinds of information into text files as well. Sometimes we might like to save the outputs that are shown in the console into a text file instead. We won't often want to do this, since it is better to save both the outputs and the R commands that generated them together, and we can accomplish this with a markdown file, or we can write an R script and let people run it themselves in order to see the outputs.
 
 Some cases in which we nonetheless want to save just the outputs are if we want to save one specific result and send it to people who do not use R and just want to see that result, or if we have conducted a very elaborate or time-consuming analysis that we don't want people to have to trawl through to find the main result.
 

@@ -9,6 +9,14 @@ output:
 
 So far, we have always started out with neatly organized data files, and we have assumed that their contents are correct and in the form that we want. We won't always receive our data in the state that we would like. We might need to rework them a little before we can produce a plot or begin statistical analysis.
 
+# Tidy data
+
+## The tidyverse
+
+### ggplot
+
+### dplyr
+
 There are two packages that can help us to reorganize data. One of them, dplyr, we learned about in the last tutorial. The other is called `reshape2`. It is designed to make it easier to 'reshape', that is to switch between different alternative ways of organizing the same set of data.
 
 ```{r}
