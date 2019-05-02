@@ -33,11 +33,11 @@ a. Load the **erotic_art.csv** data set from the class website. You can find the
 
 b. One of the research questions of the study that these data come from was: "Do erotic images make men (rather than women) report less love for their partner?" Produce a plot relevant to this research question. You can use a plot similar in structure to the plot shown for the 'bugs' data above.
 
-c. Produce a summary of the 'love for partner' ratings for each of the four groups (men and women, who viewed either abstract art or pictures of nudes). Include the following statistics in your summary:
+c. Save your plot as a **png** file.
+
+d. Produce a summary of the 'love for partner' ratings for each of the four groups (men and women, who viewed either abstract art or pictures of nudes). Include the following statistics in your summary:
 * mean
 * Standard Deviation
 * median
 * Median Absolute Deviation
 * number of observations
-
-d. Print your summary into a text file so you have it saved for later.
