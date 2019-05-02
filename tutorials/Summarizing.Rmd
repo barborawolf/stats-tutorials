@@ -682,7 +682,7 @@ The result is the same as we got from `aggregate()` above. The two dplyr functio
 
 The input to `group_by()` is the name of the variable in the data frame that we want to group by. This is fairly clear and intuitive. The input to `summarize()` is slightly more complex. It is an assignment of the result of some calculation into a newly-named column, using `=`. To the right of the `=` goes some combination of R commands using one or more of the variables in the data frame. Here we just applied the `mean()` function to the 'Birth_weight' variable. To the left of the `=` goes a new name that we choose for the output column. We should use this to give a clear description of what summary statistic is shown in the column.
 
-Each of these two functions can do a bit more, to produce a more detailed summary. `group_by()` can group by combinations of factor levels, just by adding the names of more grouping variables as further inputs. And `summarize()` can add more summary statistics if we add more `=` assignments as inputs.
+Each of the two functions that we used in our pipeline above can do a bit more, to produce a more detailed summary. `group_by()` can group by combinations of factor levels, just by adding the names of more grouping variables as further inputs. And `summarize()` can add more summary statistics if we add more `=` assignments as inputs.
 
 Let's see an example of a slightly more thorough summary of the birth weights:
 
@@ -708,4 +708,62 @@ bw_summary = bw %>%
 # ... and then for example print bw_summary into a results file
 ```
 
-That's all for dplyr for the moment, but we will learn more about it in future tutorials.
+### Some subtleties
+
+The functions from dplyr have lots of great features that can make working with data much smoother. But they introduce a little bit of extra complexity. There are two small details that it is good to be aware of from the start.
+
+First of all, the output that we get from dplyr functions is no longer strictly speaking an R data frame. Instead, it is a new kind of object called a **tibble**, which is a data frame with additional features. We can see this if we check its class, as we learned in the [tutorial on R data types](Data_types.html). We see that our data is still a data frame, but is also an object of a few other types, which dplyr has added on.
+
+```{r}
+class(bw_summary)
+```
+
+But this detail is not so important for most purposes. All of the basic things that we can do with data frames we can also do with tibbles. The only time we will need to beware of it is if we intend to use our data with another R package after having processed with dplyr first. A very few other packages, particularly those developed for very specialized kinds of analysis, expect to receive a data frame as their input and not a tibble. They may produce errors or give unexpected results if we input a tibble.
+
+If later on you are concerned that you might be in such a situation, you can always convert a tibble back to a data frame using the conversion function `as.data.frame()`.
+
+```{r}
+bw_summary = as.data.frame(bw_summary)
+class(bw_summary)
+```
+
+The second subtlety is more important. If we have applied the `group_by()` function to our data, then the groupings that we applied may remain applied to the data frame. If we forget about this and later carry out some more summarizing or processing of our data, the processing steps we apply may be applied separately for the groups the we originally defined. This is often not what we want.
+
+We can check whether there are any groupings still applied to our data using the dplyr function `groups()`. For example, let's apply the groupings from above again, and check that they are there.
+
+```{r}
+bw = bw %>%
+  group_by(Smoker, Hypertension)
+
+groups(bw)
+```
+
+If we later apply a summary function or some other function, it will still be calculated separately for the groups we defined in an earlier step.
+
+```{r}
+bw %>%
+  summarize(Mean_birth_weight=mean(Birth_weight))
+```
+
+If we do not want the groupings any more, we can remove them with the dplyr function `ungroup()`.
+
+```{r}
+bw = ungroup(bw)
+
+groups(bw)
+```
+
+Often it is a good idea to avoid any confusion with leftover groupings right from the start, by ungrouping our data at the end of our processing pipeline. To do this, we just add the `ungroup()` function on as the final step in the pipeline. This may not always be necessary, but we can do it anyway just in case. Then we know that the next time we work with our data, we won't be caught out by leftover groupings.
+
+```{r}
+bw_summary = bw %>%
+  group_by(Smoker, Hypertension) %>%
+  summarize(Mean_birth_weight=mean(Birth_weight),
+            SD=sd(Birth_weight),
+            n=n()) %>%
+  ungroup()
+
+groups(bw_summary) # (to check that the groupings have gone)
+```
+
+That's all about dplyr for the moment, but we will learn more about it in future tutorials.
