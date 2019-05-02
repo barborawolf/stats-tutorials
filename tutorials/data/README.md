@@ -32,6 +32,10 @@ Some people's heights and weights, and their ages, collected at the HuMoSim labo
 
 The mean age at first marriage, for men and women in the USA in various years. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from the exercises to chapter 9: Regression Wisdom).
 
+## penguins
+
+Duration and depth of the dives of some emperor penguins, along with the penguin's heart rate during the dive. From a [research project](https://doi.org/10.1242/jeb.013235) by Meir and Ponganis.
+
 ## ratings
 
 Some very non-normally-distributed ratings, divided into two groups. Data posted to [StackExchange](https://stats.stackexchange.com/questions/6127/which-permutation-test-implementation-in-r-to-use-instead-of-t-tests-paired-and) by Henrik Singmann.

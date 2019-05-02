@@ -28,3 +28,5 @@ Later tutorials assume familiarity with the **Statistics** tutorials, but otherw
 * [Dimension reduction](Dimension_reduction.html)
 * [Likelihood](Likelihood.html)
 * [Resampling](Resampling.html)
+* [Variants of linear models](Variants_linear_models.html)
+
