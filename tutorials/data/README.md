@@ -4,6 +4,10 @@
 
 Data on newborn babies and their mothers, collected at the Baystate Medical Center in Springfield, Massachusetts, in 1986. Adapted from the [`birthwt`](https://www.rdocumentation.org/packages/MASS/topics/birthwt) data from the `MASS` package.
 
+## bugs
+
+Data from an [online experiment](https://doi.org/10.1016/j.chb.2013.01.024) about reactions to pictures of insects. Ratings of how much each subject would like to kill the insect, for insects of different levels of disgustingness and frighteningness.
+
 ## CEOs
 
 Financial compensation paid to the CEOs of various companies in 2005, in US dollars. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 5: Understanding and Comparing Distributions).
@@ -19,6 +23,10 @@ Death counts per 100 000 people for various causes of death in several age group
 ## decathlon
 
 Athletes' performance in the 10 events of the decathlon at the Decastar and Olympic Games competitions in 2004. Adapted from the [`decathlon`](https://www.rdocumentation.org/packages/FactoMineR/topics/decathlon) data from the `FactoMineR` package.
+
+## erotic_art
+
+Data from a [psychology experiment](https://doi.org/10.1016/j.jesp.2016.11.003) collecting men's and women's ratings of erotic or non-erotic art images, along with information on their relationship status and quality of relationship.
 
 ## fat
 

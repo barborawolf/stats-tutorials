@@ -17,6 +17,8 @@ Then we look at how to work with data.
 6. [Summarizing](Summarizing.html)
 7. Reorganizing
 
+[Exercises](Exercises_2.html)
+
 # Statistics
 
 The next set of tutorials cover concepts in statistics.

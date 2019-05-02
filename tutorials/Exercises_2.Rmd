@@ -1,0 +1,43 @@
+# Exercises
+
+For each exercise, write a short R script that carries out the tasks described. Make sure to test your script and check that it runs as a coherent whole, printing out the required output.
+
+## 1
+
+a. Load the **bugs.csv** data set from the class website. You can find the file at: https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/bugs.csv. These data show people's reactions to pictures of bugs. Each row is one subject rating one bug. The subjects rated how much they would like to kill the bug, and the bugs are classified according to their disgustingness and their frighteningness.
+
+b. Check the structure of the data. Print out a table that shows how many times each subject appears in the data set. Show how many levels of disgustingness and frighteningness there are. And show a summary of the kill ratings.
+
+c. Show a histogram of the distribution of kill ratings. There is no need to show separate histograms for the different types of bug yet, just show the distribution of the whole data set.
+
+d. Now produce a more elaborate plot showing the distribution of kill ratings separately for the four bug types. Try to recreate the plot below. (This is reasonably difficult and will take some trial and error if you are new to ggplot. Just try to get as many features of the plot as you can.)
+
+```{r, echo=FALSE, message=FALSE}
+library(ggplot2)
+set.seed(0)
+bugs = read.csv("data/bugs.csv")
+for(col in c("Disgust", "Fear")){
+  bugs[,col] = relevel(bugs[,col], "low")
+}
+fig = ggplot(bugs, aes(x=Disgust, y=KillRating, fill=Fear)) +
+  geom_boxplot(outlier.shape="") +
+  geom_point(shape="circle filled", position=position_jitterdodge()) +
+  scale_y_continuous(breaks=0:10) +
+  labs(y="Desire to kill")
+print(fig)
+```
+
+## 2
+
+a. Load the **erotic_art.csv** data set from the class website. You can find the file at: https://raw.githubusercontent.com/luketudge/stats-tutorials/master/tutorials/data/erotic_art.csv. These data show people's ratings of how much they liked certain pieces of art, either erotic or non-erotic.
+
+b. One of the research questions of the study that these data come from was: "Do erotic images make men (rather than women) report less love for their partner?" Produce a plot relevant to this research question. You can use a plot similar in structure to the plot shown for the 'bugs' data above.
+
+c. Produce a summary of the 'love for partner' ratings for each of the four groups (men and women, who viewed either abstract art or pictures of nudes). Include the following statistics in your summary:
+* mean
+* Standard Deviation
+* median
+* Median Absolute Deviation
+* number of observations
+
+d. Print your summary into a text file so you have it saved for later.
