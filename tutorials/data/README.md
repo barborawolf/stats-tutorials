@@ -60,6 +60,10 @@ Just a simple made-up data set.
 
 Speed and accuracy of eye movements from several subjects in [an eye tracking experiment](https://doi.org/10.3758/s13414-017-1480-9). Slightly simplified from the full set of data.
 
+## salmon
+
+Measurements of the concentrations of various contaminants in farmed salmon at various locations around the world. From a [study](https://doi.org/10.1126/science.1091447) by Hites and colleagues.
+
 ## sleep
 
 Extra sleep gained while on one of two drugs. Data reported in Student's article '[The probable error of a mean](https://www.jstor.org/stable/2331554)' in *Biometrika*.
