@@ -36,6 +36,10 @@ Some people's waist sizes, weights, and proportion of body fat. From the book [I
 
 Some people's heights and weights, and their ages, collected at the HuMoSim laboratory at the University of Michigan. Adapted from the bigger [`seatpos`](https://www.rdocumentation.org/packages/faraway/topics/seatpos) data from the `faraway` package.
 
+## kitchen_rolls
+
+Scores on an 'openness to experience' questionnaire, from people who have just rotated a roll of kitchen paper either clockwise or counter-clockwise. From a [research project](https://www.doi.org/10.3389/fpsyg.2015.00494) by Eric-Jan Wagenmakers and colleagues. Also included as an example data set for the [JASP](https://jasp-stats.org/) program. Slightly simplified from the full set of data.
+
 ## marriage
 
 The mean age at first marriage, for men and women in the USA in various years. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from the exercises to chapter 9: Regression Wisdom).
