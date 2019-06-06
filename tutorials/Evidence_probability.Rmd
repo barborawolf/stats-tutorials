@@ -1,0 +1,23 @@
+---
+title: "Evidence and probability"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    df_print: "paged"
+---
+
+```{r, message=FALSE}
+library(ggplot2)
+```
+
+We have learned how to display and summarize data. Techniques for doing so are collectively termed **descriptive statistics** because they involve merely describing what we have observed. We would now like to take the next step and use data to infer something about the world they came from. Techniques for doing this are termed **inferential statistics**.
+
+For a lot of purposes, descriptive statistics are often sufficient. If the pattern in our data is clear and we have displayed it correctly, merely looking at the data makes it clear what conclusion we can draw.
+
+However, even in clear-cut cases, we would like to be able to quantify how well our observed data support a particular conclusion or theory. There are different ways of posing this broad question:
+
+* How well does a specific theory account for the observed data?
+* How much do the observed data support different competing theories?
+* 
+
