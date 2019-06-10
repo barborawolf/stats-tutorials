@@ -36,6 +36,14 @@ The next set of tutorials covers concepts in statistics.
 11. Probability distributions
 12. Likelihood
 
+# Estimation
+
+Then we look at concepts relevant to estimation.
+
+13. Sampling
+14. Error
+15. Bias
+
 # Models
 
 Finally, we introduce the role of models.

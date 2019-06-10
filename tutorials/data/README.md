@@ -28,6 +28,10 @@ Athletes' performance in the 10 events of the decathlon at the Decastar and Olym
 
 Data from a [psychology experiment](https://doi.org/10.1016/j.jesp.2016.11.003) collecting men's and women's ratings of erotic or non-erotic art images, along with information on their relationship status and quality of relationship.
 
+## eyes
+
+Ratings of the attractiveness of magazine covers featuring models with different eye colors. From the book [Introduction to the Practice of Statistics](https://www.macmillanlearning.com/Catalog/product/introductiontothepracticeofstatistics-ninthedition-moore) by Moore, McCabe, & Craig.
+
 ## fat
 
 Some people's waist sizes, weights, and proportion of body fat. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from the exercises to chapter 8: Linear Regression).

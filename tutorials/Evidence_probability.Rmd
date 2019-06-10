@@ -11,13 +11,59 @@ output:
 library(ggplot2)
 ```
 
-We have learned how to display and summarize data. Techniques for doing so are collectively termed **descriptive statistics** because they involve merely describing what we have observed. We would now like to take the next step and use data to infer something about the world they came from. Techniques for doing this are termed **inferential statistics**.
+We have learned how to display and summarize data. Techniques for doing so are collectively termed **descriptive statistics** because they involve describing what we have observed. We would now like to take the next step and use data to infer something about the world they came from. Techniques for doing this are termed **inferential statistics**.
 
-For a lot of purposes, descriptive statistics are often sufficient. If the pattern in our data is clear and we have displayed it correctly, merely looking at the data makes it clear what conclusion we can draw.
+For a lot of purposes, descriptive statistics are often sufficient. If the pattern in our data is clear and we have displayed it correctly, merely looking at the data can make it fairly obvious what conclusion we can draw (though this conclusion might not always be a particularly Earth-shattering discovery):
 
-However, even in clear-cut cases, we would like to be able to quantify how well our observed data support a particular conclusion or theory. There are different ways of posing this broad question:
+```{r}
+hw = read.csv("data/height_weight.csv")
+ggplot(hw, aes(x=Weight, y=Height)) +
+  geom_point() +
+  labs(x="Height (cm)", y="Weight (kg)")
+```
 
-* How well does a specific theory account for the observed data?
-* How much do the observed data support different competing theories?
-* 
+But important patterns may not always hit us between the eyes. And even in clear-cut cases, we would like to be able to quantify how well our observed data support a particular conclusion or theory, and to check that there isn't some other similar theory that our data support even better. There are different ways of posing this broad question:
+
+* How well does a specific theory account for the observed result?
+* How much does the observed result support different competing theories?
+* How closely does the observed result reflect reality?
+* How accurate are a theory's predictions about a result?
+* How much should our result change our belief in the truth of a theory?
+
+# Evidence
+
+We will eventually consider all of the questions above in turn. But we will focus initially on the first two. In slightly different ways, they both ask about the status of the observed result as **evidence** for or against a theory. So we must begin with a clear definition of the concept of evidence. Here is one:
+
+> An observed piece of data $D$ consitutes evidence for theory $H$ to the extent that $D$ would **probably** occur if $H$ were true.
+
+This definition seems to match most people's intuitive idea of evidence; if a theory says that something will probably happen, and then it does happen, then this seems to constitute evidence in favor of the theory. However, we must already make some important refinements. Consider first the following example:
+
+*Muriel claims to be clairvoyant ($H$). We present her with two playing cards turned face down, one red, one black, and ask her to pick the red card. She succeeds ($D$).*
+
+According to the definition above, the observed result here is evidence for the theory that Muriel is clairvoyant (at least assuming that she is a *good* clairvoyant). If she were clairvoyant, she would very probably pick the correct card, and that is what we have observed. However, something is not quite right. Compare with this slightly different example:
+
+*Muriel claims to be clairvoyant ($H$). We present her with twenty playing cards turned face down, one red, nineteen black, and ask her to pick the red card. She succeeds ($D$).*
+
+In this case the observed result seems intuitively like much better evidence for the theory. But both results are outcomes that would very probably occur were the theory true, fulfilling the definition of evidence that we gave above. The problem with the first result is that it is something that would also fairly probably occur even if the theory were *not* true; even if Muriel is not clairvoyant, there is still a 50-50 chance of her producing the first result. This is not the case for the second result. Here Muriel has only a 1 in 20 chance of producing the observed result if she is not clairvoyant.
+
+To account for the difference between these two cases, we must modify our earlier definition of evidence:
+
+> An observed piece of data $D$ consitutes evidence for theory $H$ to the extent that $D$ would **probably** occur if $H$ were true, and would **probably not** occur if $H$ were **not** true.
+
+## Probability
+
+What we will do now is try to make things quantitative, to give evidence in terms of numbers. In the discussion of the two examples above, we already made reference to some numbers. We said that Muriel has a 50-50 chance of getting the two-card task correct if she is just guessing, and we said that she has a 1 in 20 chance of getting the 20-card task correct. These two statements are expressing **probabilities**, albeit in two slightly different ways.
+
+One thing that the two statements have in common is that they both refer to numbers of possible outcomes. When we say "50-50", we mean that there are 50 possible outcomes of one kind, and 50 of another kind. And when we say "1 in 20", we mean that there are 20 possible outcomes, 1 of which is an outcome of a particular kind (and the other 19 are of a different kind).
+
+For example, when we say "50-50" about the outcome in the 2-card task, we are imagining a set of 100 instances of the task situation. We could think about these as representing 100 'possible worlds' in which things start out the same but turn out differently, or as 100 possible repetitions of the same situation in our actual world. In either case, we are asserting that if Muriel is just guessing at the task, then 50 of these are instances in which she gets the task correct.
+
+The concept is the same for the 20-card task.
+
+
+
+
+
+
+
 
