@@ -1,8 +1,16 @@
 # Sources
 
+## Anscombe
+
+[Anscombe's quartet](https://doi.org/10.1080%2F00031305.1973.10478966).
+
 ## birth_weights
 
 Data on newborn babies and their mothers, collected at the Baystate Medical Center in Springfield, Massachusetts, in 1986. Adapted from the [`birthwt`](https://www.rdocumentation.org/packages/MASS/topics/birthwt) data from the `MASS` package.
+
+## brain_size
+
+Brain size and IQ scores. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from the exercises to chapter 7: Scatterplots, Association, and Correlation).
 
 ## bugs
 
@@ -24,6 +32,10 @@ Death counts per 100 000 people for various causes of death in several age group
 
 Athletes' performance in the 10 events of the decathlon at the Decastar and Olympic Games competitions in 2004. Adapted from the [`decathlon`](https://www.rdocumentation.org/packages/FactoMineR/topics/decathlon) data from the `FactoMineR` package.
 
+## election_2000
+
+Votes for four candidates in the 2000 US presidential election, by county. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 9: Regression Wisdom).
+
 ## erotic_art
 
 Data from a [psychology experiment](https://doi.org/10.1016/j.jesp.2016.11.003) collecting men's and women's ratings of erotic or non-erotic art images, along with information on their relationship status and quality of relationship.
@@ -39,6 +51,14 @@ Some people's waist sizes, weights, and proportion of body fat. From the book [I
 ## height_weight
 
 Some people's heights and weights, and their ages, collected at the HuMoSim laboratory at the University of Michigan. Adapted from the bigger [`seatpos`](https://www.rdocumentation.org/packages/faraway/topics/seatpos) data from the `faraway` package.
+
+## hurricanes
+
+Central pressure and maximum wind speed of hurricanes in the US. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 7: Scatterplots, Association, and Correlation).
+
+## Kentucky_Derby
+
+Performance of the winning horses in the Kentucky derby, before and after the race was shortened in 1896. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 2: Data).
 
 ## kitchen_rolls
 
