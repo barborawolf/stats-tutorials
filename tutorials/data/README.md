@@ -16,6 +16,10 @@ Brain size and IQ scores. From the book [Intro Stats](http://catalogue.pearsoned
 
 Data from an [online experiment](https://doi.org/10.1016/j.chb.2013.01.024) about reactions to pictures of insects. Ratings of how much each subject would like to kill the insect, for insects of different levels of disgustingness and frighteningness.
 
+## car_seats
+
+Various physical dimensions of some people sitting in cars, along with their preferred positioning of the car seat. Data collected at the HuMoSim laboratory at the University of Michigan. Adapted from the bigger [`seatpos`](https://www.rdocumentation.org/packages/faraway/topics/seatpos) data from the `faraway` package. Not to be confused with the [`Carseats`](https://www.rdocumentation.org/packages/ISLR/topics/Carseats) data often used in demonstrations of linear regression in R, which give the sales of child car seats and are made up.
+
 ## CEOs
 
 Financial compensation paid to the CEOs of various companies in 2005, in US dollars. From the book [Intro Stats](http://catalogue.pearsoned.co.uk/educator/product/Intro-Stats-Pearson-New-International-Edition/9781292022505.page) by De Veaux, Velleman, & Bock (from chapter 5: Understanding and Comparing Distributions).
@@ -50,7 +54,7 @@ Some people's waist sizes, weights, and proportion of body fat. From the book [I
 
 ## height_weight
 
-Some people's heights and weights, and their ages, collected at the HuMoSim laboratory at the University of Michigan. Adapted from the bigger [`seatpos`](https://www.rdocumentation.org/packages/faraway/topics/seatpos) data from the `faraway` package.
+Subset of the **car_seats** data, omitting the variables other than height, weight, and age.
 
 ## hurricanes
 
